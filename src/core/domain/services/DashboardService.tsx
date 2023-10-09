@@ -1,5 +1,5 @@
 import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/BuscarInformacoesDashboardUserCase";
-import DashboardDTO from "../DTO/dashboard/DashboardDTO";
+import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
 import DashboardOutputPort from "@/core/application/ports/output/DashboardOutputPort";
 
 export default class DashboardService implements BuscarInformacoesDashboardUserCase {
