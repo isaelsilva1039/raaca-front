@@ -1,7 +1,7 @@
 import DashboardOutputPort from "@/core/application/ports/output/DashboardApiOutputPort";
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
-import { ApiService } from "@/core/infra/adapters/api/services/ApiService";
 import ApiMapper from "@/core/application/mappers/ApiMapper";
+import { ApiService } from "@/core/infra/ports.output/api/services/ApiService";
 
 export default class ApiAdapter implements DashboardOutputPort {
 

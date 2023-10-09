@@ -1,6 +1,6 @@
 import ApiMapper from "@/core/application/mappers/ApiMapper";
-import DashboardResponse from "../api/dto/DashboardResponse";
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
+import DashboardResponse from "@/core/infra/ports.output/api/dto/DashboardResponse";
 
 export default class ApiMapperImpl implements ApiMapper {
 
