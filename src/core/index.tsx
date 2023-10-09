@@ -1,4 +1,4 @@
-import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/BuscarInformacoesDashboardUserCase";
+import BuscarInformacoesDashboardUserCase from "@/core/application/ports/input/BuscarInformacoesDashboardUserCase";
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
 import DashboardService from "@/core/domain/services/DashboardService";
 import ApiAdapter from "@/core/infra/adapters/ApiAdapter";
