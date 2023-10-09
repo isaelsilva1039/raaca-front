@@ -1,7 +1,9 @@
 import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/BuscarInformacoesDashboardUserCase";
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
-import DashboardService from "../domain/services/DashboardService";
-import ApiAdapter from "../infra/adapters/api/ApiAdapter";
+import DashboardService from "@/core/domain/services/DashboardService";
+import ApiAdapter from "@/core/infra/adapters/ApiAdapter";
+import { ApiService } from "../infra/ports.output/api/services/ApiService";
+import ApiMapperImpl from "../infra/mappers/ApiMapperImpl";
 
 class Application {
     private static instance: Application | null = null;
@@ -9,7 +11,10 @@ class Application {
     private apiAdapter: ApiAdapter;
 
     private constructor() {
-        this.apiAdapter = new ApiAdapter();
+        const apiService = new ApiService();
+        const apiMapper = new ApiMapperImpl();
+        
+        this.apiAdapter = new ApiAdapter(apiService, apiMapper);
         this.dashboardService = new DashboardService(this.apiAdapter);
     }
 
