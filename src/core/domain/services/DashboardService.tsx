@@ -1,12 +1,12 @@
 import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/BuscarInformacoesDashboardUserCase";
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
-import DashboardOutputPort from "@/core/application/ports/output/DashboardOutputPort";
+import DashboardApiOutputPort from "@/core/application/ports/output/DashboardApiOutputPort";
 
 export default class DashboardService implements BuscarInformacoesDashboardUserCase {
 
-    constructor(private readonly outputPort: DashboardOutputPort) { }
+    constructor(private readonly dashboardAPIOutputPort: DashboardApiOutputPort) { }
     
     public buscarInformacoes(): DashboardDTO {
-        return this.outputPort.buscarDashboardData();
+        return this.dashboardAPIOutputPort.buscarDashboard();
     }
 }
