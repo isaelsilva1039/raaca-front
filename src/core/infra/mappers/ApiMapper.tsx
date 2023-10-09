@@ -1,5 +1,5 @@
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
-import DashboardResponse from "swiftpag-gestor-api-client/src/domain/dto/DashboardResponse";
+import { DashboardResponse } from "swiftpag-gestor-api-client";
 
 export default class ApiMapper {
 
