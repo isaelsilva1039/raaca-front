@@ -2,7 +2,6 @@ import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/Busc
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
 import DashboardService from "@/core/domain/services/DashboardService";
 import ApiAdapter from "@/core/infra/adapters/ApiAdapter";
-import { apiServer } from "swiftpag-gestor-api-client";
 import ApiMapperImpl from "../infra/mappers/ApiMapper";
 
 class Application {
@@ -12,7 +11,7 @@ class Application {
 
     private constructor() {
         const apiMapper = new ApiMapperImpl();
-        this.apiAdapter = new ApiAdapter(apiServer, apiMapper);
+        this.apiAdapter = new ApiAdapter();
         this.dashboardService = new DashboardService(this.apiAdapter);
     }
 
