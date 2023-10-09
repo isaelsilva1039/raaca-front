@@ -1,5 +1,5 @@
-import DashboardData from "../../domain/DTO/dashboard/DashboardData";
+import DashboardDTO from "../../domain/DTO/dashboard/DashboardDTO";
 
 export default interface BuscarInformacoesDashboardUserCase {
-    buscarInformacoes(): DashboardData
+    buscarInformacoes(): DashboardDTO
 }

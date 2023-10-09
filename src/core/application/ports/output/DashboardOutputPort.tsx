@@ -1,5 +1,5 @@
-import DashboardData from "@/core/domain/DTO/dashboard/DashboardData";
+import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
 
 export default interface DashboardOutputPort {
-    buscarDashboardData(): DashboardData
+    buscarDashboardData(): DashboardDTO
 }
