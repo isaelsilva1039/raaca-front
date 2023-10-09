@@ -1,5 +1,5 @@
 import DashboardOutputPort from "@/core/application/ports/output/DashboardApiOutputPort";
-import { DashboardDTO } from "@/core/application";
+import { DashboardDTO } from "@/core";
 
 export default class ApiAdapter implements DashboardOutputPort {
 

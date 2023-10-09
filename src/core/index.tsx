@@ -2,7 +2,7 @@ import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/Busc
 import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
 import DashboardService from "@/core/domain/services/DashboardService";
 import ApiAdapter from "@/core/infra/adapters/ApiAdapter";
-import ApiMapperImpl from "../infra/mappers/ApiMapper";
+import ApiMapperImpl from "./infra/mappers/ApiMapper";
 
 class Application {
     private static instance: Application | null = null;

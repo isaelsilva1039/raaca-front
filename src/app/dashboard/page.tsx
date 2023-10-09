@@ -1,4 +1,4 @@
-import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core/application";
+import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core";
 
 export default function Dashboard() {
   return (
