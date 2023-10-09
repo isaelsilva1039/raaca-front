@@ -7,8 +7,8 @@ import ApiMapperImpl from "../infra/mappers/ApiMapper";
 
 class Application {
     private static instance: Application | null = null;
-    private dashboardService: DashboardService;
-    private apiAdapter: ApiAdapter;
+    private readonly dashboardService: DashboardService;
+    private readonly apiAdapter: ApiAdapter;
 
     private constructor() {
         const apiMapper = new ApiMapperImpl();
