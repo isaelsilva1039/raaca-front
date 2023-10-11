@@ -1,0 +1,258 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+}
+
+.sidebar-notification {
+  background-color: white;
+  height: 100vh;
+  position: fixed; /* Para garantir que o sidebar fique fixo na lateral */
+  width: 250px; 
+  z-index: 2; 
+}
+
+.sidebar-notification .pages {
+  padding-top: 168px; /* Mesma distância do topo para ajustar o conteúdo do menu */
+  padding-left: 33px; /* Distância da borda esquerda para ajustar o conteúdo do menu */
+  width: 100%; /* O conteúdo do menu utiliza toda a largura do .sidebar-notification */
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-notification .pages .menu-item {
+  width: 100%; /* O item do menu utiliza toda a largura do .pages */
+  display: flex;
+  margin-bottom: 52px;
+  gap: 32px;
+  white-space: nowrap;
+  position: relative;
+}
+
+.content {
+  position: absolute;
+  left: 260px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+}
+
+.sidebar-notification .authentication {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 280px;
+  width: 259px;
+}
+
+.sidebar-notification .pagetitle {
+  color: #a3aed0;
+  font-family: "DM Sans", Helvetica;
+  font-size: 16px;
+  font-weight: 500;
+  left: 36px;
+  letter-spacing: -0.32px;
+  line-height: 30px;
+  position: absolute;
+  top: 3px;
+  white-space: nowrap;
+}
+
+.sidebar-notification .icon-instance-node {
+  height: 27px !important;
+  left: 0 !important;
+  position: absolute !important;
+  top: 5px !important;
+  width: 24px !important;
+}
+
+.sidebar-notification .div {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 336px;
+  width: 259px;
+}
+
+.sidebar-notification .icon-instance-node-2 {
+  height: 24px !important;
+  left: 0 !important;
+  position: absolute !important;
+  top: 6px !important;
+  width: 24px !important;
+}
+
+.sidebar-notification .profile {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 224px;
+  width: 259px;
+}
+
+.sidebar-notification .kanban {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 168px;
+  width: 259px;
+}
+
+.sidebar-notification .tables {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 112px;
+  width: 259px;
+}
+
+.sidebar-notification .NFT-marketplace {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 56px;
+  width: 259px;
+}
+
+.sidebar-notification .dashboard {
+  height: 36px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 259px;
+}
+
+.sidebar-notification .text-wrapper {
+  color: #2b3674;
+  font-family: "DM Sans", Helvetica;
+  font-size: 16px;
+  font-weight: 700;
+  left: 36px;
+  letter-spacing: -0.32px;
+  line-height: 30px;
+  position: absolute;
+  top: 3px;
+  white-space: nowrap;
+}
+
+.sidebar-notification .active {
+  background-color: #4218ff;
+  border-radius: 25px;
+  height: 36px;
+  left: 86%;
+  position: absolute;
+  top: 0;
+  width: 3px;
+}
+
+.sidebar-notification .logo {
+  height: 26px;
+  left: 36px;
+  position: absolute;
+  top: 56px;
+  width: 114px;
+}
+
+.sidebar-notification .text {
+  height: 26px;
+  position: relative;
+  width: 116px;
+}
+
+.sidebar-notification .swift-pay {
+  color: #2b3674;
+  font-family: "Poppins", Helvetica;
+  font-size: 26px;
+  font-weight: 400;
+  left: 0;
+  letter-spacing: 0;
+  line-height: 26px;
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+}
+
+.sidebar-notification .span {
+  font-weight: 700;
+}
+
+.sidebar-notification .text-wrapper-2 {
+  color: #2b3674;
+  font-family: "Poppins", Helvetica;
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 26px;
+}
+
+.sidebar-notification .separator {
+  background-image: url(https://c.animaapp.com/Vc1YDz46/img/separator.svg);
+  background-position: 50% 50%;
+  background-size: cover;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  top: 129px;
+  width: 100%;
+}
+
+
+
+#menu-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 20px; /* Adjust the spacing between the button and menu */
+  z-index: 3; /* Ensure the button is above the menu */
+}
+
+/* Style for the button when the menu is open */
+.sidebar-notification.open #menu-btn {
+  color: #4318ff; /* Change the button color when the menu is open */
+}
+
+#menu-btn {
+  display: none; /* Esconde o botão do menu por padrão */
+}
+
+/* Estilo para telas pequenas (mobile) */
+@media only screen and (max-width: 768px) {
+  #menu-btn {
+    width: 100%; /* Make the button occupy the full width */
+    display: block; /* Exibe o botão do menu em telas pequenas */
+    z-index: 2; /* Coloca o menu acima dos outros conteúdos */
+    align-items: start;
+    justify-content: start;
+    text-align: start;
+  }
+
+  .sidebar-container{
+    width: 100%; 
+    align-items: start;
+    justify-content: start;
+    text-align: start;
+  }
+
+  .sidebar-notification {
+    width: 0; /* esconde o menu */
+    overflow: hidden; /* esconde o conteúdo que ultrapassa o container */
+    transition: width 0.3s ease; /* animação suave ao expandir e contrair */
+  }
+
+  .sidebar-notification.open {
+    background-color: white;
+    width: 250px; /* exibe o menu ao ter a classe 'open' */
+  }
+
+  .content {
+    margin-top: 10px;
+    left: 0; /* Content takes up the full width */
+    z-index: -2;
+  }
+}

@@ -1,0 +1,1 @@
+export { MoneyCoinsDocumentChart } from "./MoneyCoinsDocumentChart";
