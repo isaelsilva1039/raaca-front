@@ -1,0 +1,18 @@
+.label-dashboard {
+    height: 24px;
+    width: 122px;
+  }
+  
+  .label-dashboard .text-wrapper-dashboard {
+    color: #707eae;
+    font-family: "DM Sans-Medium", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    left: 0;
+    letter-spacing: 0;
+    line-height: 24px;
+    /* position: fixed; */
+    top: 0;
+    white-space: nowrap;
+  }
+  

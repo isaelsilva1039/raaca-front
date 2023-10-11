@@ -1,9 +1,11 @@
-import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core/application";
+
+import React from "react";
+import '@/styles/dashboard/dashboard.css';
 
 export default function Dashboard() {
   return (
-    <main>
-      <h1>Helo Word </h1>
-    </main>
-  )
+    <div className="label-dashboard">
+        <div className="text-wrapper-dashboard">Menu / Dashboard</div>
+    </div>
+  );
 }
