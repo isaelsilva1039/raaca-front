@@ -1,9 +1,9 @@
 .label-dashboard {
     height: 24px;
     width: 122px;
-  }
-  
-  .label-dashboard .text-wrapper-dashboard {
+}
+
+.label-dashboard .text-wrapper-dashboard {
     color: #707eae;
     font-family: "DM Sans-Medium", Helvetica;
     font-size: 14px;
@@ -14,5 +14,4 @@
     /* position: fixed; */
     top: 0;
     white-space: nowrap;
-  }
-  
+}

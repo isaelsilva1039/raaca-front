@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Head from "next/head";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
-import '@/componentes/menu/styles/stilos.css'
+import '@/core/ui/componentes/menu/styles/stilos.css'
 import Home from "./page";
-import { SidebarNotification } from "@/componentes/menu/menu";
+import { SidebarNotification } from "@/core/ui/componentes/menu/menu";
 
 export const metadata: Metadata = {
   title: "SwiftPay",

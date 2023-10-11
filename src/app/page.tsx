@@ -1,5 +1,5 @@
 
-import { SidebarNotification } from '@/componentes/menu/menu';
+import { SidebarNotification } from '@/core/ui/componentes/menu/menu';
 
 export default function Home() {
   return (
