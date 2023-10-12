@@ -6,6 +6,7 @@ import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartPro
 import Options from "@/core/ui/componentes/grafico-linha/options";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import CartaoGenericoProps from "@/core/ui/componentes/cartao-generico/CartaoGenericoProps";
+import { CartaoGenericoComIndicador } from "@/core/ui/componentes/cartao-generico-indicador/cartao-generico-indicador";
 
 
 export default function Dashboard() {
@@ -80,7 +81,7 @@ export default function Dashboard() {
       <h1>Dashboard</h1>
       <GraficoLinha {...props} />
       <CartaoGenerico {...cartaoGenericoProps} />
-      <CartaoGenerico {...cartaoGenericoProps} />
+      <CartaoGenericoComIndicador {...cartaoGenericoProps} />
     </main>
   )
 }
