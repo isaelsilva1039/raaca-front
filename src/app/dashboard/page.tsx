@@ -7,6 +7,8 @@ import Options from "@/core/ui/componentes/grafico-linha/options";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import CartaoGenericoProps from "@/core/ui/componentes/cartao-generico/CartaoGenericoProps";
 import { CartaoGenericoComIndicador } from "@/core/ui/componentes/cartao-generico-indicador/cartao-generico-indicador";
+import { TabelaProps } from "@/core/ui/componentes/tabela/TabelaProps";
+import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
 
 
 export default function Dashboard() {
@@ -76,12 +78,80 @@ export default function Dashboard() {
     icone: SmartphoneIcon
   }
 
+  const tabelaProps: TabelaProps = {
+    orders: [
+      {
+        id: "f69f88012978187a6c12897f",
+        ref: "ChavePix1",
+        amount: 30.5,
+        customer: {
+          name: "17.5%",
+        },
+        createdAt: '12',
+        status: "R$3123,00",
+      },
+      {
+        id: "f69f88012978187a6c12897f",
+        ref: "ChavePix2",
+        amount: 30.5,
+        customer: {
+          name: "17.5%",
+        },
+        createdAt: '12',
+        status: "R$3123,00",
+      },
+      {
+        id: "f69f88012978187a6c12897f",
+        ref: "ChavePix3",
+        amount: 30.5,
+        customer: {
+          name: "17.5%",
+        },
+        createdAt: '12',
+        status: "R$3123,00",
+      },
+      {
+        id: "f69f88012978187a6c12897f",
+        ref: "ChavePix4",
+        amount: 30.5,
+        customer: {
+          name: "17.5%",
+        },
+        createdAt: '12',
+        status: "R$3123,00",
+      },
+      {
+        id: "f69f88012978187a6c12897f",
+        ref: "ChavePix5",
+        amount: 30.5,
+        customer: {
+          name: "17.5%",
+        },
+        createdAt: '12',
+        status: "R$3123,00",
+      },
+      {
+        id: "f69f88012978187a6c12897f",
+        ref: "ChavePix6",
+        amount: 30.5,
+        customer: {
+          name: "17.5%",
+        },
+        createdAt: '12',
+        status: "R$3123,00",
+      }
+    ],
+    sx: { height: "100%", borderRadius: '8px' },
+    nameTable: "Transações PIX"
+  }
+
   return (
     <main>
       <h1>Dashboard</h1>
       <GraficoLinha {...props} />
       <CartaoGenerico {...cartaoGenericoProps} />
       <CartaoGenericoComIndicador {...cartaoGenericoProps} />
+      <Tabela {...tabelaProps} />
     </main>
   )
 }
