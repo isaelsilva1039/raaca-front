@@ -4,8 +4,8 @@ import TotalGeralDTO from "./TotalGeralDTO";
 import TotalTransacoesItemDTO from "./TotalTransacoesItemDTO";
 
 export default interface DashboardDTO {
-  horizontalWidgets: HorizontalWidgetDTO[] | undefined;
-  totalGeral: TotalGeralDTO | undefined;
-  totalTransacoes: TotalTransacoesItemDTO[] | undefined;
-  tabelas: TabelaDTO[] | undefined;
+  horizontalWidgets: HorizontalWidgetDTO[]
+  totalGeral: TotalGeralDTO
+  totalTransacoes: TotalTransacoesItemDTO[]
+  tabelas: TabelaDTO[]
 }

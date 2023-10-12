@@ -1,3 +1,5 @@
+import Head from "next/head";
+import { Box, Container, Unstable_Grid2 as Grid, Typography } from "@mui/material";
 import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core";
 import { GraficoLinha } from "@/core/ui/componentes/grafico-linha/grafico-linha";
 import { CartaoGenerico } from "@/core/ui/componentes/cartao-generico/cartao-generico"
@@ -10,148 +12,65 @@ import { CartaoGenericoComIndicador } from "@/core/ui/componentes/cartao-generic
 import { TabelaProps } from "@/core/ui/componentes/tabela/TabelaProps";
 import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
 
-
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO = buscarInformacoesDashboardUserCase.buscarInformacoes();
+  
+  const cartaoGenericoComponents = dashboardInfo.horizontalWidgets.map((element, index) => {
+    const cartaoGenericoProps: CartaoGenericoProps = {
+      valor: element.valor,
+      descritivo: element.descritivo,
+      icone: SmartphoneIcon,
+    };
 
-  const labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-
-  const dataset: Dataset = {
-    type: "line",
-    label: "Dataset",
-    data: labels.map(() => Math.floor(Math.random() * 100)),
-    borderColor: "#4318FF",
-    fill: false,
-    lineTension: 0.4,
-    pointBorderColor: "#4318FF",
-    borderWidth: 4,
-    pointRadius: 0,
-    pointHoverRadius: 8,
-    pointHoverBackgroundColor: "#ffffff",
-    pointHoverBorderColor: "#4318FF",
-    pointHoverBorderWidth: 4,
-    pointHitRadius: 50,
-  }
-
-  const options: Options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: false
-      },
-    },
-    scales: {
-      x: {
-        grid: {
-          display: false
-        },
-        ticks: {
-          beginAtZero: true,
-          color: '#A3AED0 ',
-          font: {
-            size: 12,
-            family: 'Arial, sans-serif',
-          },
-        }
-      },
-      y: {
-        display: false,
-        grid: {
-          display: false,
-        },
-      }
-    }
-  };
-
-  const props: LineChartProps = {
-    options,
-    valor: 'R$ 999,000.00',
-    data: {
-      labels,
-      datasets: [dataset]
-    }
-  };
-
-  const cartaoGenericoProps: CartaoGenericoProps = {
-    valor: 'R$ 999,000.00',
-    descritivo: 'Total de vendas',
-    icone: SmartphoneIcon
-  }
-
-  const tabelaProps: TabelaProps = {
-    orders: [
-      {
-        id: "f69f88012978187a6c12897f",
-        ref: "ChavePix1",
-        amount: 30.5,
-        customer: {
-          name: "17.5%",
-        },
-        createdAt: '12',
-        status: "R$3123,00",
-      },
-      {
-        id: "f69f88012978187a6c12897f",
-        ref: "ChavePix2",
-        amount: 30.5,
-        customer: {
-          name: "17.5%",
-        },
-        createdAt: '12',
-        status: "R$3123,00",
-      },
-      {
-        id: "f69f88012978187a6c12897f",
-        ref: "ChavePix3",
-        amount: 30.5,
-        customer: {
-          name: "17.5%",
-        },
-        createdAt: '12',
-        status: "R$3123,00",
-      },
-      {
-        id: "f69f88012978187a6c12897f",
-        ref: "ChavePix4",
-        amount: 30.5,
-        customer: {
-          name: "17.5%",
-        },
-        createdAt: '12',
-        status: "R$3123,00",
-      },
-      {
-        id: "f69f88012978187a6c12897f",
-        ref: "ChavePix5",
-        amount: 30.5,
-        customer: {
-          name: "17.5%",
-        },
-        createdAt: '12',
-        status: "R$3123,00",
-      },
-      {
-        id: "f69f88012978187a6c12897f",
-        ref: "ChavePix6",
-        amount: 30.5,
-        customer: {
-          name: "17.5%",
-        },
-        createdAt: '12',
-        status: "R$3123,00",
-      }
-    ],
-    sx: { height: "100%", borderRadius: '8px' },
-    nameTable: "Transações PIX"
-  }
-
+    return (
+      <Grid key={index} xs={12} sm={6} lg={3}>
+        <CartaoGenerico {...cartaoGenericoProps} />
+      </Grid>
+    );
+  });
   return (
     <main>
-      <h1>Dashboard</h1>
-      <GraficoLinha {...props} />
-      <CartaoGenerico {...cartaoGenericoProps} />
-      <CartaoGenericoComIndicador {...cartaoGenericoProps} />
-      <Tabela {...tabelaProps} />
+      <Head>
+        <title>SWIFTPay | Dashboard</title>
+      </Head>
+      <Container maxWidth="xl" sx={{ mt: "48px" }}>
+        <Typography
+          sx={{
+            fontFamily: "DM Sans",
+            color: "#707EAE",
+            fontWeight: "500",
+            lineHeight: "24px",
+            fontSize: "15px",
+          }}
+        >
+          Menu / Dashboard
+        </Typography>
+        <Typography
+          sx={{
+            fontFamily: "DM Sans",
+            color: "#2B3674",
+            fontWeight: "700",
+            fontSize: "34px",
+            lineHeight: "42x",
+            letterSpacing: "-2%",
+          }}
+        >
+          Painel Principal
+        </Typography>
+      </Container>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 3,
+        }}
+      >
+        <Container maxWidth="xl">
+          <Grid container spacing={2}>
+            {cartaoGenericoComponents}
+          </Grid>
+        </Container>
+      </Box>
     </main>
   )
 }
