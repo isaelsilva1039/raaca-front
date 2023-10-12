@@ -42,6 +42,64 @@ export default function Dashboard() {
     );
   });
 
+  const options: Options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+        ticks: {
+          beginAtZero: true,
+          color: '#A3AED0 ',
+          font: {
+            size: 12,
+            family: 'Arial, sans-serif',
+          },
+        }
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false,
+        },
+      }
+    }
+  };
+
+  const values: number[] = dashboardInfo.totalGeral.data.map((element) => {
+    return element.valor
+  })
+
+  const props: LineChartProps = {
+    options,
+    valor: dashboardInfo.totalGeral.valor,
+    data: {
+      labels: dashboardInfo.totalGeral.data.map((element) => { return element.descritivo }),
+      datasets: [{
+        type: "line",
+        label: "Dataset",
+        data: values,
+        borderColor: "#4318FF",
+        fill: false,
+        lineTension: 0.4,
+        pointBorderColor: "#4318FF",
+        borderWidth: 4,
+        pointRadius: 0,
+        pointHoverRadius: 8,
+        pointHoverBackgroundColor: "#ffffff",
+        pointHoverBorderColor: "#4318FF",
+        pointHoverBorderWidth: 4,
+        pointHitRadius: 50,
+      }]
+    },
+  }
+
   return (
     <>
       <Box
@@ -56,6 +114,9 @@ export default function Dashboard() {
             {cartaoGenericoComponents}
             <Grid xs={12} lg={4} md={3} container direction="column" spacing={2} component="div">
               {cartaoGenericoComIndicadorComponents}
+            </Grid>
+            <Grid xs={12} lg={8} md={9}>
+              <GraficoLinha {...props} />
             </Grid>
           </Grid>
         </Container>

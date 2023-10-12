@@ -34,16 +34,52 @@ export default class ApiAdapter implements DashboardApiOutputPort {
                 "variacao": -2.45,
                 "data": [
                     {
+                        "descritivo": "JAN",
+                        "valor": 25060
+                    },
+                    {
+                        "descritivo": "FEV",
+                        "valor": 27980
+                    },
+                    {
+                        "descritivo": "MAR",
+                        "valor": 42800
+                    },
+                    {
+                        "descritivo": "ABR",
+                        "valor": 32400
+                    },
+                    {
+                        "descritivo": "MAI",
+                        "valor": 35200
+                    },
+                    {
+                        "descritivo": "JUN",
+                        "valor": 38200
+                    },
+                    {
+                        "descritivo": "JUL",
+                        "valor": 52160
+                    },
+                    {
+                        "descritivo": "AGO",
+                        "valor": 42400
+                    },
+                    {
                         "descritivo": "SET",
-                        "valor": 22.57
+                        "valor": 35200
                     },
                     {
                         "descritivo": "OUT",
-                        "valor": 23.47
+                        "valor": 38200
                     },
                     {
                         "descritivo": "NOV",
-                        "valor": 41.82
+                        "valor": 52160
+                    },
+                    {
+                        "descritivo": "DEZ",
+                        "valor": 42400
                     }
                 ]
             },

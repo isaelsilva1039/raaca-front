@@ -14,9 +14,21 @@ import { Line } from "react-chartjs-2";
 import { Box, Card, Stack, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import Calendar from "@mui/icons-material/CalendarToday";
 import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
+import React from "react";
+import "./style.css";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+
+export const TimelineButton = (): JSX.Element => {
+    return (
+        <div className="timeline-button">
+            <Calendar className="calendar-today"/>
+            <div className="text-wrapper">Este mês</div>
+        </div>
+    );
+};
 
 export const GraficoLinha = (props: LineChartProps) => {
     return (
@@ -30,6 +42,7 @@ export const GraficoLinha = (props: LineChartProps) => {
                 }}>
                     {props.valor ? (
                         <>
+                            <TimelineButton />
                             <Typography
                                 color="#2B3674"
                                 style={{
