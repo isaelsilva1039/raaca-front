@@ -123,19 +123,6 @@ function toLineChartProps(totalGeral: TotalGeralDTO) {
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO = buscarInformacoesDashboardUserCase.buscarInformacoes();
 
-  const tabelas = dashboardInfo.tabelas.map((element) => {
-    const tabelaProps: TabelaProps = {
-      titulo: element.titulo,
-      headers: element.header,
-      body: element.body,
-    };
-    return (
-      <Grid xs={12} lg={6}>
-        <Tabela {...tabelaProps} />
-      </Grid>
-    );
-  });
-
   return (
     <>
       <Head>
@@ -182,7 +169,7 @@ export default function Dashboard() {
             <Grid xs={12} lg={8} md={9}>
               <GraficoLinha {...toLineChartProps(dashboardInfo.totalGeral)} />
             </Grid>
-            {tabelas}
+            {criarTabelas(dashboardInfo.tabelas)}
           </Grid>
         </Container>
       </Box>
