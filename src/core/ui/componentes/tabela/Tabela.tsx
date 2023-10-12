@@ -17,71 +17,41 @@ import { Scrollbar } from '../scrollbar/scrollbar';
 import { TabelaProps } from './TabelaProps';
 
 export const Tabela = (props: TabelaProps) => {
-  const { orders = [], sx, nameTable } = props;
+
+  const headers = props.headers.map((header) => {
+    return (<TableCell>{header}</TableCell>);
+  });
+
+  const body = props.body.map((row, index: number) => {
+    const cells = row.map((cell) => {
+      return (<TableCell>{cell}</TableCell>);
+    });
+    return (
+      <TableRow
+        hover
+        key={index}
+      >
+        {cells}
+      </TableRow>
+    );
+  });
 
   return (
-    <Card sx={sx}>
-      <CardHeader title={nameTable} />
+    <Card sx={{ height: "100%", borderRadius: '8px' }}>
+      <CardHeader title={props.titulo} />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>
-                  Adquirente
-                </TableCell>
-                <TableCell>
-                  Participação
-                </TableCell>
-                <TableCell sortDirection="desc">
-                  Quantidade
-                </TableCell>
-                <TableCell>
-                  Total
-                </TableCell>
+                {headers}
               </TableRow>
             </TableHead>
-            <TableBody>
-              {orders.map((order) => {
-                return (
-                  <TableRow
-                    hover
-                    key={order.id}
-                  >
-                    <TableCell>
-                      {order.ref}
-                    </TableCell>
-                    <TableCell>
-                      {order.customer.name}
-                    </TableCell>
-                    <TableCell>
-                      {order.createdAt}
-                    </TableCell>
-                    <TableCell>
-                      {order.status}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
+            <TableBody>{body}</TableBody>
           </Table>
         </Box>
       </Scrollbar>
       <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-          variant="text"
-        >
-          View all
-        </Button>
-      </CardActions>
     </Card>
   );
 };

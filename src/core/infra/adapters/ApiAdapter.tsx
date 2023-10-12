@@ -117,7 +117,7 @@ export default class ApiAdapter implements DashboardApiOutputPort {
                             "meucontato.projetos@gmail.com",
                             "17,69%",
                             "12",
-                            "R$ 3.896,98"
+                            "R$ 1.296,98"
                         ],
                         [
                             "meucontato.projetos@gmail.com",

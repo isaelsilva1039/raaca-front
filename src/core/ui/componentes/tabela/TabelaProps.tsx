@@ -1,5 +1,5 @@
 export interface TabelaProps {
-    orders?: any[];
-    sx?: any;
-    nameTable?: string;
+    titulo: string;
+    headers: string[];
+    body: string[][];
 }
