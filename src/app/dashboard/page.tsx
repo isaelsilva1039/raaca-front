@@ -11,53 +11,39 @@ import CartaoGenericoProps from "@/core/ui/componentes/cartao-generico/CartaoGen
 import { CartaoGenericoComIndicador } from "@/core/ui/componentes/cartao-generico-indicador/cartao-generico-indicador";
 import { TabelaProps } from "@/core/ui/componentes/tabela/TabelaProps";
 import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
+import CartaoGenericoComIndicadorProps from "@/core/ui/componentes/cartao-generico-indicador/CartaoGenericoComIndicadorProps";
 
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO = buscarInformacoesDashboardUserCase.buscarInformacoes();
-  
+
   const cartaoGenericoComponents = dashboardInfo.horizontalWidgets.map((element, index) => {
     const cartaoGenericoProps: CartaoGenericoProps = {
       valor: element.valor,
       descritivo: element.descritivo,
       icone: SmartphoneIcon,
     };
-
     return (
       <Grid key={index} xs={12} sm={6} lg={3}>
         <CartaoGenerico {...cartaoGenericoProps} />
       </Grid>
     );
   });
+
+  const cartaoGenericoComIndicadorComponents = dashboardInfo.totalTransacoes.map((element, index) => {
+    const cartaoGenericoComIndicadorProps: CartaoGenericoComIndicadorProps = {
+      valor: element.valor,
+      descritivo: element.descritivo,
+      icone: SmartphoneIcon,
+    };
+    return (
+      <Grid>
+        <CartaoGenericoComIndicador {...cartaoGenericoComIndicadorProps} />
+      </Grid>
+    );
+  });
+
   return (
-    <main>
-      <Head>
-        <title>SWIFTPay | Dashboard</title>
-      </Head>
-      <Container maxWidth="xl" sx={{ mt: "48px" }}>
-        <Typography
-          sx={{
-            fontFamily: "DM Sans",
-            color: "#707EAE",
-            fontWeight: "500",
-            lineHeight: "24px",
-            fontSize: "15px",
-          }}
-        >
-          Menu / Dashboard
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: "DM Sans",
-            color: "#2B3674",
-            fontWeight: "700",
-            fontSize: "34px",
-            lineHeight: "42x",
-            letterSpacing: "-2%",
-          }}
-        >
-          Painel Principal
-        </Typography>
-      </Container>
+    <>
       <Box
         component="main"
         sx={{
@@ -68,9 +54,12 @@ export default function Dashboard() {
         <Container maxWidth="xl">
           <Grid container spacing={2}>
             {cartaoGenericoComponents}
+            <Grid xs={12} lg={4} md={3} container direction="column" spacing={2} component="div">
+              {cartaoGenericoComIndicadorComponents}
+            </Grid>
           </Grid>
         </Container>
       </Box>
-    </main>
-  )
+    </>
+  );
 }
