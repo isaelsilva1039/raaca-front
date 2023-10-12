@@ -1,8 +1,11 @@
 import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core";
 import { GraficoLinha } from "@/core/ui/componentes/grafico-linha/grafico-linha";
-import { Dataset } from "@/core/ui/styles/grafico-linha/Dataset";
-import { LineChartProps } from "@/core/ui/styles/grafico-linha/LineChartProps";
-import Options from "@/core/ui/styles/grafico-linha/options";
+import { CartaoGenerico } from "@/core/ui/componentes/cartao-generico/cartao-generico"
+import { Dataset } from "@/core/ui/componentes/grafico-linha/Dataset";
+import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
+import Options from "@/core/ui/componentes/grafico-linha/options";
+import SmartphoneIcon from "@mui/icons-material/Smartphone";
+import CartaoGenericoProps from "@/core/ui/componentes/cartao-generico/CartaoGenericoProps";
 
 
 export default function Dashboard() {
@@ -66,10 +69,18 @@ export default function Dashboard() {
     }
   };
 
+  const cartaoGenericoProps: CartaoGenericoProps = {
+    valor: 'R$ 999,000.00',
+    descritivo: 'Total de vendas',
+    icone: SmartphoneIcon
+  }
+
   return (
     <main>
       <h1>Dashboard</h1>
       <GraficoLinha {...props} />
+      <CartaoGenerico {...cartaoGenericoProps} />
+      <CartaoGenerico {...cartaoGenericoProps} />
     </main>
   )
 }

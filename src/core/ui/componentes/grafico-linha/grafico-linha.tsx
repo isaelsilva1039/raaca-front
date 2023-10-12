@@ -14,7 +14,7 @@ import { Line } from "react-chartjs-2";
 import { Box, Card, Stack, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { LineChartProps } from "@/core/ui/styles/grafico-linha/LineChartProps";
+import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
