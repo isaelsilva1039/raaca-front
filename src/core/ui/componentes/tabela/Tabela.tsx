@@ -52,7 +52,7 @@ export const Tabela = (props: TabelaProps) => {
   });
 
   return (
-    <Card sx={{ height: "100%", borderRadius: '8px', boxShadow: "none"}}>
+    <Card sx={{ height: "100%", borderRadius: '8px', boxShadow: "none" }}>
       <CardHeader title={props.titulo} style={{
         color: "#2B3674"
       }} />
