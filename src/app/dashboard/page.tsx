@@ -9,13 +9,12 @@ import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core";
 import { GraficoLinha } from "@/core/ui/componentes/grafico-linha/grafico-linha";
 import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
 import Options from "@/core/ui/componentes/grafico-linha/options";
-import { CartaoGenericoComIndicador } from "@/core/ui/componentes/cartao-generico-indicador/cartao-generico-indicador";
 import { TabelaProps } from "@/core/ui/componentes/tabela/TabelaProps";
 import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
-import CartaoGenericoComIndicadorProps from "@/core/ui/componentes/cartao-generico-indicador/CartaoGenericoComIndicadorProps";
 import { CardTituloDescricaoIcone } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIcone";
 import { CardTituloDescricaoIconeParams } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIconeParams";
 import { CardLabelTituloDescricaoIconeIndicador } from "@/core/ui/componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicador";
+import CardLabelTituloDescricaoIconeIndicadorProps from "@/core/ui/componentes/periodo-titulo-descricao-indicador/CardLabelTituloDescricaoIconeIndicadorProps";
 
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO =
@@ -39,15 +38,16 @@ export default function Dashboard() {
 
   const cartaoGenericoComIndicadorComponents =
     dashboardInfo.totalTransacoes.map((element, index) => {
-      const cartaoGenericoComIndicadorProps: CartaoGenericoComIndicadorProps = {
-        valor: element?.valor,
-        descritivo: element?.descritivo,
-        icone: element?.icone,
-        variacao: element?.variacao,
+      const cardLabelTituloDescricaoIconeIndicadorProps: CardLabelTituloDescricaoIconeIndicadorProps = {
+        label: element.titulo,
+        titulo: element.valor,
+        descricao: element.descritivo,
+        icone: element.icone,
+        variacao: element.variacao,
       };
       return (
         <Grid item xs={12} sm={12} md={12} lg={12} key={index}>
-          <CardLabelTituloDescricaoIconeIndicador />
+          <CardLabelTituloDescricaoIconeIndicador {...cardLabelTituloDescricaoIconeIndicadorProps} />
         </Grid>
       );
     });

@@ -91,15 +91,15 @@ export default class ApiAdapter implements DashboardApiOutputPort {
                     titulo: "PIX",
                     descritivo: "Total transações PIX",
                     valor: "R$ 1.352,87",
-                    icone: PixIcon,
-                    variacao: 2.45,
+                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    variacao: 9.87,
                 },
                 {
                     titulo: "POS",
                     descritivo: "Total transações POS",
-                    valor: "R$ 1.352,87",
-                    icone: SmartphoneIcon,
-                    variacao: -2.45,
+                    valor: "R$ 289.183,18",
+                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    variacao: -1.37,
                 }
             ],
             tabelas: [
