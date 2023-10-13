@@ -12,10 +12,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { Box, Card, Stack, Typography } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import ErrorIcon from "@mui/icons-material/Error";
 import Calendar from "@mui/icons-material/CalendarToday";
 import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
 import React from "react";
@@ -40,8 +36,6 @@ export const TimelineButton = (): JSX.Element => {
     </div>
   );
 };
-
-// ... (restante do código)
 
 export const GraficoLinha = (props: LineChartProps) => {
     const { IndicatorIcon, indicatorColor, message, MessageIcon } =

@@ -16,8 +16,6 @@ import {
 import { Scrollbar } from '../scrollbar/scrollbar';
 import { TabelaProps } from './TabelaProps';
 
-// ... (resto das suas importações)
-
 export const Tabela = (props: TabelaProps) => {
   const tableStyles = {
     fontFamily: "DM Sans, sans-serif"

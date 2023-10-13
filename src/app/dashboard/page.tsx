@@ -131,7 +131,15 @@ export default function Dashboard() {
       <Head>
         <title>SWIFTPay | Início</title>
       </Head>
-      <Container maxWidth="lg" sx={{ mt: "12px" }}>
+
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 3,
+        }}
+      >
+        <Container maxWidth={false}>
         <Typography
           sx={{
             color: "#707EAE",
@@ -153,15 +161,6 @@ export default function Dashboard() {
         >
           Painel Principal
         </Typography>
-      </Container>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 3,
-        }}
-      >
-        <Container maxWidth={false}>
           <Grid container spacing={2}>
             {cartaoGenericoComponents}
             <Grid
