@@ -28,7 +28,7 @@ export default function Dashboard() {
         icone: element?.icone,
       };
       return (
-        <Grid key={index} xs={12} sm={12} md={12} lg={3}>
+        <Grid key={index} xs={12} sm={12} md={6} lg={3}>
           <CartaoGenerico {...cartaoGenericoProps} />
         </Grid>
       );
@@ -131,15 +131,7 @@ export default function Dashboard() {
       <Head>
         <title>SWIFTPay | Início</title>
       </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 3,
-        }}
-      >
-        
-        <Container maxWidth={false}>
+      <Container maxWidth="lg" sx={{ mt: "12px" }}>
         <Typography
           sx={{
             color: "#707EAE",
@@ -161,6 +153,15 @@ export default function Dashboard() {
         >
           Painel Principal
         </Typography>
+      </Container>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 3,
+        }}
+      >
+        <Container maxWidth={false}>
           <Grid container spacing={2}>
             {cartaoGenericoComponents}
             <Grid
