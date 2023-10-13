@@ -12,22 +12,22 @@ export default class ApiAdapter implements DashboardApiOutputPort {
         const result:DashboardDTO =  {
             horizontalWidgets: [
                 {
-                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    icone: "PIX",
                     descritivo: "Ticket médio PIX",
                     valor: "R$ 16.981,52"
                 },
                 {
-                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    icone: "POS",
                     descritivo: "Ticket médio POS",
                     valor: "R$ 2.456,99"
                 },
                 {
-                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    icone: "PIX",
                     descritivo: "Quantidade transações PIX",
                     valor: "222"
                 },
                 {
-                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    icone: "POS",
                     descritivo: "Quantidade transações POS",
                     valor: "542"
                 }
@@ -91,14 +91,14 @@ export default class ApiAdapter implements DashboardApiOutputPort {
                     titulo: "PIX",
                     descritivo: "Total transações PIX",
                     valor: "R$ 1.352,87",
-                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    icone: "Pix",
                     variacao: 9.87,
                 },
                 {
                     titulo: "POS",
                     descritivo: "Total transações POS",
                     valor: "R$ 289.183,18",
-                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
+                    icone: "POS",
                     variacao: -1.37,
                 }
             ],

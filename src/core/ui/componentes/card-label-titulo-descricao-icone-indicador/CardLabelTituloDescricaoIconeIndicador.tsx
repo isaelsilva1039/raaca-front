@@ -1,6 +1,8 @@
 import React from "react";
 import "./style.css";
 import CardLabelTituloDescricaoIconeIndicadorProps from "./CardLabelTituloDescricaoIconeIndicadorProps";
+import { Pix } from "@mui/icons-material";
+import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly'
 
 export const CardLabelTituloDescricaoIconeIndicador = (props: CardLabelTituloDescricaoIconeIndicadorProps): JSX.Element => {
     return (
@@ -28,7 +30,21 @@ export const CardLabelTituloDescricaoIconeIndicador = (props: CardLabelTituloDes
                 )}
             </div>
             <div className="div-3">
-                <img className="img-2" alt="Frame" src="https://c.animaapp.com/3xag2zkK/img/frame-52.svg" />
+                <div className="root-icone">
+                    <div className="icone">
+                        {props.icone === "Pix" ? (
+                            <Pix sx={{
+                                color: "#4318FF",
+                                fontSize: "26px",
+                            }} />
+                        ) : (
+                            <MobileFriendlyIcon sx={{
+                                color: "#4318FF",
+                                fontSize: "26px",
+                            }} />
+                        )}
+                    </div>
+                </div>
                 <div className="precentage">
                     {props.variacao > 0 ? (
                         <div className="overlap-group">

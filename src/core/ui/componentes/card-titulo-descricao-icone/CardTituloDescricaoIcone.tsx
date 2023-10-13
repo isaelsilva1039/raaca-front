@@ -1,6 +1,9 @@
 import React from "react";
 import "./style.css";
 import { CardTituloDescricaoIconeParams } from "./CardTituloDescricaoIconeParams";
+import { Pix } from "@mui/icons-material";
+import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly'
+
 export const CardTituloDescricaoIcone = (params: CardTituloDescricaoIconeParams): JSX.Element => {
   return (
     <div className="card_titulo_descricao_icone">
@@ -10,7 +13,21 @@ export const CardTituloDescricaoIcone = (params: CardTituloDescricaoIconeParams)
           <div className="label">{params.descricao}</div>
         </div>
       </div>
-      <img className="img" alt="Frame" src={params.icone} />
+      <div className="root-icone">
+        <div className="icone">
+          {params.icone === "PIX" ? (
+            <Pix sx={{
+              color: "#4318FF",
+              fontSize: "26px",
+            }} />
+          ) : (
+            <MobileFriendlyIcon sx={{
+              color: "#4318FF",
+              fontSize: "26px",
+            }} />
+          )}
+        </div>
+      </div>
     </div>
   );
 };
