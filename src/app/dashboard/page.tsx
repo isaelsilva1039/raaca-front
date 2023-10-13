@@ -7,14 +7,14 @@ import {
 } from "@mui/material";
 import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core";
 import { GraficoLinha } from "@/core/ui/componentes/grafico-linha/grafico-linha";
-import { CartaoGenerico } from "@/core/ui/componentes/cartao-generico/cartao-generico";
 import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
 import Options from "@/core/ui/componentes/grafico-linha/options";
-import CartaoGenericoProps from "@/core/ui/componentes/cartao-generico/CartaoGenericoProps";
 import { CartaoGenericoComIndicador } from "@/core/ui/componentes/cartao-generico-indicador/cartao-generico-indicador";
 import { TabelaProps } from "@/core/ui/componentes/tabela/TabelaProps";
 import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
 import CartaoGenericoComIndicadorProps from "@/core/ui/componentes/cartao-generico-indicador/CartaoGenericoComIndicadorProps";
+import { CardTituloDescricaoIcone } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIcone";
+import { CardTituloDescricaoIconeParams } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIconeParams";
 
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO =
@@ -22,14 +22,15 @@ export default function Dashboard() {
 
   const cartaoGenericoComponents = dashboardInfo.horizontalWidgets.map(
     (element, index) => {
-      const cartaoGenericoProps: CartaoGenericoProps = {
-        valor: element?.valor,
-        descritivo: element?.descritivo,
+      const params: CardTituloDescricaoIconeParams = {
+        titulo: element?.valor,
+        descricao: element?.descritivo,
         icone: element?.icone,
-      };
+      }
+
       return (
         <Grid key={index} xs={12} sm={12} md={6} lg={3}>
-          <CartaoGenerico {...cartaoGenericoProps} />
+          <CardTituloDescricaoIcone {...params} />
         </Grid>
       );
     }
@@ -140,27 +141,27 @@ export default function Dashboard() {
         }}
       >
         <Container maxWidth={false}>
-        <Typography
-          sx={{
-            color: "#707EAE",
-            fontWeight: "500",
-            lineHeight: "24px",
-            fontSize: "15px",
-          }}
-        >
-          Menu / Dashboard
-        </Typography>
-        <Typography
-          sx={{
-            color: "#2B3674",
-            fontWeight: "700",
-            fontSize: "34px",
-            lineHeight: "42x",
-            letterSpacing: "-2%",
-          }}
-        >
-          Painel Principal
-        </Typography>
+          <Typography
+            sx={{
+              color: "#707EAE",
+              fontWeight: "500",
+              lineHeight: "24px",
+              fontSize: "15px",
+            }}
+          >
+            Menu / Dashboard
+          </Typography>
+          <Typography
+            sx={{
+              color: "#2B3674",
+              fontWeight: "700",
+              fontSize: "34px",
+              lineHeight: "42x",
+              letterSpacing: "-2%",
+            }}
+          >
+            Painel Principal
+          </Typography>
           <Grid container spacing={2}>
             {cartaoGenericoComponents}
             <Grid

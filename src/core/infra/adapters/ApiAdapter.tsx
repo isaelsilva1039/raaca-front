@@ -1,7 +1,6 @@
 import DashboardApiOutputPort from "@/core/application/ports/output/DashboardApiOutputPort";
 import SmartphoneIcon from "@mui/icons-material/Smartphone";
 import PixIcon from '@mui/icons-material/Pix';
-import PaymentsFinanceCardReaderCreditCard1 from '../../../core/ui/componentes/menu/icons/PaymentsFinanceCardReaderCreditCard1'
 
 import { DashboardDTO } from "@/core";
 
@@ -13,22 +12,22 @@ export default class ApiAdapter implements DashboardApiOutputPort {
         const result:DashboardDTO =  {
             horizontalWidgets: [
                 {
-                    icone: PixIcon,
+                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
                     descritivo: "Ticket médio PIX",
-                    valor: "R$ 999.999,99"
+                    valor: "R$ 16.981,52"
                 },
                 {
-                    icone: SmartphoneIcon,
+                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
                     descritivo: "Ticket médio POS",
-                    valor: "R$ 999.999,99"
+                    valor: "R$ 2.456,99"
                 },
                 {
-                    icone: PixIcon,
+                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
                     descritivo: "Transações PIX",
-                    valor: "875"
+                    valor: "222"
                 },
                 {
-                    icone: SmartphoneIcon,
+                    icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
                     descritivo: "Transações POS",
                     valor: "542"
                 }
