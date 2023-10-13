@@ -1,8 +1,9 @@
 import React from "react";
 import "./style.css";
 import Calendar from "@mui/icons-material/CalendarToday";
+import PeriodoTituloDescricaoIndicadorProps from "./PeriodoTituloDescricaoIndicadorProps";
 
-export const PeriodoTituloDescricaoIndicador = (): JSX.Element => {
+export const PeriodoTituloDescricaoIndicador = (props: PeriodoTituloDescricaoIndicadorProps): JSX.Element => {
     return (
         <div className="periodo-titulo-descricao-indicador">
             <div className="timeline-button">
@@ -10,12 +11,10 @@ export const PeriodoTituloDescricaoIndicador = (): JSX.Element => {
                 <div className="text-wrapper">Este mês</div>
             </div>
             <div className="div">
-                <div className="price">R$999.999,99</div>
+                <div className="price">{props.titulo}</div>
                 <div className="div-2">
-                    <div className="frame-wrapper">
-                        <div className="label-wrapper">
-                            <div className="label">Total geral</div>
-                        </div>
+                    <div className="label-wrapper">
+                        <div className="label">{props.descricao}</div>
                     </div>
                     <div className="precentage">
                         <div className="overlap-group">

@@ -15,8 +15,8 @@ import { Box, Card, Stack } from "@mui/material";
 import Calendar from "@mui/icons-material/CalendarToday";
 import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
 import React from "react";
-import { useVariationStyles } from "../../hooks/useVariationsStyles";
 import { PeriodoTituloDescricaoIndicador } from "../periodo-titulo-descricao-indicador/PeriodoTituloDescricaoIndicador";
+import PeriodoTituloDescricaoIndicadorProps from "../periodo-titulo-descricao-indicador/PeriodoTituloDescricaoIndicadorProps";
 
 ChartJS.register(
   CategoryScale,
@@ -38,15 +38,19 @@ export const TimelineButton = (): JSX.Element => {
 };
 
 export const GraficoLinha = (props: LineChartProps) => {
-  const { IndicatorIcon, indicatorColor, message, MessageIcon } = useVariationStyles(props.variacao);
+  const periodoTituloDescricaoIndicadorProps: PeriodoTituloDescricaoIndicadorProps = {
+    titulo: props.valor,
+    descricao: "Total geral",
+    variacao: props.variacao,
+  };
 
   return (
-    <Card sx={{ 
-      borderRadius: "8px", 
+    <Card sx={{
+      borderRadius: "8px",
       boxShadow: "none",
-       height: "100%", 
-       paddingRight: "24px",
-       }}>
+      height: "100%",
+      paddingRight: "24px",
+    }}>
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={4}
@@ -54,7 +58,7 @@ export const GraficoLinha = (props: LineChartProps) => {
         height={"100%"}
       >
         <Box sx={{ flexGrow: 1, minWidth: "25%", pr: 3 }}>
-          <PeriodoTituloDescricaoIndicador />
+          <PeriodoTituloDescricaoIndicador {...periodoTituloDescricaoIndicadorProps} />
         </Box>
 
         <Box

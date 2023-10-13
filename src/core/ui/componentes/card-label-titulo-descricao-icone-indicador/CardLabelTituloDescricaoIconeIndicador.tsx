@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-import CardLabelTituloDescricaoIconeIndicadorProps from "../periodo-titulo-descricao-indicador/CardLabelTituloDescricaoIconeIndicadorProps";
+import CardLabelTituloDescricaoIconeIndicadorProps from "./CardLabelTituloDescricaoIconeIndicadorProps";
 
 export const CardLabelTituloDescricaoIconeIndicador = (props: CardLabelTituloDescricaoIconeIndicadorProps): JSX.Element => {
     return (

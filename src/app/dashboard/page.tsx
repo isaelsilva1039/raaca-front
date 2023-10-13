@@ -14,7 +14,7 @@ import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
 import { CardTituloDescricaoIcone } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIcone";
 import { CardTituloDescricaoIconeParams } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIconeParams";
 import { CardLabelTituloDescricaoIconeIndicador } from "@/core/ui/componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicador";
-import CardLabelTituloDescricaoIconeIndicadorProps from "@/core/ui/componentes/periodo-titulo-descricao-indicador/CardLabelTituloDescricaoIconeIndicadorProps";
+import CardLabelTituloDescricaoIconeIndicadorProps from "@/core/ui/componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicadorProps";
 
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO =
