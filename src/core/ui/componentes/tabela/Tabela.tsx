@@ -16,15 +16,20 @@ import {
 import { Scrollbar } from '../scrollbar/scrollbar';
 import { TabelaProps } from './TabelaProps';
 
+// ... (resto das suas importações)
+
 export const Tabela = (props: TabelaProps) => {
+  const tableStyles = {
+    fontFamily: "DM Sans, sans-serif"
+  };
 
   const headers = props.headers.map((header) => {
-    return (<TableCell>{header}</TableCell>);
+    return (<TableCell style={tableStyles}>{header}</TableCell>);
   });
 
   const body = props.body.map((row, index: number) => {
     const cells = row.map((cell) => {
-      return (<TableCell>{cell}</TableCell>);
+      return (<TableCell style={tableStyles}>{cell}</TableCell>);
     });
     return (
       <TableRow

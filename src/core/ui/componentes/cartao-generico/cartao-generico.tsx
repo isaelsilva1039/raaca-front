@@ -4,25 +4,39 @@ import CartaoGenericoProps from "./CartaoGenericoProps";
 export const CartaoGenerico = (props: CartaoGenericoProps) => {
   const Icon = props.icone;
   return (
-    <Card sx={{
-      height: "120px",
-      borderRadius: '8px'
-    }}>
+    <Card 
+      sx={{
+        height: "120px",
+        borderRadius: '10px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', 
+        backgroundColor: '#ffffff'  
+      }}
+    >
       <CardContent
         sx={{
           display: "flex",
           flexDirection: "column",
           height: "100%",
-          justifyContent: "center"
+          justifyContent: "center",
+          padding: '15px'
         }}
       >
-        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack spacing={1}>
+        <Stack 
+          alignItems="center" 
+          direction="row" 
+          justifyContent="space-between"
+          spacing={2}
+        >
             <Typography
               sx={{
-                fontFamily: "DM Sans",
                 fontWeight: "700",
-                fontSize: "24px",
+                fontSize: {
+                  xs: "24px", 
+                  sm: "22px", 
+                  md: "22px", 
+                  lg: "22px",
+                  xl: "22px"
+                },
                 lineHeight: "32px",
                 letterSpacing: "-2%",
                 color: "#2B3674",
@@ -30,31 +44,31 @@ export const CartaoGenerico = (props: CartaoGenericoProps) => {
             >
               {props.valor}
             </Typography>
-            <Typography
+            <Avatar
               sx={{
-                fontFamily: "DM Sans",
-                fontWeight: "500",
-                fontSize: "14px",
-                lineHeight: "24px",
-                letterSpacing: "-2%",
-                color: "#A3AED0",
+                backgroundColor: "#F4F7FE",
+                height: 56,
+                width: 56,
+                borderRadius: '50px',
               }}
             >
-              {props.descritivo}
-            </Typography>
-          </Stack>
-          <Avatar
-            sx={{
-              backgroundColor: "#F4F7FE",
-              height: 56,
-              width: 56,
-            }}
-          >
-            <SvgIcon>
-              <Icon color="primary" />
-            </SvgIcon>
-          </Avatar>
+              <SvgIcon>
+                <Icon color="primary" />
+              </SvgIcon>
+            </Avatar>
         </Stack>
+        <Typography
+          sx={{
+            fontWeight: "500",
+            fontSize: "14px",
+            lineHeight: "24px",
+            letterSpacing: "-2%",
+            color: "#A3AED0",
+            mb: 1
+          }}
+        >
+          {props.descritivo}
+        </Typography>
       </CardContent>
     </Card>
   );

@@ -1,4 +1,8 @@
 import DashboardApiOutputPort from "@/core/application/ports/output/DashboardApiOutputPort";
+import SmartphoneIcon from "@mui/icons-material/Smartphone";
+import PixIcon from '@mui/icons-material/Pix';
+import PaymentsFinanceCardReaderCreditCard1 from '../../../core/ui/componentes/menu/icons/PaymentsFinanceCardReaderCreditCard1'
+
 import { DashboardDTO } from "@/core";
 
 export default class ApiAdapter implements DashboardApiOutputPort {
@@ -9,29 +13,29 @@ export default class ApiAdapter implements DashboardApiOutputPort {
         const result:DashboardDTO =  {
             horizontalWidgets: [
                 {
-                    "icone": "./...",
-                    "descritivo": "Ticket médio PIX",
-                    "valor": "R$ 999.999,99"
+                    icone: PixIcon,
+                    descritivo: "Ticket médio PIX",
+                    valor: "R$ 999.999,99"
                 },
                 {
-                    "icone": "./...",
-                    "descritivo": "Ticket médio POS",
-                    "valor": "R$ 999.999,99"
+                    icone: SmartphoneIcon,
+                    descritivo: "Ticket médio POS",
+                    valor: "R$ 999.999,99"
                 },
                 {
-                    "icone": "./...",
-                    "descritivo": "Quantidade de transações PIX",
-                    "valor": "875"
+                    icone: PixIcon,
+                    descritivo: "Transações PIX",
+                    valor: "875"
                 },
                 {
-                    "icone": "./...",
-                    "descritivo": "Quantidade de transações POS",
-                    "valor": "542"
+                    icone: SmartphoneIcon,
+                    descritivo: "Transações POS",
+                    valor: "542"
                 }
             ],
             totalGeral: {
                 "valor": "R$ 1.352,87",
-                "variacao": -2.45,
+                "variacao": 2.45,
                 "data": [
                     {
                         "descritivo": "JAN",
@@ -85,16 +89,18 @@ export default class ApiAdapter implements DashboardApiOutputPort {
             },
             totalTransacoes: [
                 {
-                    "titulo": "PIX",
-                    "descritivo": "Total transações PIX",
-                    "valor": "R$ 1.352,87",
-                    "variacao": -2.45
+                    titulo: "PIX",
+                    descritivo: "Total transações PIX",
+                    valor: "R$ 1.352,87",
+                    icone: PixIcon,
+                    variacao: 2.45,
                 },
                 {
-                    "titulo": "POS",
-                    "descritivo": "Total transações POS",
-                    "valor": "R$ 1.352,87",
-                    "variacao": -2.45
+                    titulo: "POS",
+                    descritivo: "Total transações POS",
+                    valor: "R$ 1.352,87",
+                    icone: SmartphoneIcon,
+                    variacao: -2.45,
                 }
             ],
             tabelas: [

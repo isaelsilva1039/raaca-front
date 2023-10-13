@@ -1,34 +1,40 @@
-import { Avatar, Box, Card, CardContent, Stack, SvgIcon, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, SvgIcon, Typography } from "@mui/material";
 import CartaoGenericoComIndicadorProps from "./CartaoGenericoComIndicadorProps";
 
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+
+import { useVariationStyles } from "../../hooks/useVariationsStyles";
+
 
 export const CartaoGenericoComIndicador = (props: CartaoGenericoComIndicadorProps) => {
   const Icon = props.icone;
+  const { IndicatorIcon, indicatorColor, message, MessageIcon } = useVariationStyles(props.variacao);
+
+
   return (
     <Card sx={{
       height: "150px",
-      borderRadius: '8px'
+      borderRadius: '8px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      backgroundColor: '#ffffff',
+      padding: '15px'
     }}>
       <CardContent
         sx={{
           display: "flex",
           flexDirection: "column",
-          height: "100%",
-          justifyContent: "center"
+          justifyContent: "space-between",
         }}
       >
-        <Stack alignItems="center" direction="row" justifyContent="space-between" spacing={3}>
-          <Stack spacing={1}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box>
             <Typography
               sx={{
-                fontFamily: "DM Sans",
                 fontWeight: "500",
                 fontSize: "14px",
                 lineHeight: "24px",
                 letterSpacing: "-2%",
                 color: "#A3AED0",
+                mb: 1
               }}
             >
               PIX
@@ -36,75 +42,76 @@ export const CartaoGenericoComIndicador = (props: CartaoGenericoComIndicadorProp
 
             <Typography
               sx={{
-                fontFamily: "DM Sans",
                 fontWeight: "700",
                 fontSize: "24px",
                 lineHeight: "32px",
                 letterSpacing: "-2%",
                 color: "#2B3674",
+                mb: 1
               }}
             >
               {props.valor}
             </Typography>
+
             <Typography
               sx={{
-                fontFamily: "DM Sans",
                 fontWeight: "500",
                 fontSize: "14px",
                 lineHeight: "24px",
                 letterSpacing: "-2%",
                 color: "#A3AED0",
+                mb: 2
               }}
             >
               {props.descritivo}
             </Typography>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <CheckCircleIcon fontSize={'small'} color={'success'} sx={{ mr: '5px' }} />
-                <Typography
-                  sx={{
-                    fontFamily: "DM Sans",
-                    fontWeight: "700",
-                    fontSize: "16px",
-                    lineHeight: "28px",
-                    letterSpacing: "-2%",
-                    color: "#05CD99",
-                  }}
-                >
-                  Parabéns
-                </Typography>
-              </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', ml: '100%' }}>
-                <ArrowDropUpIcon fontSize={'small'} color={'success'} sx={{ mr: '5px' }} />
-                <Typography
-                  sx={{
-                    fontFamily: "DM Sans",
-                    fontWeight: "700",
-                    fontSize: "16px",
-                    lineHeight: "28px",
-                    letterSpacing: "-2%",
-                    color: "#05CD99",
-                  }}
-                >
-                  2.78
-                </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <MessageIcon fontSize={'small'} style={{ color: indicatorColor, marginRight: '5px' }} />
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  fontSize: "16px",
+                  lineHeight: "28px",
+                  letterSpacing: "-2%",
+                  color: indicatorColor,
+                  mr: 2
+                }}
+              >
+                {message}
+              </Typography>
+              <Box sx={{display:'flex', alignItems:'center'}}>
+              <IndicatorIcon fontSize={'small'} style={{ color: indicatorColor, marginRight: '5px' }} />
+              <Typography
+                sx={{
+                  fontWeight: "700",
+                  fontSize: "16px",
+                  lineHeight: "28px",
+                  letterSpacing: "-2%",
+                  color: indicatorColor,
+                }}
+              >
+                {props.variacao}
+              </Typography>
               </Box>
             </Box>
+          </Box>
 
-          </Stack>
           <Avatar
             sx={{
               backgroundColor: "#F4F7FE",
               height: 56,
               width: 56,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             <SvgIcon>
               <Icon color="primary" />
             </SvgIcon>
           </Avatar>
-        </Stack>
+        </Box>
       </CardContent>
     </Card>
   );
