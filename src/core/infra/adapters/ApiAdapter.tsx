@@ -23,12 +23,12 @@ export default class ApiAdapter implements DashboardApiOutputPort {
                 },
                 {
                     icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
-                    descritivo: "Transações PIX",
+                    descritivo: "Quantidade transações PIX",
                     valor: "222"
                 },
                 {
                     icone: "https://c.animaapp.com/NkwBcXtH/img/frame-51.svg",
-                    descritivo: "Transações POS",
+                    descritivo: "Quantidade transações POS",
                     valor: "542"
                 }
             ],
