@@ -38,26 +38,32 @@ export const TimelineButton = (): JSX.Element => {
 };
 
 export const GraficoLinha = (props: LineChartProps) => {
-  const { IndicatorIcon, indicatorColor, message, MessageIcon } =
-    useVariationStyles(props.variacao);
+  const { IndicatorIcon, indicatorColor, message, MessageIcon } = useVariationStyles(props.variacao);
 
   return (
-    <Card sx={{ borderRadius: "8px",  boxShadow:"none", height:"100%"}}>
+    <Card sx={{ 
+      borderRadius: "8px", 
+      boxShadow: "none",
+       height: "100%", 
+       paddingRight: "24px",
+       }}>
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={4}
         alignItems="flex-start"
+        height={"100%"}
       >
         <Box sx={{ flexGrow: 1, minWidth: "25%", pr: 3 }}>
-          <PeriodoTituloDescricaoIndicador/>
+          <PeriodoTituloDescricaoIndicador />
         </Box>
 
         <Box
           sx={{
             flexGrow: 2,
             width: "100%",
-            minHeight: "327px",
+            height: "100%",
             overflow: "hidden",
+            maxHeight: "340px",
           }}
         >
           <Line
