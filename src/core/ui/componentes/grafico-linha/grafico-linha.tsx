@@ -38,97 +38,98 @@ export const TimelineButton = (): JSX.Element => {
 };
 
 export const GraficoLinha = (props: LineChartProps) => {
-    const { IndicatorIcon, indicatorColor, message, MessageIcon } =
-      useVariationStyles(props.variacao);
-  
-    return (
-      <Card sx={{ borderRadius: "8px", p: 3 }}>
-        <Stack
-          direction={{ xs: "column", md: "row" }}
-          spacing={4}
-          alignItems="flex-start"
-        >
-          <Box sx={{ flexGrow: 1, minWidth: "25%", pr: 3 }}>
-            <TimelineButton />
-            <Typography
-              color="#2B3674"
-              sx={{
-                  fontSize: { xs: "12px", sm: "13px", md: "34px" },
-                  fontWeight: "700",
-                lineHeight: "42px",
-                letterSpacing: "-2%",
-                mt: 3,
-              }}
-            >
-              {props.valor}
-            </Typography>
-  
-            <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-              <Typography
-                sx={{
-                  fontWeight: "500",
-                  lineHeight: "24px",
-                  letterSpacing: "-2%",
-                  color: "#A3AED0",
-                  fontSize: { xs: "12px", sm: "13px", md: "14px" },
-                  mr: 2,
-                  whiteSpace: "nowrap"
-                }}
-              >
-                Total geral
-              </Typography>
-              <IndicatorIcon
-                fontSize={"small"}
-                sx={{ color: indicatorColor, mr: 1 }}
-              />
-              <Typography
-                sx={{
-                  fontWeight: "700",
-                  fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                  lineHeight: "28px",
-                  letterSpacing: "-2%",
-                  color: indicatorColor,
-                }}
-              >
-                {props.variacao}
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
-              <MessageIcon
-                fontSize={"small"}
-                color={"success"}
-                sx={{ mr: 1, color: indicatorColor }}
-              />
-              <Typography
-                sx={{
-                  fontWeight: "700",
-                  fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                  lineHeight: "28px",
-                  letterSpacing: "-2%",
-                  color: indicatorColor,
-                }}
-              >
-                {message}
-              </Typography>
-            </Box>
-          </Box>
-          <Box
+  const { IndicatorIcon, indicatorColor, message, MessageIcon } =
+    useVariationStyles(props.variacao);
+
+  return (
+    <Card sx={{ borderRadius: "8px",  boxShadow:"none", height:"100%"}}>
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={4}
+        alignItems="flex-start"
+      >
+        <Box sx={{ flexGrow: 1, minWidth: "25%", pr: 3 }}>
+          <TimelineButton />
+          <Typography
+            color="#2b3674"
             sx={{
-              flexGrow: 2,
-              width: "100%",
-              minHeight: "327px",
-              overflow: "hidden",
+              fontSize: { xs: "12px", sm: "13px", md: "34px" },
+              fontWeight: "700",
+              lineHeight: "42px",
+              letterSpacing: "-2%",
+              mt: 3,
+              marginLeft: "24px",
             }}
           >
-            <Line
-              height={"100%"}
-              width={"100%"}
-              options={{ ...props.options, maintainAspectRatio: false }}
-              data={props.data}
+            {props.valor}
+          </Typography>
+
+          <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
+            <Typography
+              sx={{
+                fontWeight: "500",
+                lineHeight: "24px",
+                letterSpacing: "-2%",
+                color: "#A3AED0",
+                fontSize: { xs: "12px", sm: "13px", md: "14px" },
+                mr: 2,
+                whiteSpace: "nowrap",
+                marginLeft: "24px",
+              }}
+            >
+              Total geral
+            </Typography>
+            <IndicatorIcon
+              fontSize={"small"}
+              sx={{ color: indicatorColor, mr: 1 }}
             />
+            <Typography
+              sx={{
+                fontWeight: "700",
+                fontSize: { xs: "14px", sm: "15px", md: "16px" },
+                lineHeight: "28px",
+                letterSpacing: "-2%",                
+                color: indicatorColor,
+              }}
+            >
+              {props.variacao}
+            </Typography>
           </Box>
-        </Stack>
-      </Card>
-    );
-  };
-  
+          <Box sx={{ display: "flex", alignItems: "center", mt: 2, marginLeft:"24px"}}>
+            <MessageIcon
+              fontSize={"small"}
+              color={"success"}
+              sx={{ mr: 1, color: indicatorColor }}
+            />
+            <Typography
+              sx={{
+                fontWeight: "700",
+                fontSize: { xs: "14px", sm: "15px", md: "16px" },
+                lineHeight: "28px",
+                letterSpacing: "-2%",
+                color: indicatorColor,
+              }}
+            >
+              {message}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flexGrow: 2,
+            width: "100%",
+            minHeight: "327px",
+            overflow: "hidden",
+          }}
+        >
+          <Line
+            height={"100%"}
+            width={"100%"}
+            options={{ ...props.options, maintainAspectRatio: false }}
+            data={props.data}
+          />
+        </Box>
+      </Stack>
+    </Card>
+  );
+};

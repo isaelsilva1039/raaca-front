@@ -15,6 +15,7 @@ import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
 import CartaoGenericoComIndicadorProps from "@/core/ui/componentes/cartao-generico-indicador/CartaoGenericoComIndicadorProps";
 import { CardTituloDescricaoIcone } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIcone";
 import { CardTituloDescricaoIconeParams } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIconeParams";
+import { CardLabelTituloDescricaoIconeIndicador } from "@/core/ui/componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicador";
 
 export default function Dashboard() {
   const dashboardInfo: DashboardDTO =
@@ -46,7 +47,7 @@ export default function Dashboard() {
       };
       return (
         <Grid item xs={12} sm={12} md={12} lg={12} key={index}>
-          <CartaoGenericoComIndicador {...cartaoGenericoComIndicadorProps} />
+          <CardLabelTituloDescricaoIconeIndicador />
         </Grid>
       );
     });
