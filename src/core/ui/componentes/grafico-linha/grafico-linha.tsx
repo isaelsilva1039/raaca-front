@@ -11,12 +11,12 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import { Box, Card, Stack, Typography } from "@mui/material";
+import { Box, Card, Stack } from "@mui/material";
 import Calendar from "@mui/icons-material/CalendarToday";
 import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
 import React from "react";
-import "./style.css";
 import { useVariationStyles } from "../../hooks/useVariationsStyles";
+import { PeriodoTituloDescricaoIndicador } from "../periodo-titulo-descricao-indicador/PeriodoTituloDescricaoIndicador";
 
 ChartJS.register(
   CategoryScale,
@@ -49,71 +49,9 @@ export const GraficoLinha = (props: LineChartProps) => {
         alignItems="flex-start"
       >
         <Box sx={{ flexGrow: 1, minWidth: "25%", pr: 3 }}>
-          <TimelineButton />
-          <Typography
-            color="#2b3674"
-            sx={{
-              fontSize: { xs: "12px", sm: "13px", md: "34px" },
-              fontWeight: "700",
-              lineHeight: "42px",
-              letterSpacing: "-2%",
-              mt: 3,
-              marginLeft: "24px",
-            }}
-          >
-            {props.valor}
-          </Typography>
-
-          <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-            <Typography
-              sx={{
-                fontWeight: "500",
-                lineHeight: "24px",
-                letterSpacing: "-2%",
-                color: "#A3AED0",
-                fontSize: { xs: "12px", sm: "13px", md: "14px" },
-                mr: 2,
-                whiteSpace: "nowrap",
-                marginLeft: "24px",
-              }}
-            >
-              Total geral
-            </Typography>
-            <IndicatorIcon
-              fontSize={"small"}
-              sx={{ color: indicatorColor, mr: 1 }}
-            />
-            <Typography
-              sx={{
-                fontWeight: "700",
-                fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                lineHeight: "28px",
-                letterSpacing: "-2%",                
-                color: indicatorColor,
-              }}
-            >
-              {props.variacao}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center", mt: 2, marginLeft:"24px"}}>
-            <MessageIcon
-              fontSize={"small"}
-              color={"success"}
-              sx={{ mr: 1, color: indicatorColor }}
-            />
-            <Typography
-              sx={{
-                fontWeight: "700",
-                fontSize: { xs: "14px", sm: "15px", md: "16px" },
-                lineHeight: "28px",
-                letterSpacing: "-2%",
-                color: indicatorColor,
-              }}
-            >
-              {message}
-            </Typography>
-          </Box>
+          <PeriodoTituloDescricaoIndicador/>
         </Box>
+
         <Box
           sx={{
             flexGrow: 2,

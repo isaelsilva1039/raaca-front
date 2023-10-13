@@ -163,7 +163,7 @@ export default function Dashboard() {
           >
             Painel Principal
           </Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} marginTop={"12px"}>
             {cartaoGenericoComponents}
             <Grid
               item

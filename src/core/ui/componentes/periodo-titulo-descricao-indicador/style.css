@@ -1,0 +1,214 @@
+.periodo-titulo-descricao-indicador {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+}
+
+.periodo-titulo-descricao-indicador .timeline-button .calendar-today {
+    height: 18px;
+    left: 12px;
+    position: absolute;
+    top: 10px;
+    width: 18px;
+    color: #a3aed0;
+}
+
+.periodo-titulo-descricao-indicador .timeline-button {
+    background-color: #f4f7fe;
+    border-radius: 8px;
+    height: 37px;
+    overflow: hidden;
+    position: relative;
+    margin-left: 24px;
+    margin-top: 24px;
+    min-width: 123px;
+}
+
+.periodo-titulo-descricao-indicador .timeline-button .text-wrapper {
+    color: #a3aed0;
+    font-size: 14px;
+    font-weight: 500;
+    height: 18px;
+    left: 36px;
+    letter-spacing: -0.28px;
+    line-height: normal;
+    position: absolute;
+    font-weight: bold;
+    width: 100%;
+}
+
+.periodo-titulo-descricao-indicador .div {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+    margin-top: 24px;
+    margin-left: 24px;
+}
+
+.periodo-titulo-descricao-indicador .group-wrapper {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    height: 61px;
+    justify-content: space-around;
+    padding: 0px 0px 24px;
+    position: relative;
+}
+
+.periodo-titulo-descricao-indicador .group {
+    height: 37px;
+    position: relative;
+    width: 123px;
+}
+
+.periodo-titulo-descricao-indicador .calendar-today {
+    height: 18px;
+    left: 12px;
+    position: absolute;
+    top: 10px;
+    width: 18px;
+}
+
+.periodo-titulo-descricao-indicador .text-wrapper {
+    color: #a3aed0;
+    font-family: "DM Sans", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    height: 18px;
+    left: 36px;
+    letter-spacing: -0.28px;
+    line-height: normal;
+    position: absolute;
+    top: 9px;
+}
+
+.periodo-titulo-descricao-indicador .price {
+    color: #2b3674;
+    font-family: "DM Sans", Helvetica;
+    font-size: 34px;
+    font-weight: 700;
+    height: 40px;
+    letter-spacing: -0.68px;
+    line-height: 42px;
+    margin-right: -2px;
+    position: relative;
+    white-space: nowrap;
+}
+
+.periodo-titulo-descricao-indicador .div-2 {
+    align-items: center;
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    height: 24px;
+    position: relative;
+}
+
+.periodo-titulo-descricao-indicador .frame-wrapper {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+}
+
+.periodo-titulo-descricao-indicador .label-wrapper {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    gap: 2px;
+    position: relative;
+}
+
+.periodo-titulo-descricao-indicador .label {
+    color: #a3aed0;
+    font-family: "DM Sans", Helvetica;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.28px;
+    line-height: 24px;
+    margin-top: -1px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+}
+
+.periodo-titulo-descricao-indicador .precentage {
+    height: 16.25px;
+    position: relative;
+    width: 68.96px;
+}
+
+.periodo-titulo-descricao-indicador .overlap-group {
+    height: 16px;
+    position: relative;
+    width: 67px;
+}
+
+.periodo-titulo-descricao-indicador .text-wrapper-2 {
+    color: #05cd99;
+    font-family: "DM Sans", Helvetica;
+    font-size: 12px;
+    font-weight: 700;
+    left: 20px;
+    letter-spacing: -0.24px;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    white-space: nowrap;
+    width: 47px;
+}
+
+.periodo-titulo-descricao-indicador .arrow-drop-up {
+    height: 14px;
+    left: 0;
+    position: absolute;
+    top: 3px;
+    width: 20px;
+}
+
+.periodo-titulo-descricao-indicador .track-wrapper {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    gap: 107px;
+    position: relative;
+    margin-top: 24px;
+}
+
+.periodo-titulo-descricao-indicador .track {
+    height: 16px;
+    margin-right: -2px;
+    position: relative;
+    width: 102.62px;
+}
+
+.periodo-titulo-descricao-indicador .text-wrapper-3 {
+    color: #05cd99;
+    font-family: "DM Sans", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    height: 100%;
+    left: 22px;
+    letter-spacing: -0.32px;
+    position: absolute;
+    top: 1px;
+    white-space: nowrap;
+    width: 78px;
+}
+
+.periodo-titulo-descricao-indicador .img {
+    height: 16px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 16px;
+}
