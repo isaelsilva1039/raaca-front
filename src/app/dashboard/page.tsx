@@ -1,46 +1,139 @@
 import Head from "next/head";
-import { Box, Container, Unstable_Grid2 as Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Unstable_Grid2 as Grid,
+  Typography,
+} from "@mui/material";
 import { buscarInformacoesDashboardUserCase, DashboardDTO } from "@/core";
 import { GraficoLinha } from "@/core/ui/componentes/grafico-linha/grafico-linha";
-import UIMapper from "@/core/application/mappers/UIMapper";
+import { LineChartProps } from "@/core/ui/componentes/grafico-linha/LineChartProps";
+import Options from "@/core/ui/componentes/grafico-linha/options";
+import { TabelaProps } from "@/core/ui/componentes/tabela/TabelaProps";
+import { Tabela } from "@/core/ui/componentes/tabela/Tabela";
+import { CardTituloDescricaoIcone } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIcone";
+import { CardTituloDescricaoIconeParams } from "@/core/ui/componentes/card-titulo-descricao-icone/CardTituloDescricaoIconeParams";
+import { CardLabelTituloDescricaoIconeIndicador } from "@/core/ui/componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicador";
+import CardLabelTituloDescricaoIconeIndicadorProps from "@/core/ui/componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicadorProps";
 
 export default function Dashboard() {
-  const dashboardInfo: DashboardDTO = buscarInformacoesDashboardUserCase.buscarInformacoes();
-  const cartaoGenericoComponents = UIMapper.toCartaoGenericoPropsArray(dashboardInfo.horizontalWidgets);
-  const cartaoGenericoComIndicadorComponents = UIMapper.toCartaoGenericoComIndicadorPropsArray(dashboardInfo.totalTransacoes);
-  const props = UIMapper.toLineChartProps(dashboardInfo.totalGeral);
-  const tabelas = UIMapper.criarTabelas(dashboardInfo.tabelas);
-  
+  const dashboardInfo: DashboardDTO =
+    buscarInformacoesDashboardUserCase.buscarInformacoes();
+
+  const cartaoGenericoComponents = dashboardInfo.horizontalWidgets.map(
+    (element, index) => {
+      const params: CardTituloDescricaoIconeParams = {
+        titulo: element?.valor,
+        descricao: element?.descritivo,
+        icone: element?.icone,
+      }
+
+      return (
+        <Grid key={index} xs={12} sm={12} md={6} lg={3}>
+          <CardTituloDescricaoIcone {...params} />
+        </Grid>
+      );
+    }
+  );
+
+  const cartaoGenericoComIndicadorComponents =
+    dashboardInfo.totalTransacoes.map((element, index) => {
+      const cardLabelTituloDescricaoIconeIndicadorProps: CardLabelTituloDescricaoIconeIndicadorProps = {
+        label: element.titulo,
+        titulo: element.valor,
+        descricao: element.descritivo,
+        icone: element.icone,
+        variacao: element.variacao,
+      };
+      return (
+        <Grid item xs={12} sm={12} md={12} lg={12} key={index}>
+          <CardLabelTituloDescricaoIconeIndicador {...cardLabelTituloDescricaoIconeIndicadorProps} />
+        </Grid>
+      );
+    });
+
+  const options: Options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      x: {
+        grid: {
+          display: false,
+        },
+        ticks: {
+          beginAtZero: true,
+          color: "#A3AED0 ",
+          font: {
+            size: 12,
+            family: "DM Sans",
+          },
+        },
+      },
+      y: {
+        display: false,
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  const values: number[] = dashboardInfo.totalGeral.data.map((element) => {
+    return element.valor;
+  });
+
+  const props: LineChartProps = {
+    options,
+    valor: dashboardInfo.totalGeral.valor,
+    variacao: dashboardInfo.totalGeral.variacao,
+    data: {
+      labels: dashboardInfo.totalGeral.data.map((element) => {
+        return element.descritivo;
+      }),
+      datasets: [
+        {
+          type: "line",
+          label: "Dataset",
+          data: values,
+          borderColor: "#4318FF",
+          fill: false,
+          lineTension: 0.4,
+          pointBorderColor: "#4318FF",
+          borderWidth: 4,
+          pointRadius: 0,
+          pointHoverRadius: 8,
+          pointHoverBackgroundColor: "#ffffff",
+          pointHoverBorderColor: "#4318FF",
+          pointHoverBorderWidth: 4,
+          pointHitRadius: 50,
+        },
+      ],
+    },
+  };
+
+  const tabelas = dashboardInfo.tabelas.map((element, index) => {
+    const tabelaProps: TabelaProps = {
+      titulo: element.titulo,
+      headers: element.header,
+      body: element.body,
+    };
+    return (
+      <Grid item xs={12} lg={6} key={index}>
+        <Tabela {...tabelaProps} />
+      </Grid>
+    );
+  });
+
   return (
     <>
       <Head>
         <title>SWIFTPay | Início</title>
       </Head>
-      <Container maxWidth="xl" sx={{ mt: "12px" }}>
-        <Typography
-          sx={{
-            fontFamily: "DM Sans",
-            color: "#707EAE",
-            fontWeight: "500",
-            lineHeight: "24px",
-            fontSize: "15px",
-          }}
-        >
-          Menu / Dashboard
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily: "DM Sans",
-            color: '#2B3674',
-            fontWeight: "700",
-            fontSize: "34px",
-            lineHeight: "42x",
-            letterSpacing: "-2%",
-          }}
-        >
-          Painel Principal
-        </Typography>
-      </Container>
+
       <Box
         component="main"
         sx={{
@@ -49,12 +142,41 @@ export default function Dashboard() {
         }}
       >
         <Container maxWidth={false}>
-          <Grid container spacing={2}>
+          <Typography
+            sx={{
+              color: "#707EAE",
+              fontWeight: "500",
+              lineHeight: "24px",
+              fontSize: "15px",
+            }}
+          >
+            Menu / Dashboard
+          </Typography>
+          <Typography
+            sx={{
+              color: "#2B3674",
+              fontWeight: "700",
+              fontSize: "34px",
+              lineHeight: "42x",
+              letterSpacing: "-2%",
+            }}
+          >
+            Painel Principal
+          </Typography>
+          <Grid container spacing={2} marginTop={"12px"}>
             {cartaoGenericoComponents}
-            <Grid xs={12} lg={4} md={3} container direction="column" spacing={2} component="div">
+            <Grid
+              item
+              xs={12}
+              md={12}
+              lg={4}
+              container
+              direction="column"
+              spacing={2}
+            >
               {cartaoGenericoComIndicadorComponents}
             </Grid>
-            <Grid xs={12} lg={8} md={9}>
+            <Grid item xs={12} md={12} lg={8}>
               <GraficoLinha {...props} />
             </Grid>
             {tabelas}

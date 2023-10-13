@@ -1,12 +1,8 @@
-import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import {
   Box,
-  Button,
   Card,
-  CardActions,
   CardHeader,
   Divider,
-  SvgIcon,
   Table,
   TableBody,
   TableCell,
@@ -17,14 +13,33 @@ import { Scrollbar } from '../scrollbar/scrollbar';
 import { TabelaProps } from './TabelaProps';
 
 export const Tabela = (props: TabelaProps) => {
-
   const headers = props.headers.map((header) => {
-    return (<TableCell>{header}</TableCell>);
+    return (
+      <TableCell
+        style={{
+          fontFamily: "DM Sans, Helvetica",
+          fontSize: "14px",
+          color: "#A3AED0",
+          fontWeight: "500",
+          lineHeight: "normal",
+          letterSpacing: "-0.28px",
+          borderBottom: "1px solid #F4F7FE"
+        }}>
+        {header}
+      </TableCell>);
   });
 
   const body = props.body.map((row, index: number) => {
     const cells = row.map((cell) => {
-      return (<TableCell>{cell}</TableCell>);
+      return (<TableCell style={{
+        fontFamily: "DM Sans, Helvetica",
+        fontSize: "14px",
+        color: "#2B3674",
+        lineHeight: "normal",
+        letterSpacing: "-0.28px",
+        fontWeight: "bold",
+        borderBottom: "none"
+      }}>{cell}</TableCell>);
     });
     return (
       <TableRow
@@ -37,8 +52,10 @@ export const Tabela = (props: TabelaProps) => {
   });
 
   return (
-    <Card sx={{ height: "100%", borderRadius: '8px' }}>
-      <CardHeader title={props.titulo} />
+    <Card sx={{ height: "100%", borderRadius: '8px', boxShadow: "none" }}>
+      <CardHeader title={props.titulo} style={{
+        color: "#2B3674"
+      }} />
       <Scrollbar sx={{ flexGrow: 1 }}>
         <Box sx={{ minWidth: 800 }}>
           <Table>

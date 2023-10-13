@@ -3,4 +3,5 @@ export default interface TotalTransacoesItemDTO {
   descritivo: string;
   valor: string;
   variacao: number;
+  icone: string;
 }
