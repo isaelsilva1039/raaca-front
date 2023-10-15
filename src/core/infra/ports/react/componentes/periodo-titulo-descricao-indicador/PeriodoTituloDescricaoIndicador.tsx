@@ -17,20 +17,42 @@ export const PeriodoTituloDescricaoIndicador = (props: { dto: PeriodoTituloDescr
                         <div className="label">{props.dto.descricao}</div>
                     </div>
                     <div className="precentage">
-                        <div className="overlap-group">
-                            <div className="text-wrapper-2">+2.45%</div>
-                            <img
-                                className="arrow-drop-up"
-                                alt="Arrow drop up"
-                                src="https://c.animaapp.com/ltVr5tk8/img/arrow-drop-up.svg"
-                            />
-                        </div>
+                        {props.dto.variacao > 0 ? (
+                            <>
+                                <div className="overlap-group">
+                                    <div className="text-wrapper-up">+{props.dto.variacao.toFixed(2)}%</div>
+                                    <img
+                                        className="arrow-drop-up"
+                                        alt="Arrow drop up"
+                                        src="./assets/arrow-drop-up.svg"
+                                    />
+                                </div>
+                            </>
+                        ) : (
+                            <div className="overlap-group">
+                                <div className="text-wrapper-down">{props.dto.variacao.toFixed(2)}%</div>
+                                <img
+                                    className="arrow-drop-up"
+                                    alt="Arrow drop up"
+                                    src="./assets/arrow_drop_down.svg"
+                                />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="track-wrapper">
                     <div className="track">
-                        <div className="text-wrapper-3">Parabéns</div>
-                        <img className="img" alt="Frame" src="https://c.animaapp.com/ltVr5tk8/img/frame-5.svg" />
+                        {props.dto.variacao > 0 ? (
+                            <>
+                                <div className="text-wrapper-parabens">Parabéns</div>
+                                <img src="./assets/check-green.svg" />
+                            </>
+                        ) : (
+                            <>
+                                <div className="text-wrapper-alerta">Precisa de atenção</div>
+                                <img src="./assets/alerta.svg" />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

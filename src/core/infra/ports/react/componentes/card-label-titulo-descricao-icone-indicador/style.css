@@ -79,7 +79,7 @@
     position: relative;
 }
 
-.card-label-titulo-descricao-icone-indicador .text-wrapper-2 {
+.card-label-titulo-descricao-icone-indicador .text-wrapper-parabens {
     color: #05cd99;
     font-family: "DM Sans", Helvetica;
     font-size: 16px;
@@ -93,12 +93,18 @@
     width: 78px;
 }
 
-.card-label-titulo-descricao-icone-indicador .img {
-    height: 16px;
-    left: 0;
+.card-label-titulo-descricao-icone-indicador .text-wrapper-alerta {
+    color: #cd0505;
+    font-family: "DM Sans", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    height: 100%;
+    left: 22px;
+    letter-spacing: -0.32px;
     position: absolute;
-    top: 0;
-    width: 16px;
+    top: 1px;
+    white-space: nowrap;
+    width: 78px;
 }
 
 .card-label-titulo-descricao-icone-indicador .div-3 {
@@ -132,8 +138,23 @@
     width: 67px;
 }
 
-.card-label-titulo-descricao-icone-indicador .text-wrapper-3 {
+.card-label-titulo-descricao-icone-indicador .text-wrapper-parabens {
     color: #05cd99;
+    font-family: "DM Sans", Helvetica;
+    font-size: 12px;
+    font-weight: 700;
+    left: 20px;
+    letter-spacing: -0.24px;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    white-space: nowrap;
+    width: 47px;
+}
+
+.card-label-titulo-descricao-icone-indicador .text-wrapper-alerta {
+    color: #cd0505;
     font-family: "DM Sans", Helvetica;
     font-size: 12px;
     font-weight: 700;

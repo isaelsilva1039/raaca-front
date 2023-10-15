@@ -1,8 +1,6 @@
 import React from "react"
 import "./style.css"
 import CardLabelTituloDescricaoIconeIndicadorDTO from "../../dto/CardLabelTituloDescricaoIconeIndicadorDTO"
-import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly'
-import { styleIcon } from "./style"
 
 export const CardLabelTituloDescricaoIconeIndicador = (props: { dto: CardLabelTituloDescricaoIconeIndicadorDTO }): JSX.Element => {
     return (
@@ -16,15 +14,15 @@ export const CardLabelTituloDescricaoIconeIndicador = (props: { dto: CardLabelTi
                 {props.dto.variacao > 0 ? (
                     <div className="track-wrapper">
                         <div className="track">
-                            <div className="text-wrapper-2">Parabéns</div>
-                            <img className="img" alt="Frame" src="https://c.animaapp.com/3xag2zkK/img/frame-5.svg" />
+                            <div className="text-wrapper-parabens">Parabéns</div>
+                            <img src="./assets/check-green.svg" />
                         </div>
                     </div>
                 ) : (
                     <div className="track-wrapper">
                         <div className="track">
-                            <div className="text-wrapper-2">Parabéns</div>
-                            <img className="img" alt="Frame" src="https://c.animaapp.com/3xag2zkK/img/frame-5.svg" />
+                            <div className="text-wrapper-alerta">Precisa de atenção</div>
+                            <img src="./assets/alerta.svg" />
                         </div>
                     </div>
                 )}
@@ -38,24 +36,24 @@ export const CardLabelTituloDescricaoIconeIndicador = (props: { dto: CardLabelTi
                 <div className="precentage">
                     {props.dto.variacao > 0 ? (
                         <div className="overlap-group">
-                            <div className="text-wrapper-3">
+                            <div className="text-wrapper-parabens">
                                 +{props.dto.variacao.toFixed(2)}%
                             </div>
                             <img
                                 className="arrow-drop-up"
                                 alt="Arrow drop up"
-                                src="https://c.animaapp.com/3xag2zkK/img/arrow-drop-up.svg"
+                                src="./assets/arrow-drop-up.svg"
                             />
                         </div>
                     ) : (
                         <div className="overlap-group">
-                            <div className="text-wrapper-3">
-                                -{props.dto.variacao.toFixed(2)}%
+                            <div className="text-wrapper-alerta">
+                                {props.dto.variacao.toFixed(2)}%
                             </div>
                             <img
                                 className="arrow-drop-up"
                                 alt="Arrow drop up"
-                                src="https://c.animaapp.com/3xag2zkK/img/arrow-drop-up.svg"
+                                src="./assets/arrow_drop_down.svg"
                             />
                         </div>
                     )}

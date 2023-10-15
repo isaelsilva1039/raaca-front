@@ -31,24 +31,8 @@ export default class APIAdapter implements APIPort {
             ],
             totalGeral: {
                 "valor": "R$ 1.352,87",
-                "variacao": 2.45,
+                "variacao": -2.45,
                 "data": [
-                    {
-                        "descritivo": "JAN",
-                        "valor": 25060
-                    },
-                    {
-                        "descritivo": "FEV",
-                        "valor": 27980
-                    },
-                    {
-                        "descritivo": "MAR",
-                        "valor": 42800
-                    },
-                    {
-                        "descritivo": "ABR",
-                        "valor": 32400
-                    },
                     {
                         "descritivo": "MAI",
                         "valor": 35200
@@ -72,14 +56,6 @@ export default class APIAdapter implements APIPort {
                     {
                         "descritivo": "OUT",
                         "valor": 38200
-                    },
-                    {
-                        "descritivo": "NOV",
-                        "valor": 52160
-                    },
-                    {
-                        "descritivo": "DEZ",
-                        "valor": 42400
                     }
                 ]
             },

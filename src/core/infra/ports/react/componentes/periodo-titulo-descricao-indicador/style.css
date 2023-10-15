@@ -152,8 +152,23 @@
     width: 67px;
 }
 
-.periodo-titulo-descricao-indicador .text-wrapper-2 {
+.periodo-titulo-descricao-indicador .text-wrapper-up {
     color: #05cd99;
+    font-family: "DM Sans", Helvetica;
+    font-size: 12px;
+    font-weight: 700;
+    left: 20px;
+    letter-spacing: -0.24px;
+    line-height: 20px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    white-space: nowrap;
+    width: 47px;
+}
+
+.periodo-titulo-descricao-indicador .text-wrapper-down {
+    color: #cd0505;
     font-family: "DM Sans", Helvetica;
     font-size: 12px;
     font-weight: 700;
@@ -191,7 +206,7 @@
     width: 102.62px;
 }
 
-.periodo-titulo-descricao-indicador .text-wrapper-3 {
+.periodo-titulo-descricao-indicador .text-wrapper-parabens {
     color: #05cd99;
     font-family: "DM Sans", Helvetica;
     font-size: 16px;
@@ -205,10 +220,16 @@
     width: 78px;
 }
 
-.periodo-titulo-descricao-indicador .img {
-    height: 16px;
-    left: 0;
+.periodo-titulo-descricao-indicador .text-wrapper-alerta {
+    color: #cd0505;
+    font-family: "DM Sans", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    height: 100%;
+    left: 22px;
+    letter-spacing: -0.32px;
     position: absolute;
-    top: 0;
-    width: 16px;
+    top: 1px;
+    white-space: nowrap;
+    width: 78px;
 }
