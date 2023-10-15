@@ -1,30 +1,43 @@
-import BuscarInformacoesDashboardUserCase from "@/core/application/ports/input/BuscarInformacoesDashboardUserCase";
-import DashboardDTO from "@/core/domain/DTO/dashboard/DashboardDTO";
-import DashboardService from "@/core/domain/services/DashboardService";
-import ApiAdapter from "@/core/infra/adapters/ApiAdapter";
-import ApiMapperImpl from "./infra/mappers/ApiMapper";
+import BuscarInformacoesDashboardUserCase from "@/core/application/usercase/BuscarInformacoesDashboardUserCase"
+import DashboardDTO from "@/core/domain/dto/DashboardDTO"
+import DashboardService from "@/core/domain/services/DashboardService"
+import APIAdapter from "@/core/infra/adapter/APIAdapter"
+import UIPort from "./application/ports/UIPort"
+import ReactAdapter from "./infra/adapter/ReactAdapter"
+import ReactMapperImpl from "./infra/adapter/mappers/impl/ReactMapperImpl"
+import PageFactory from "./infra/ports/react/factory/PageFactory"
+import APIPort from "./application/ports/APIPort"
 
 class Application {
-    private static instance: Application | null = null;
-    private readonly dashboardService: DashboardService;
-    private readonly apiAdapter: ApiAdapter;
+    private static instance: Application | null = null
+    private readonly dashboardService: DashboardService
+    private readonly uiPort: UIPort
+    private readonly apiAdapter: APIAdapter
 
     private constructor() {
-        const apiMapper = new ApiMapperImpl();
-        this.apiAdapter = new ApiAdapter();
-        this.dashboardService = new DashboardService(this.apiAdapter);
+        this.apiAdapter = new APIAdapter()
+        this.dashboardService = new DashboardService(this.apiAdapter)
+
+        const pageFactory = new PageFactory()
+        const reactMapper = new ReactMapperImpl()
+        this.uiPort = new ReactAdapter(pageFactory, reactMapper)
     }
 
     public static getInstance(): Application {
         if (!Application.instance)
-            Application.instance = new Application();
-        return Application.instance;
+            Application.instance = new Application()
+        return Application.instance
     }
 
     public getDashboardService(): DashboardService {
-        return this.dashboardService;
+        return this.dashboardService
+    }
+
+    getUIPort(): UIPort {
+        return this.uiPort
     }
 }
 
-export const buscarInformacoesDashboardUserCase: BuscarInformacoesDashboardUserCase = Application.getInstance().getDashboardService();
-export type { BuscarInformacoesDashboardUserCase, DashboardDTO };
+export const buscarInformacoesDashboardUserCase: BuscarInformacoesDashboardUserCase = Application.getInstance().getDashboardService()
+export const uiPort: UIPort = Application.getInstance().getUIPort()
+export type { BuscarInformacoesDashboardUserCase, DashboardDTO, UIPort, APIPort }
