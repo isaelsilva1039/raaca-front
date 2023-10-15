@@ -1,26 +1,34 @@
-import Link from 'next/link'
-import React, { FC } from 'react'
+import Link from "next/link"
 
-interface MenuItemProps {
-  title: string
-  IconComponent: FC<{ className: string, color?: string }>
-  isActive?: boolean
-  color?: string
-  route: string
-}
-
-export const MenuItem: FC<MenuItemProps> = ({ title, IconComponent, isActive = false, route }) => {
-
-  let colorTitle = isActive ? '#2B3674' : '#A3AED0'
-  let color = isActive ? '#4318FF' : '#A3AED0'
-
-  return (
-    <Link href={route}>
-      <div className="menu-item">
-        <div className="pagetitle" style={{ color: colorTitle }}>{title}</div>
-        <IconComponent className="icon-instance-node-2" color={color} />
-        {isActive && <div className="active" />}
-      </div>
-    </Link>
-  )
+export const MenuItem = (props: {
+    title: string,
+    icone: string,
+    route: string,
+    isActive: boolean
+}): JSX.Element => {
+    return (
+        <Link href={props.route}>
+            {props.isActive ? (
+                <div className="menu-item">
+                    <div className="menu-item-details">
+                        <img className="img" src={props.icone} />
+                        <div className="menu-item-title">{props.title}</div>
+                    </div>
+                    <div className="dashboard-wrapper">
+                        <div className="dashboard">
+                            <div className="active" />
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div className="menu-item">
+                    <div className="menu-item-details">
+                        <img className="img" src={props.icone} />
+                        <div className="menu-item-title-nao-selecionado">{props.title}</div>
+                    </div>
+                    <div className="div-3" />
+                </div>
+            )}
+        </Link>
+    )
 }

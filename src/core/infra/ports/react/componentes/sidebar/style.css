@@ -1,0 +1,64 @@
+.navigation-root {
+    background-color: white;
+    height: 100vh;
+    position: fixed;
+    width: 250px;
+    z-index: 2;
+}
+
+.navigation-root .logo {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100px;
+    justify-content: center;
+    display: flex;
+}
+
+.navigation-root .logo .img {
+    width: 130px;
+}
+
+.navigation-root .span {
+    font-weight: 700;
+}
+
+@media only screen and (max-width: 768px) {
+    #menu-btn {
+        background: #2B3674;
+        border: none;
+        font-size: 36px;
+        cursor: pointer;
+        width: 100%;
+        display: block;
+        text-align: start;
+        z-index: 1;
+        position: absolute;
+        color: #FFFFFF;
+        padding-left: 12px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+    }
+
+    #menu-btn .title {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 30px;
+        letter-spacing: -0.32px;
+        color: #FFFFFF;
+        margin-left: 24px;
+        align-self: center;
+    }
+
+    .navigation-root {
+        width: 0;
+        overflow: hidden;
+        transition: width 0.3s ease;
+    }
+
+    .navigation-root.open {
+        background-color: white;
+        width: 250px;
+    }
+}

@@ -1,1 +1,0 @@
-export { MoneyCoinsDocumentChart } from "./MoneyCoinsDocumentChart";

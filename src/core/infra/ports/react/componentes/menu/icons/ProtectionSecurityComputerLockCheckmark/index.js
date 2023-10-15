@@ -1,1 +1,0 @@
-export { ProtectionSecurityComputerLockCheckmark } from "./ProtectionSecurityComputerLockCheckmark";
