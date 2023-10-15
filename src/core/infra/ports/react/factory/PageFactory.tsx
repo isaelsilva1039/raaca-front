@@ -47,17 +47,7 @@ export default class PageFactory {
                         >
                             Menu / Dashboard
                         </Typography>
-                        <Typography
-                            sx={{
-                                color: "#2B3674",
-                                fontWeight: "700",
-                                fontSize: "34px",
-                                lineHeight: "42x",
-                                letterSpacing: "-2%",
-                            }}
-                        >
-                            Painel Principal
-                        </Typography>
+                        
                         <Grid container spacing={2} marginTop={"12px"}>
                             {this.renderTopCards(topCardsDTOs)}
                             <Grid

@@ -1,6 +1,6 @@
 import UIPort from "@/core/application/ports/UIPort"
 import PageFactory from "../ports/react/factory/PageFactory"
-import ReactMapper from "./mappers/ReactMapper"
+import ReactMapper from "../mappers/ReactMapper"
 import DashboardDTO from "@/core/domain/dto/DashboardDTO"
 
 export default class ReactAdapter implements UIPort {

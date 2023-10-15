@@ -4,7 +4,7 @@ import DashboardService from "@/core/domain/services/DashboardService"
 import APIAdapter from "@/core/infra/adapter/APIAdapter"
 import UIPort from "./application/ports/UIPort"
 import ReactAdapter from "./infra/adapter/ReactAdapter"
-import ReactMapperImpl from "./infra/adapter/mappers/impl/ReactMapperImpl"
+import ReactMapperImpl from "./infra/mappers/impl/ReactMapperImpl"
 import PageFactory from "./infra/ports/react/factory/PageFactory"
 import APIPort from "./application/ports/APIPort"
 
