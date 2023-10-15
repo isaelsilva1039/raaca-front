@@ -1,9 +1,6 @@
 import React from "react"
 import "./style.css"
 import { CardTituloDescricaoIconeDTO } from "../../dto/CardTituloDescricaoIconeDTO"
-import { Pix } from "@mui/icons-material"
-import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly'
-import { styleIcon } from "./style"
 
 export const CardTituloDescricaoIcone = (props: { dto: CardTituloDescricaoIconeDTO }): JSX.Element => {
   return (
@@ -17,9 +14,9 @@ export const CardTituloDescricaoIcone = (props: { dto: CardTituloDescricaoIconeD
       <div className="root-icone">
         <div className="icone">
           {props.dto.icone === "PIX" ? (
-            <Pix sx={styleIcon} />
+             <img src="./assets/pix.svg" alt="SwiftPay" />
           ) : (
-            <MobileFriendlyIcon sx={styleIcon} />
+            <img src="./assets/pos.svg" alt="SwiftPay" />
           )}
         </div>
       </div>

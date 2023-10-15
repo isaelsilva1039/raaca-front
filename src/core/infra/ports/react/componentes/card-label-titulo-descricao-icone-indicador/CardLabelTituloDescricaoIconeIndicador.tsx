@@ -1,7 +1,6 @@
 import React from "react"
 import "./style.css"
 import CardLabelTituloDescricaoIconeIndicadorDTO from "../../dto/CardLabelTituloDescricaoIconeIndicadorDTO"
-import { Pix } from "@mui/icons-material"
 import MobileFriendlyIcon from '@mui/icons-material/MobileFriendly'
 import { styleIcon } from "./style"
 
@@ -33,7 +32,7 @@ export const CardLabelTituloDescricaoIconeIndicador = (props: { dto: CardLabelTi
             <div className="div-3">
                 <div className="root-icone">
                     <div className="icone">
-                        {props.dto.icone === "Pix" ? (<Pix sx={styleIcon} />) : (<MobileFriendlyIcon sx={styleIcon} />)}
+                        {props.dto.icone === "Pix" ? <img src="./assets/pix.svg" alt="SwiftPay" /> : <img src="./assets/pos.svg" alt="SwiftPay" />}
                     </div>
                 </div>
                 <div className="precentage">
