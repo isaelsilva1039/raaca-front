@@ -5,8 +5,9 @@ import APIAdapter from "@/core/infra/adapter/APIAdapter"
 import UIPort from "./application/ports/UIPort"
 import ReactAdapter from "./infra/adapter/ReactAdapter"
 import ReactMapperImpl from "./infra/mappers/impl/ReactMapperImpl"
-import PageFactory from "./infra/ports/react/factory/PageFactory"
+import LayoutFactory from "./infra/ports/react/factory/LayoutFactory"
 import APIPort from "./application/ports/APIPort"
+import ComponentFactory from "./infra/ports/react/factory/ComponentFactory"
 
 class Application {
     private static instance: Application | null = null
@@ -18,7 +19,8 @@ class Application {
         this.apiAdapter = new APIAdapter()
         this.dashboardService = new DashboardService(this.apiAdapter)
 
-        const pageFactory = new PageFactory()
+        const componentFactory = new ComponentFactory()
+        const pageFactory = new LayoutFactory(componentFactory)
         const reactMapper = new ReactMapperImpl()
         this.uiPort = new ReactAdapter(pageFactory, reactMapper)
     }
