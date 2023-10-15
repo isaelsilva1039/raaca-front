@@ -3,7 +3,7 @@ Este projeto é licenciado sob a [Licença Pública Geral GNU v3.0 (GNU GPLv3)](
 [![Licença](https://img.shields.io/badge/Licença-GNU%20GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow.svg)](https://github.com/meucontato/swiftpag-gestor)
 [![Última Versão](https://img.shields.io/badge/Versão-1.0-blue.svg)](https://github.com/meucontato/swiftpag-gestor/releases)
-[![Contribuidores](https://img.shields.io/badge/Contribuidores-3-orange.svg)](https://github.com/seu-usuario/seu-projeto/graphs/contributors)
+[![Contribuidores](https://img.shields.io/badge/Contribuidores-3-orange.svg)](https://github.com/meucontato/swiftpag-gestor/graphs/contributors)
 
 ## Como executar o projeto
 - Primeiro, clone o projeto para seu computador
