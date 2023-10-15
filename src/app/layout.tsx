@@ -2,7 +2,7 @@
 
 import { Inter } from 'next/font/google'
 import '@/core/infra/ports/react/componentes/menu/styles/stilos.css'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FoldersFolderKey } from '@/core/infra/ports/react/componentes/menu/icons/FoldersFolderKey'
 import { InterfaceEssentialBlackboardBusinessChart11 } from '@/core/infra/ports/react/componentes/menu/icons/InterfaceEssentialBlackboardBusinessChart11'
 import { MoneyCoinsDocumentChart } from '@/core/infra/ports/react/componentes/menu/icons/MoneyCoinsDocumentChart'
@@ -99,6 +99,11 @@ export default function RootLayout({
   }
 
   const route = usePathname();
+
+  useEffect(() => {
+    if (route === '/')
+      window.location.href = '/dashboard'
+  }, []);
 
   return (
     <html className="h-screen w-screen">
