@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import Head from "next/head";
-import { Inter } from "next/font/google";
-const inter = Inter({ subsets: ["latin"] });
-import '@/core/ui/componentes/menu/styles/stilos.css'
-import Home from "./page";
-import { SidebarNotification } from "@/core/ui/componentes/menu/menu";
+
+import '@/core/infra/ports/react/componentes/menu/styles/stilos.css'
+import { SidebarNotification } from "@/core/infra/ports/react/componentes/menu/menu";
 
 export const metadata: Metadata = {
   title: "SwiftPay",
@@ -13,7 +10,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  title,
 }: {
   children: React.ReactNode;
   title: string;
