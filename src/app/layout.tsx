@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 
+import { Inter } from 'next/font/google'
 import '@/core/infra/ports/react/componentes/menu/styles/stilos.css'
 import { SidebarNotification } from "@/core/infra/ports/react/componentes/menu/menu";
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: "SwiftPay",
@@ -16,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html className="h-screen w-screen">
-      <body className="h-screen w-screen" style={{background: "#EFF1F3"}}>
+      <body className={inter.className} style={{background: "#EFF1F3"}}>
         <main className='w-full h-full bg-[#EFF1F3]'>
         <div className="container">
           <SidebarNotification />
@@ -30,3 +33,4 @@ export default function RootLayout({
     </html>
   );
 }
+    
