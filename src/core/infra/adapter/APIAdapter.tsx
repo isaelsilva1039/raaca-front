@@ -31,7 +31,7 @@ export default class APIAdapter implements APIPort {
             ],
             totalGeral: {
                 "valor": "R$ 1.352,87",
-                "variacao": -2.45,
+                "variacao": 2.45,
                 "data": [
                     {
                         "descritivo": "MAI",
