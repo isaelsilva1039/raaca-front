@@ -12,10 +12,10 @@ export default class ReactAdapter implements UIPort {
     renderDashboard(dashboardInfo: DashboardDTO): JSX.Element {
         return this.pageFactory.renderDashboard(
             this.reactMapper.toCardTituloDescricaoIconeDTO(dashboardInfo.horizontalWidgets),
-            this.reactMapper.toCardLabelTituloDescricaoIconeIndicadorDTO(dashboardInfo.totalTransacoes),
-            this.reactMapper.toTabelaDTO(dashboardInfo.tabelas),
-            this.reactMapper.toPeriodoTituloDescricaoIndicadorDTO(dashboardInfo.totalGeral),
-            this.reactMapper.toLineChartDTO(dashboardInfo.totalGeral)
+            // this.reactMapper.toCardLabelTituloDescricaoIconeIndicadorDTO(dashboardInfo.totalTransacoes),
+            // this.reactMapper.toTabelaDTO(dashboardInfo.tabelas),
+            // this.reactMapper.toPeriodoTituloDescricaoIndicadorDTO(dashboardInfo.totalGeral),
+            // this.reactMapper.toLineChartDTO(dashboardInfo.totalGeral)
         )
     }
 }

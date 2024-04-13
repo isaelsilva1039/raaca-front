@@ -5,7 +5,7 @@ import './style.css'
 import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Sidebar } from '@/core/infra/ports/react/componentes/sidebar/Sidebar'
-import { MenuItem } from '@/core/infra/ports/react/componentes/menu/MenuItem'
+import { MenuItem } from '@/core/infra/ports/react/componentes/menu/menuItem'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,9 +16,9 @@ const menuItems = [
     route: '/dashboard',
   },
   {
-    title: 'Chaves Pix',
-    icone: './assets/rout-chaves-pix.svg',
-    route: '/chaves-Pix',
+    title: 'Clientes',
+    icone: './assets/rout-operadores.svg',
+    route: '/clientes',
   },
   {
     title: 'Smart POS',

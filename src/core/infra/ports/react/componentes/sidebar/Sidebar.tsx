@@ -12,7 +12,7 @@ export const Sidebar = (props: {
             <div>
                 <div className={`navigation-root ${props.isOpen ? 'open' : ''}`}>
                     <div className="logo">
-                        <img className="img" src="./assets/logo.svg" />
+                        <img className="img" src="./assets/sem-fundo-inteira-01-1.png" />
                     </div>
                     <img
                         src='./assets/separator.svg'

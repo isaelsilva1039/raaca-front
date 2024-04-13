@@ -10,22 +10,22 @@ export default class APIAdapter implements APIPort {
             horizontalWidgets: [
                 {
                     icone: "PIX",
-                    descritivo: "Ticket médio PIX",
+                    descritivo: "Vendas dia",
                     valor: "R$ 16.981,52"
                 },
                 {
                     icone: "POS",
-                    descritivo: "Ticket médio POS",
+                    descritivo: "Vendas mes",
                     valor: "R$ 2.456,99"
                 },
                 {
                     icone: "PIX",
-                    descritivo: "Quantidade transações PIX",
+                    descritivo: "Quantidade de clientes geral",
                     valor: "222"
                 },
                 {
                     icone: "POS",
-                    descritivo: "Quantidade transações POS",
+                    descritivo: "Quantidade de clientes dia",
                     valor: "542"
                 }
             ],

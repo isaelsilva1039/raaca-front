@@ -7,14 +7,15 @@ import { LineChartDTO } from "../dto/LineChartDTO"
 import { DashboardLayout } from "../layouts/DashboardLayout"
 import ComponentFactory from "./ComponentFactory"
 import PropsDTO from "../dto/PropsDTO"
+import { ClientesLayout } from "../layouts/ClientesLayout"
 
-export default class LayoutFactory {
+export default class ClientesFactory {
     constructor(private readonly componentFactory: ComponentFactory) { }
 
-    renderDashboard(
-        topCardsDTOs: CardTituloDescricaoIconeDTO[],
+    renderClientes(
+        // topCardsDTOs: CardTituloDescricaoIconeDTO[],
         // leftCardDTOs: CardLabelTituloDescricaoIconeIndicadorDTO[],
-        // tabelaDTOs: TabelaDTO[],
+        tabelaDTOs: TabelaDTO[],
         // totalGeralDTO: PeriodoTituloDescricaoIndicadorDTO,
         // lineChartDTO: LineChartDTO
     ): JSX.Element {
@@ -23,15 +24,15 @@ export default class LayoutFactory {
         const propsTabela: PropsDTO = { xs: 12, sm: 12, md: 12, lg: 6 }
         const propsGraficoLinha: PropsDTO = { xs: 12, sm: 12, md: 12, lg: 8 }
 
-        const topCards = this.componentFactory.criarComponentGridCardTituloDescricaoIcone(topCardsDTOs, propsCardsTop)
+  
         // const leftCards = this.componentFactory.criarComponentGridCardLabelTituloDescricaoIconeIndicador(leftCardDTOs, propsCardsLeft)
-        // const tabela = this.componentFactory.criarComponentGridTabela(tabelaDTOs, propsTabela)
+        const tabela = this.componentFactory.criarComponentGridTabela(tabelaDTOs, propsTabela)
         // const graficoLinha = this.componentFactory.criarComponentGridGraficoLinha(totalGeralDTO, lineChartDTO, propsGraficoLinha)
 
-        return <DashboardLayout
-            topCards={topCards}
+        return <ClientesLayout
+            // topCards={topCards}
             // leftCards={leftCards}
-            // tabelas={tabela}
+            tabelas={tabela}
             // graficoLinha={graficoLinha} 
             />
     }

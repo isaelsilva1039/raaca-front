@@ -6,16 +6,16 @@ import {
     Typography,
 } from "@mui/material";
 
-export const DashboardLayout = (props: {
-    topCards: JSX.Element[],
+export const ClientesLayout  = (props: {
+    // topCards: JSX.Element[],
     // leftCards: JSX.Element[],
-    // tabelas: JSX.Element[],
+    tabelas: JSX.Element[],
     // graficoLinha: JSX.Element,
 }) => {
     return (
         <>
             <Head>
-                <title>SWIFTPay | Início</title>
+                <title>Raaca | Clinete</title>
             </Head>
 
             <Box
@@ -34,23 +34,12 @@ export const DashboardLayout = (props: {
                             fontSize: "15px",
                         }}
                     >
-                        Menu / Dashboard
+                        Menu / Clientes
                     </Typography>
 
                     <Grid container spacing={2} marginTop={"12px"}>
-                        {props.topCards}
-                        <Grid
-                            xs={12}
-                            md={12}
-                            lg={4}
-                            container
-                            direction="column"
-                            spacing={2}
-                        >
-                            {/* {props.leftCards} */}
-                        </Grid>
-                        {/* {props.graficoLinha} */}
-                        {/* {props.tabelas} */}
+                    
+                        {props.tabelas}
                     </Grid>
                 </Container>
             </Box >
