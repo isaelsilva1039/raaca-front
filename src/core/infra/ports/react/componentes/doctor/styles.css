@@ -32,10 +32,14 @@
   
   .name {
     font-weight: bold;
+    /* color: #A500F7; */
   }
   
   .specialty {
     /* estilos adicionais para specialty podem ser adicionados aqui */
+        color: #A500F7;
+        font-weight: 300;
+        font-style: normal;
   }
   
 

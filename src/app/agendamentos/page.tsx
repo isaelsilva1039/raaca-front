@@ -81,6 +81,39 @@ export default function SmartsPOS() {
     // Adicione mais médicos conforme necessário
   ];
 
+
+
+  const testEvents = [
+    {
+        title: 'Consulta Médica',
+        start: '2024-05-11T14:00:00',  // Data e hora de início do evento
+        end: '2024-05-12T15:00:00',    // Data e hora de término do evento
+        color: 'blue',                 // Cor opcional para o evento
+        description: 'Consulta médica com o Dr. Silva',
+        extendedProps: {
+          details: 'Detalhes adicionais aqui',
+          clientId: '123',  // Identificador único do cliente
+          clientName: 'João Silva',
+          clientImageUrl: 'https://randomuser.me/api/portraits/men/91.jpg'  // Nome do cliente
+        }
+    },
+    {
+        title: 'Reunião de equipe',
+        start: '2024-05-11T09:00:00',
+        color: 'red',
+        description: 'Consulta médica com o Dr. Silva',
+        extendedProps: {
+          details: 'Detalhes adicionais aqui',
+          clientId: '123',  // Identificador único do cliente
+          clientName: 'João Silva',  // Nome do cliente
+          clientImageUrl: 'https://randomuser.me/api/portraits/men/91.jpg'
+        }
+    }
+    // Você pode adicionar mais eventos aqui conforme necessário
+];
+
+
+
   return (
     <div className="container">
 
@@ -110,7 +143,7 @@ export default function SmartsPOS() {
           ))}
         </div>
         <div className="calendario">
-           <CalendarComponent />
+           <CalendarComponent events={testEvents}/>
 
         </div>
       </div>

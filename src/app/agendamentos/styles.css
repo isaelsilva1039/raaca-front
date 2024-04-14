@@ -1,4 +1,9 @@
 
+/* Esconde a barra de rolagem em todos os navegadores */
+html, body {
+    overflow: hidden;
+  }
+  
 .list-top{
     display: flex;
     gap: 10px;
@@ -10,14 +15,15 @@
     border-radius: 4px;
     display: flex;
     flex-direction: row;
-
+    height: 93vh;
     gap: 20px;
 
+
     .menu-profissionais{
-        padding: 20px;
+        padding: 18px 0px 0px 20px;
         width: 350px;
 
-        height: 90vh;
+        height: 86vh;
 
         overflow-y: auto; /* Mantém a funcionalidade de rolagem */
         scrollbar-width: none; /* Para Firefox */

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Sidebar } from '@/core/infra/ports/react/componentes/sidebar/Sidebar'
 import { MenuItem } from '@/core/infra/ports/react/componentes/menu/menuItem'
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,9 +27,9 @@ const menuItems = [
     route: '/agendamentos',
   },
   {
-    title: 'Gerenciador',
+    title: 'Profissionais',
     icone: './assets/rout-gerenciadores.svg',
-    route: '/gerenciador',
+    route: '/cadastro-profissionais',
   },
   {
     title: 'Relatório',
@@ -82,7 +83,7 @@ export default function RootLayout({
     }
 
     return (
-      <MenuItem {...props} />
+      <MenuItem {...props} key={index} />
     )
   })
 

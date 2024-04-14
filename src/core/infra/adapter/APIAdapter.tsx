@@ -30,6 +30,7 @@ export default class APIAdapter implements APIPort {
                 }
             ],
             totalGeral: {
+                "icone": "Pix",
                 "valor": "R$ 1.352,87",
                 "variacao": 2.45,
                 "data": [

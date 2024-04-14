@@ -4,7 +4,7 @@ import {
 import { GraficoLinha } from "../componentes/grafico-linha/grafico-linha"
 import { CardLabelTituloDescricaoIconeIndicador } from "../componentes/card-label-titulo-descricao-icone-indicador/CardLabelTituloDescricaoIconeIndicador"
 import { CardTituloDescricaoIcone } from "../componentes/card-titulo-descricao-icone/CardTituloDescricaoIcone"
-import { Tabela } from "../componentes/tabela/Tabela"
+// import { Tabela } from "../componentes/tabela/Tabela"
 import { TabelaDTO } from "../dto/TabelaDTO"
 import { CardTituloDescricaoIconeDTO } from "../dto/CardTituloDescricaoIconeDTO"
 import CardLabelTituloDescricaoIconeIndicadorDTO from "../dto/CardLabelTituloDescricaoIconeIndicadorDTO"
@@ -18,7 +18,7 @@ export default class ComponentFactory {
         return tabelaDTOs.map((tabelaDTO, index: number) => {
             return (
                 <Grid key={index} xs={props.xs} sm={props.sm} md={props.md} lg={props.lg}>
-                    <Tabela tabela={tabelaDTO} />
+                    {/* <Tabela tabela={tabelaDTO} /> */}
                 </Grid>
             )
         })

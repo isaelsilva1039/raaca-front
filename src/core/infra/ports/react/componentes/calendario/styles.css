@@ -1,0 +1,79 @@
+.agenda-titele{
+    font-weight: bold;
+}
+
+.text{
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.agenda-informacao{
+    /* font-weight: bold; */
+    display: flex;
+    gap: 10px;
+
+    flex-direction: column;
+    /* background: red; */
+    .text{
+        font-weight: bold;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 4px;
+    }
+
+    .detalhes{
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .container-cliente{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* justify-content: center; */
+
+            img{
+                border: #8502c7 1px solid;
+            }
+        }
+    }
+
+}
+
+.btn-salvar{
+    background: #A500F7;
+    color: white;
+}
+
+
+
+.btn-salvar:hover{
+    background: #8502c7;
+    color: white;
+}
+
+.btn-fechar{
+    color: #A500F7;
+    /* color: white; */
+}
+
+
+.fc-dayGridMonth-view {
+    height: 80vh;
+}
+
+
+.fc-timeGridWeek-view  {
+    height: 80vh;
+}
+
+.fc-timeGridDay-view {
+    height: 80vh;
+}
+
+
+.fc-listMonth-view  {
+    height: 80vh;
+}
+
+/* .fc-view-harness-active */
+/* .fc-view .fc-timegrid */

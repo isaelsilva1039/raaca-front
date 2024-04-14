@@ -48,12 +48,12 @@ export const GraficoLinha = (props: {
         <Box
           sx={styleBoxGrafico}
         >
-          <Line
+          {/* <Line
             height={"100%"}
             width={"100%"}
             options={{ ...props.lineChartDTO.options, maintainAspectRatio: false }}
             data={props.lineChartDTO.data}
-          />
+          /> */}
         </Box>
       </Stack>
     </Card>

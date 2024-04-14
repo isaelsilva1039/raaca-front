@@ -1,11 +1,13 @@
-'use client'
+"use client";
+import React, { useMemo, useState } from "react";
+import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModal";
 
-import { useMemo } from 'react';
-// @ts-ignore
-import { useTable } from 'react-table';
+import { Button } from "react-bootstrap";
+import { Typography } from "@mui/material";
+import { useTable } from "react-table";
+import "../clientes/style.css";
+import "./styles.css";
 
-import './style.css'
-import { Typography } from '@mui/material';
 
 interface IData {
   nome: string;
@@ -13,16 +15,15 @@ interface IData {
   descricao: string;
 }
 
-
-export default function Gerenciador() {
-
+export default function Professional() {
+  const [modalShow, setModalShow] = useState(false);
 
   // Dados mockados
   const data = useMemo<IData[]>(
     () => [
-      { nome: "Produto A", quantidade: 20, descricao: "Produto A desc" },
-      { nome: "Produto B", quantidade: 30, descricao: "Produto B desc" },
-      { nome: "Produto C", quantidade: 10, descricao: "Produto C desc" },
+      { key:1, nome: "Produto A", quantidade: 20, descricao: "Produto A desc" },
+      { key:2, nome: "Produto B", quantidade: 30, descricao: "Produto B desc" },
+      { key:3, nome: "Produto C", quantidade: 10, descricao: "Produto C desc" },
     ],
     []
   );
@@ -40,21 +41,35 @@ export default function Gerenciador() {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data });
 
-
   return (
-    <div className='container-clientes'>
-        <Typography
-                        sx={{
-                            color: "#707EAE",
-                            fontWeight: "500",
-                            lineHeight: "24px",
-                            fontSize: "15px",
-                        }}
-                    >
-                        Menu / Clientes
-                    </Typography>
-                    <div className='tabela'>
-                    <table {...getTableProps()} className="table">
+    <div className="container">
+
+      <Typography
+        className="list-top"
+        sx={{
+          color: "#707EAE",
+          fontWeight: "500",
+          lineHeight: "24px",
+          fontSize: "15px",
+        }}
+      >
+        Menu / Profissionais
+      </Typography>
+
+      <Button variant="primary" onClick={() => setModalShow(true)}>
+        Adicionar Novo Profissional
+      </Button>
+
+        <div className="container-modal">
+        <ProfessionalFormModal
+        show={modalShow}
+        handleClose={() => setModalShow(false)}
+      />
+        </div>
+     
+
+      <div className="tabela">
+        <table {...getTableProps()} className="table">
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps() } key={headerGroup?.id} >
