@@ -21,9 +21,9 @@ const menuItems = [
     route: '/clientes',
   },
   {
-    title: 'Smart POS',
+    title: 'Agendamentos',
     icone: './assets/rout-smart-pos.svg',
-    route: '/smart-pos',
+    route: '/agendamentos',
   },
   {
     title: 'Gerenciador',
