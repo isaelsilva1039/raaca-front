@@ -1,3 +1,37 @@
-.container{
+.container {
     padding-bottom: 20px;
+    
+
+    .sub-container-geral {
+
+        background: white;
+        /* height: 90vh; */
+        padding: 20px;
+        border-radius: 4px;
+
+        .container-novo {
+
+            display: flex;
+            padding: 12px;
+            float: right;
+
+            .novo-profissional {
+                width: fit-content;
+                height: 32px;
+                border: none;
+                background: #a704f8;
+                color: white;
+                border-radius: 3px;
+                display: flex;
+                align-items: center;
+                padding: 12px;
+                gap: 4px;
+
+            }
+
+            .novo-profissional:hover {
+                background: #7c02b9;
+            }
+        }
+    }
 }

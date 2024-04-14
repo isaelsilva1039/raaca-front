@@ -1,0 +1,44 @@
+/* styles/globals.css */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    
+  }
+  
+   td {
+    padding: 12px 15px;
+    text-align: left;
+    background-color: white;
+    height: 50px;
+  }
+  
+  th {
+    text-align: left;
+    padding: 2px 10px;
+    background-color: #fafafa;
+    color:  #686868;
+    font-weight: bold;
+    font-family: sans-serif;
+  
+  }
+  
+  
+  tbody tr:hover {
+    border-left: 4px solid #a704f8;
+    background: #a704f8;
+    
+  }
+  
+  table tbody tr:hover td {  
+    background: #fafafa;
+  }
+  
+  
+  
+  .container-clientes{
+  
+  
+  }

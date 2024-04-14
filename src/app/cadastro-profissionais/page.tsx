@@ -4,26 +4,111 @@ import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/P
 
 import { Button } from "react-bootstrap";
 import { Typography } from "@mui/material";
-import { useTable } from "react-table";
+import { useExpanded, useTable } from "react-table";
 import "../clientes/style.css";
 import "./styles.css";
-
+import { IoPersonAddOutline } from "react-icons/io5";
+import { AnyCnameRecord } from "dns";
+import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
 
 interface IData {
-  nome: string;
-  quantidade: number;
-  descricao: string;
+  id: number;
+  name: string;
+  specialty: string;
+  avatarUrl: string;
 }
 
 export default function Professional() {
   const [modalShow, setModalShow] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<any>({});
 
-  // Dados mockados
+
+  const toggleRowExpanded = (rowId:any) => {
+    const newExpandedState = { ...expandedRows, [rowId]: !expandedRows[rowId] };
+    setExpandedRows(newExpandedState);
+  };
+
+  const renderRowSubComponent = ({ row }:any) => (
+    <div>
+      {/* Render additional details for the expanded row here */}
+      More details for {row.original.name}
+    </div>
+  );
+
+
   const data = useMemo<IData[]>(
     () => [
-      { key:1, nome: "Produto A", quantidade: 20, descricao: "Produto A desc" },
-      { key:2, nome: "Produto B", quantidade: 30, descricao: "Produto B desc" },
-      { key:3, nome: "Produto C", quantidade: 10, descricao: "Produto C desc" },
+      {
+        id: 1,
+        name: "Dr. Jane Doe",
+        specialty: "Cardiologist",
+        avatarUrl: "https://randomuser.me/api/portraits/women/81.jpg",
+      },
+      {
+        id: 2,
+        name: "Dr. John Smith",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/82.jpg",
+      },
+      {
+        id: 3,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/83.jpg",
+      },
+      {
+        id: 4,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/84.jpg",
+      },
+      {
+        id: 5,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/85.jpg",
+      },
+      {
+        id: 6,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg",
+      },
+
+      {
+        id: 7,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/87.jpg",
+      },
+
+      {
+        id: 8,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/88.jpg",
+      },
+
+      {
+        id: 9,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/89.jpg",
+      },
+
+      {
+        id: 10,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/90.jpg",
+      },
+
+      {
+        id: 11,
+        name: "Dr. Marcio",
+        specialty: "Dermatologist",
+        avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg",
+      },
     ],
     []
   );
@@ -31,19 +116,40 @@ export default function Professional() {
   // Colunas com tipagem explícita baseada na interface IData.
   const columns = useMemo(
     () => [
-      { Header: "Nome", accessor: "nome" as const }, // as const garante que o tipo seja preservado como literal
-      { Header: "Quantidade", accessor: "quantidade" as const },
-      { Header: "Descrição", accessor: "descricao" as const },
+      {
+        Header: "ID",
+        accessor: "id",
+      },
+      {
+        Header: "Profissional",
+        accessor: "name",
+        Cell: ({ row }: { row: { original: IData } }) => (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <img
+              src={row.original.avatarUrl}
+              alt="Avatar"
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: "50%",
+                marginRight: 10,
+              }}
+            />
+            {row.original.name}
+          </div>
+        ),
+      },
+      {
+        Header: "Especialidade",
+        accessor: "specialty",
+      },
     ],
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
 
   return (
     <div className="container">
-
       <Typography
         className="list-top"
         sx={{
@@ -56,44 +162,34 @@ export default function Professional() {
         Menu / Profissionais
       </Typography>
 
-      <Button variant="primary" onClick={() => setModalShow(true)}>
-        Adicionar Novo Profissional
-      </Button>
+      <div className="sub-container-geral">
+        <div className="container-novo">
+          <Button
+            variant="primary"
+            className="novo-profissional"
+            onClick={() => setModalShow(true)}
+          >
+            <IoPersonAddOutline /> Adicionar Novo Profissional
+          </Button>
+        </div>
 
         <div className="container-modal">
-        <ProfessionalFormModal
-        show={modalShow}
-        handleClose={() => setModalShow(false)}
-      />
+          <ProfessionalFormModal
+            show={modalShow}
+            handleClose={() => setModalShow(false)}
+          />
         </div>
-     
 
-      <div className="tabela">
-        <table {...getTableProps()} className="table">
-          <thead>
-            {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps() } key={headerGroup?.id} >
-                {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps() } key={column?.id}>
-                    {column.render("Header")}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody {...getTableBodyProps()}>
-            {rows.map((row) => {
-              prepareRow(row);
-              return (
-                <tr {...row.getRowProps()} key={row?.id} >
-                  {row.cells.map((cell) => (    
-                    <td {...cell.getCellProps() } key={cell?.column?.id}>{cell.render("Cell") }  </td>
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="tabela">
+        <CustomTable 
+            columns={columns} 
+            data={data} 
+            expandedRows={expandedRows}
+            toggleRowExpanded={toggleRowExpanded}
+            renderRowSubComponent={renderRowSubComponent}
+    
+          />
+        </div>
       </div>
     </div>
   );

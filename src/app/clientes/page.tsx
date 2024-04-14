@@ -43,23 +43,23 @@ export default function Gerenciador() {
 
   return (
     <div className='container-clientes'>
-        <Typography
-                        sx={{
-                            color: "#707EAE",
-                            fontWeight: "500",
-                            lineHeight: "24px",
-                            fontSize: "15px",
-                        }}
-                    >
-                        Menu / Clientes
-                    </Typography>
-                    <div className='tabela'>
-                    <table {...getTableProps()} className="table">
+      <Typography
+        sx={{
+          color: "#707EAE",
+          fontWeight: "500",
+          lineHeight: "24px",
+          fontSize: "15px",
+        }}
+      >
+        Menu / Clientes
+      </Typography>
+      <div className='tabela'>
+        <table {...getTableProps()} className="table">
           <thead>
             {headerGroups.map((headerGroup) => (
-              <tr {...headerGroup.getHeaderGroupProps() } key={headerGroup?.id} >
+              <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup?.id} >
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps() } key={column?.id}>
+                  <th {...column.getHeaderProps()} key={column?.id}>
                     {column.render("Header")}
                   </th>
                 ))}
@@ -71,8 +71,8 @@ export default function Gerenciador() {
               prepareRow(row);
               return (
                 <tr {...row.getRowProps()} key={row?.id} >
-                  {row.cells.map((cell) => (    
-                    <td {...cell.getCellProps() } key={cell?.column?.id}>{cell.render("Cell") }  </td>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()} key={cell?.column?.id}>{cell.render("Cell")}  </td>
                   ))}
                 </tr>
               );
