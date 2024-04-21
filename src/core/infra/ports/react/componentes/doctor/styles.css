@@ -2,6 +2,7 @@
 
 .cardContainer {
     border: 1px solid #ccc;
+    border-left: 2px solid #A500F7;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -9,6 +10,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: left;
+    width: 88%;
+    /* width: fit-content; */
+
 
   }
 
@@ -37,7 +41,7 @@
   
   .specialty {
     /* estilos adicionais para specialty podem ser adicionados aqui */
-        color: #A500F7;
+        /* color: #A500F7; */
         font-weight: 300;
         font-style: normal;
   }
@@ -55,6 +59,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    
   }
 
 

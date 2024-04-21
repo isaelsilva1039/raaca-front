@@ -13,7 +13,19 @@ import Avatar from "@mui/material/Avatar"; // Importando componente Avatar
 import { FaCheckCircle } from "react-icons/fa";
 import './styles.css'
 import { Dropdown } from "react-bootstrap";
-import { MenuItem } from "@mui/material";
+import { Alert, MenuItem, Tooltip } from "@mui/material";
+import { enviarProfissional } from "./sevises/postProfissional";
+
+
+interface ProfissionalData {
+  nome: string;
+  cpf: string;
+  dataNascimento: string;
+  especialidade: string;
+  email: string;
+  fileInput: File | null;
+}
+
 
 const ProfessionalFormModal = ({ show, handleClose }: any) => {
   const [name, setName] = useState("");
@@ -23,6 +35,11 @@ const ProfessionalFormModal = ({ show, handleClose }: any) => {
   const [specialty, setSpecialty] = useState("");
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState("");
+
+
+  const [isSucess , setIsSucess] = useState(false)
+  const [isFoto , setIsFoto] = useState(false)
+  const [mensagem , setMensagem] = useState('')
 
   const fileInputRef = useRef<any>(null);
 
@@ -45,15 +62,70 @@ const ProfessionalFormModal = ({ show, handleClose }: any) => {
     { value: 'dermatology', label: 'Dermatologia' },
     { value: 'neurology', label: 'Neurologia' },
     { value: 'pediatrics', label: 'Pediatria' },
-    // Adicione mais especialidades conforme necessário
   ];
 
+const especialidadeIterator = specialties.values();
+const firstSpecialty = especialidadeIterator.next().value; // Obter o primeiro valor do iterador
+  
+  // Exemplo de como passar os dados para a função
+const profissionalData: ProfissionalData = {
+  nome: name,
+  cpf: cpf,
+  dataNascimento: birthdate,
+  especialidade: firstSpecialty ? firstSpecialty.value : '', // Usar o valor da primeira especialidade, se disponível
+  email: email,
+  fileInput: document.querySelector('input[type="file"]')?.files?.[0] ?? null
+};
+
+
+// Exemplo de uso
+const handleclickSalvar = () => {
+  enviarProfissional(profissionalData, 
+    (data) => {
+
+      console.log(data.status)
+      if(data.status === 500){
+        setIsFoto(true)
+        setMensagem(data.mensagem)
+      }else{
+        setIsSucess(true)
+        setMensagem(data.mensagem)
+       
+      }
+
+    }, 
+    (error) => {
+      setIsFoto(true)
+      setMensagem('Aconteceu um erro')
+    } 
+  );
+};
+
+
+const handleLimpar = ( ) =>{
+  setIsSucess(false) 
+  setName('')
+  setEmail('')
+  setCpf('')
+  setBirthdate('')
+  setSpecialty('')
+  setPhoto(null)
+  setPreview('')
+
+  // Limpar o campo de entrada de arquivo
+  const fileInput = document.querySelector('input[type="file"]');
+  if (fileInput) fileInput.value = '';
+}
 
   return (
+    <>
+
+
     <Dialog open={show} onClose={handleClose}>
+
       <DialogTitle>Adicionar Novo Profissional</DialogTitle>
       <DialogContent>
-        {/* Outros campos do formulário */}
+  
         <Avatar
           className="avatar"
           src={preview || defaultAvatar}
@@ -66,8 +138,25 @@ const ProfessionalFormModal = ({ show, handleClose }: any) => {
           ref={fileInputRef}
           hidden
           onChange={handlePhotoChange}
+          required
         />
+        {isFoto && (
+          <div style={{padding:'12px'}}>
+            <Alert onClose={() => setIsFoto(false)} onClick={() => setIsFoto(false)} color="error" > {mensagem}</Alert>
+          </div>
+        )}
+       
 
+       {isSucess && (
+          <div style={{padding:'12px'}}>
+            <Alert onClose={() => handleLimpar()} onClick={() => setIsSucess(false)} color="success"> Adicionado com sucesso </Alert>
+          </div>
+        )}
+       
+       
+
+       
+  
         <TextField
           margin="dense"
           label="Nome"
@@ -125,9 +214,10 @@ const ProfessionalFormModal = ({ show, handleClose }: any) => {
       </DialogContent>
       <DialogActions>
       <Button className="btn-fechar" onClick={handleClose}>fechar</Button>
-      <Button className="btn-salvar" onClick={handleClose}>Salvar <FaCheckCircle /> </Button>
+      <Button className="btn-salvar" onClick={() => handleclickSalvar()}>Salvar <FaCheckCircle /> </Button>
       </DialogActions>
     </Dialog>
+    </>
   );
 };
 

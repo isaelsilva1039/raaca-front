@@ -1,0 +1,16 @@
+.pagination-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.pagination-control {
+    margin-right: 10px; /* Espaço entre os botões de controle */
+}
+
+.pagination-item {
+    margin: 0 2px; /* Espaçamento entre os números das páginas */
+}
+
+.active-pagination-item {
+    font-weight: bold; /* Destacar a página atual */
+}

@@ -1,8 +1,11 @@
 .container {
     padding-bottom: 20px;
-    
+ 
+    overflow-y: auto; /* Mantém a funcionalidade de rolagem */
+    scrollbar-width: none; /* Para Firefox */
 
     .sub-container-geral {
+
 
         background: white;
         /* height: 90vh; */
@@ -32,6 +35,14 @@
             .novo-profissional:hover {
                 background: #7c02b9;
             }
+        }
+
+        .paginacao{
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
     }
 }

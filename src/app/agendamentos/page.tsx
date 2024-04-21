@@ -3,7 +3,10 @@ import { Doctor } from "@/core/infra/ports/react/componentes/doctor/types";
 import { Typography } from "@mui/material";
 import './styles.css'
 import CalendarComponent from "@/core/infra/ports/react/componentes/calendario/CalendarComponent";
-import { Container } from "postcss";
+import styled from 'styled-components';
+import { useState } from "react";
+
+
 
 export default function SmartsPOS() {
   const doctors: Doctor[] = [
@@ -82,7 +85,7 @@ export default function SmartsPOS() {
   ];
 
 
-
+  
   const testEvents = [
     {
         title: 'Consulta Médica',

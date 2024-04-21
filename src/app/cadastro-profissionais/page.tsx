@@ -3,13 +3,15 @@ import React, { useMemo, useState } from "react";
 import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModal";
 
 import { Button } from "react-bootstrap";
-import { Typography } from "@mui/material";
+import { Pagination, Typography } from "@mui/material";
 import { useExpanded, useTable } from "react-table";
 import "../clientes/style.css";
 import "./styles.css";
 import { IoPersonAddOutline } from "react-icons/io5";
 import { AnyCnameRecord } from "dns";
 import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
+import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
+
 
 interface IData {
   id: number;
@@ -21,6 +23,9 @@ interface IData {
 export default function Professional() {
   const [modalShow, setModalShow] = useState(false);
   const [expandedRows, setExpandedRows] = useState<any>({});
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
 
   const toggleRowExpanded = (rowId:any) => {
@@ -35,83 +40,31 @@ export default function Professional() {
     </div>
   );
 
+  const data = useMemo<IData[]>(() => [
+    { id: 1, name: "Dr. Jane Doe", specialty: "Cardiologist", avatarUrl: "https://randomuser.me/api/portraits/women/81.jpg" },
+    { id: 2, name: "Dr. John Smith", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/82.jpg" },
+    { id: 3, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/83.jpg" },
+    { id: 4, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/84.jpg" },
+    { id: 5, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/85.jpg" },
+    { id: 6, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
+    { id: 7, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/87.jpg" },
+    { id: 8, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/88.jpg" },
+    { id: 9, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/89.jpg" },
+    { id: 10, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/90.jpg" },
+    { id: 11, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" }
+  ], []);
 
-  const data = useMemo<IData[]>(
-    () => [
-      {
-        id: 1,
-        name: "Dr. Jane Doe",
-        specialty: "Cardiologist",
-        avatarUrl: "https://randomuser.me/api/portraits/women/81.jpg",
-      },
-      {
-        id: 2,
-        name: "Dr. John Smith",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/82.jpg",
-      },
-      {
-        id: 3,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/83.jpg",
-      },
-      {
-        id: 4,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/84.jpg",
-      },
-      {
-        id: 5,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/85.jpg",
-      },
-      {
-        id: 6,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg",
-      },
 
-      {
-        id: 7,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/87.jpg",
-      },
+  const currentPageData = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return data.slice(start, start + itemsPerPage);
+  }, [currentPage, data]);
 
-      {
-        id: 8,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/88.jpg",
-      },
+  const totalPages = Math.ceil(data.length / itemsPerPage);
 
-      {
-        id: 9,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/89.jpg",
-      },
-
-      {
-        id: 10,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/90.jpg",
-      },
-
-      {
-        id: 11,
-        name: "Dr. Marcio",
-        specialty: "Dermatologist",
-        avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg",
-      },
-    ],
-    []
-  );
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   // Colunas com tipagem explícita baseada na interface IData.
   const columns = useMemo(
@@ -146,6 +99,8 @@ export default function Professional() {
     ],
     []
   );
+
+  
 
 
   return (
@@ -183,13 +138,19 @@ export default function Professional() {
         <div className="tabela">
         <CustomTable 
             columns={columns} 
-            data={data} 
+            data={currentPageData} 
             expandedRows={expandedRows}
             toggleRowExpanded={toggleRowExpanded}
             renderRowSubComponent={renderRowSubComponent}
     
           />
+
         </div>
+        <div className="paginacao">
+         <CustomPagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+
+        </div >
+        
       </div>
     </div>
   );

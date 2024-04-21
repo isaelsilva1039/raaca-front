@@ -23,7 +23,7 @@ html, body {
         padding: 18px 0px 0px 20px;
         width: 350px;
 
-        height: 86vh;
+        height: 87vh;
 
         overflow-y: auto; /* Mantém a funcionalidade de rolagem */
         scrollbar-width: none; /* Para Firefox */
@@ -49,5 +49,7 @@ html, body {
     .calendario{
         width: 100%;
         height: 100%;
+
+
     }
 }
