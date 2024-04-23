@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation'
 import { Sidebar } from '@/core/infra/ports/react/componentes/sidebar/Sidebar'
 import { MenuItem } from '@/core/infra/ports/react/componentes/menu/menuItem'
 // import 'bootstrap/dist/css/bootstrap.min.css';
+import { Toaster } from "react-hot-toast";
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -118,6 +120,8 @@ export const getLayout = (props: {
                 isOpen={props.isOpen}
               />
               <div className="content" onClick={() => { if (props.isOpen) props.onClick() }}>
+     
+
                 {props.children}
               </div>
             </div>

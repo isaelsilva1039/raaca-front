@@ -1,0 +1,31 @@
+.spinnerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    /* width: 100vw; */
+    /* position: fixed; */
+    /* top: 0; */
+    /* left: 0; */
+    z-index: 9999;  /* Faz com que o spinner fique acima de outros elementos */
+    background: rgba(255, 255, 255, 0.568);
+  }
+  
+  .spinner {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border: 4px solid;  /* Define a espessura do círculo */
+    border-radius: 50%;
+    animation: spin 1.2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

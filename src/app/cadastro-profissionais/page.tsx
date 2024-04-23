@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModal";
 
 import { Button } from "react-bootstrap";
@@ -11,6 +11,7 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import { AnyCnameRecord } from "dns";
 import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
 import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
+import {  fetchProfissionais } from "./ferch";
 
 
 interface IData {
@@ -26,6 +27,13 @@ export default function Professional() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+  const [totalPagesState, setTotalPages] = useState(0);
+
+  const [profissionais, setProfissionais] = useState([]);
+  const [error, setError] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
 
 
   const toggleRowExpanded = (rowId:any) => {
@@ -53,6 +61,10 @@ export default function Professional() {
     { id: 10, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/90.jpg" },
     { id: 11, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" }
   ], []);
+
+
+
+
 
 
   const currentPageData = useMemo(() => {
@@ -100,8 +112,21 @@ export default function Professional() {
     []
   );
 
-  
 
+  useEffect(() => {
+    const onFetchSuccess = (data : any) => {
+      setProfissionais(data);
+    };
+
+    const onFetchError = (error : any) => {
+      console.error('Erro ao buscar profissionais:', error);
+      setError(error);
+    };
+
+    fetchProfissionais(onFetchSuccess, onFetchError);
+  }, []);
+
+  console.log(profissionais)
 
   return (
     <div className="container">
