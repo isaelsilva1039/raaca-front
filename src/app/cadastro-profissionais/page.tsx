@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModal";
 
 import { Button, Col, Row } from "react-bootstrap";
-import { Pagination, Typography } from "@mui/material";
+import { IconButton, Pagination, Tooltip, Typography } from "@mui/material";
 import { useExpanded, useTable } from "react-table";
 import "../clientes/style.css";
 import "./styles.css";
@@ -13,6 +13,9 @@ import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
 import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
 import { fetchProfissionais } from "./ferch";
 import MuiTableSkeleton from "@/core/infra/ports/react/componentes/skeleton/MuiTableSkeleton";
+import { FaTrash } from "react-icons/fa6";
+import { FaUserEdit } from "react-icons/fa";
+import ProfessionalFormModaleditar from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModaleditar";
 
 interface IData {
   id: number;
@@ -34,6 +37,11 @@ export default function Professional() {
   const [loading, setLoading] = useState(true);
 
   const [isNovoMembro, setIsNovoMembro] = useState(false);
+
+  const [modalEditar, setModalEditar] = useState({
+    abriModal: false,
+    profissional : {}
+  });
 
   const toggleRowExpanded = (rowId: any) => {
     const newExpandedState = { ...expandedRows, [rowId]: !expandedRows[rowId] };
@@ -72,6 +80,7 @@ export default function Professional() {
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
+
   const columns = useMemo(
     () => [
       {
@@ -108,6 +117,19 @@ export default function Professional() {
   const onUpdate = () => {
     setIsNovoMembro(true);
   };
+  
+  // const hendlerEditar = () => {
+
+  
+  //   return <div className="container-modal">
+  //         <ProfessionalFormModaleditar
+  //           show={modalEditar}
+  //           handleClose={() => setModalEditar({abriModal: false, profissional:{}})}
+  //           onUpdate={onUpdate}
+  //           profissionail={modalEditar.profissional}
+  //         />
+  //        </div>
+  // }
 
   const renderRowSubComponent = ({ row }: any) => (
     <Row className="rowContainer">
@@ -137,7 +159,7 @@ export default function Professional() {
 
         <Col className="columnStart">
           <text className="text-header">Data de Nascimento</text>
-          <small >{row.original.data_nascimento}</small>
+          <small>{row.original.data_nascimento}</small>
         </Col>
 
         <Col className="columnStart">
@@ -145,7 +167,25 @@ export default function Professional() {
           <small>{row.original.email}</small>
         </Col>
 
-        {/* Adicione mais campos conforme necessário */}
+        <Col className="columnStart">
+          <text className="text-header">Ações</text>
+          <Row className="botoes">
+
+            <Tooltip title="Editar">
+              <IconButton onClick={() =>{setModalEditar({abriModal: true, profissional:row?.original})}
+                }>
+                <FaUserEdit size={18} color="#707EAE" />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Deletar">
+              <IconButton>
+                <FaTrash color="red" size={14} />
+              </IconButton>
+            </Tooltip>
+          
+          </Row>
+        </Col>
       </Row>
     </Row>
   );
@@ -182,8 +222,20 @@ export default function Professional() {
             onUpdate={onUpdate}
           />
         </div>
+        
 
-        <div className="tabela">
+        <div className="container-modal">
+          <ProfessionalFormModaleditar
+            show={modalEditar.abriModal}
+            handleClose={() => setModalEditar({abriModal: false, profissional:{}})}
+            onUpdate={onUpdate}
+            profissionail={modalEditar.profissional}
+          />
+    </div>
+         {/* {hendlerEditar()} */}
+
+
+       <div className="abela">
           {loading ? (
             <MuiTableSkeleton />
           ) : (
