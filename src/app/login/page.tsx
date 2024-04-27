@@ -15,7 +15,9 @@ const Login: React.FC = () => {
         <button type="submit">Entrar</button>
       </form>
       <p>Não tem uma conta? </p>
-      <p>Cadastre-se</p>
+      <p><a href= "https://api.whatsapp.com/send?phone=5537999137500&text=Ol%C3%A1,%20tenho%20interesse%20%20na%20RACCA%20SA%C3%9ADE"> Entre em contato com nosso time </a>
+        <img className='whats' src="/img/logWhats.png"/>
+      </p>
     </div>
   );
 }
