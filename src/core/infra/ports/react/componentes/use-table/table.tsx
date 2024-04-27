@@ -42,7 +42,7 @@ const CustomTable = ({ columns, data, expandedRows, toggleRowExpanded, renderRow
               {isExpanded && (
                 <tr key={row?.original?.id}>
                   <td colSpan={columns.length} key={row?.original?.id}>
-                    {renderRowSubComponent ? renderRowSubComponent({ row }) : null}
+                    {renderRowSubComponent ? renderRowSubComponent({row}) : null}
                   </td>
                 </tr>
               )}

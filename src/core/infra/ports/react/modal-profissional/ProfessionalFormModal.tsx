@@ -24,7 +24,12 @@ interface ProfissionalData {
   fileInput: File | null;
 }
 
-const ProfessionalFormModal = ({ show, handleClose }: any) => {
+const ProfessionalFormModal = ({
+   show,
+   handleClose,
+   onUpdate = () => {} }: any) =>
+  {
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
@@ -91,7 +96,7 @@ const ProfessionalFormModal = ({ show, handleClose }: any) => {
           setIsLoading(false);
           setIsSucess(true);
           setMensagem(data.mensagem);
-
+          onUpdate()
 
         }
       },

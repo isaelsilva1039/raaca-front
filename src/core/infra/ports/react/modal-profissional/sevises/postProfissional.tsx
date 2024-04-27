@@ -1,3 +1,5 @@
+import { API } from "@/core/api/api";
+
 interface ProfissionalData {
     nome: string;
     cpf: string;
@@ -12,7 +14,7 @@ interface ProfissionalData {
     onSuccess: (data: any) => void, // Callback para sucesso
     onError: (error: any) => void  // Callback para erro
   ) => {
-    const url = 'http://127.0.0.1:8000/api/racca/profissional/novo';
+    const url = API + '/api/racca/profissional/novo';
     const { nome, cpf, dataNascimento, especialidade, email, fileInput } = profissionalData;
   
     const formData = new FormData();

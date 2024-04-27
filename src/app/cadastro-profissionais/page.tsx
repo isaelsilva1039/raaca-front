@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModal";
 
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { Pagination, Typography } from "@mui/material";
 import { useExpanded, useTable } from "react-table";
 import "../clientes/style.css";
@@ -11,74 +11,73 @@ import { IoPersonAddOutline } from "react-icons/io5";
 import { AnyCnameRecord } from "dns";
 import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
 import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
-import {  fetchProfissionais } from "./ferch";
-
+import { fetchProfissionais } from "./ferch";
+import MuiTableSkeleton from "@/core/infra/ports/react/componentes/skeleton/MuiTableSkeleton";
 
 interface IData {
   id: number;
-  name: string;
-  specialty: string;
+  nome: string;
+  especialidade: string;
   avatarUrl: string;
 }
 
 export default function Professional() {
   const [modalShow, setModalShow] = useState(false);
-  const [expandedRows, setExpandedRows] = useState<any>({});
-
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const [totalPagesState, setTotalPages] = useState(0);
-
-  const [profissionais, setProfissionais] = useState([]);
+  const [profissionais, setProfissionais] = useState<IData[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
   const [error, setError] = useState(null);
 
-  const [loading, setLoading] = useState(false);
+  const [expandedRows, setExpandedRows] = useState<any>({});
 
+  const [loading, setLoading] = useState(true);
 
+  const [isNovoMembro,setIsNovoMembro] = useState(false)
 
-  const toggleRowExpanded = (rowId:any) => {
+  const toggleRowExpanded = (rowId: any) => {
     const newExpandedState = { ...expandedRows, [rowId]: !expandedRows[rowId] };
     setExpandedRows(newExpandedState);
   };
 
-  const renderRowSubComponent = ({ row }:any) => (
-    <div>
-      {/* Render additional details for the expanded row here */}
-      More details for {row.original.name}
-    </div>
-  );
-
-  const data = useMemo<IData[]>(() => [
-    { id: 1, name: "Dr. Jane Doe", specialty: "Cardiologist", avatarUrl: "https://randomuser.me/api/portraits/women/81.jpg" },
-    { id: 2, name: "Dr. John Smith", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/82.jpg" },
-    { id: 3, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/83.jpg" },
-    { id: 4, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/84.jpg" },
-    { id: 5, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/85.jpg" },
-    { id: 6, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg" },
-    { id: 7, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/87.jpg" },
-    { id: 8, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/88.jpg" },
-    { id: 9, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/89.jpg" },
-    { id: 10, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/90.jpg" },
-    { id: 11, name: "Dr. Marcio", specialty: "Dermatologist", avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg" }
-  ], []);
 
 
+  const fetchProfissionaisAll = () => {
+    setLoading(true);
+    const onFetchSuccess = (data: any) => {
+      setProfissionais(data.original.data);
+      setTotalItems(data.original.total);
+      setItemsPerPage(data.original.perPage);
+
+      setLoading(false);
+    };
+
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+      setError(error);
+      setLoading(false);
+    };
+
+    fetchProfissionais(currentPage, onFetchSuccess, onFetchError);
+  }
 
 
 
+  useEffect(() => {
+    fetchProfissionaisAll()
+  }, [currentPage]);
 
-  const currentPageData = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    return data.slice(start, start + itemsPerPage);
-  }, [currentPage, data]);
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  useEffect(() => {
+    if(isNovoMembro){
+      fetchProfissionaisAll()
+      setIsNovoMembro(false)
+    }
+    
+  }, [isNovoMembro]);
 
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  // Colunas com tipagem explícita baseada na interface IData.
   const columns = useMemo(
     () => [
       {
@@ -87,7 +86,7 @@ export default function Professional() {
       },
       {
         Header: "Profissional",
-        accessor: "name",
+        accessor: "nome",
         Cell: ({ row }: { row: { original: IData } }) => (
           <div style={{ display: "flex", alignItems: "center" }}>
             <img
@@ -100,34 +99,68 @@ export default function Professional() {
                 marginRight: 10,
               }}
             />
-            {row.original.name}
+            {row.original.nome}
           </div>
         ),
       },
       {
         Header: "Especialidade",
-        accessor: "specialty",
+        accessor: "especialidade",
       },
     ],
     []
   );
 
+  const onUpdate = () => {
+    setIsNovoMembro(true);
+  }
+  
+  const renderRowSubComponent = ({ row }: any) => (
+    <Row style={{
+        padding:'0 70px 0 60px',
+        borderRadius: '4px',
+        background:' #fafafa'
 
-  useEffect(() => {
-    const onFetchSuccess = (data : any) => {
-      setProfissionais(data);
-    };
+    } }>
+  <Row style={{display:'flex' , justifyContent:'space-between' , alignItems:'center'}}>
+  <Col  style={{display:'flex' , gap:'10px' , alignItems:'center' , flexDirection:'row' , justifyContent:'center'}}>
+    <img
+      src={row.original.avatarUrl || "path/to/default/avatar.jpg"} // Caminho para um avatar padrão caso não exista
+      alt={`Avatar de ${row.original.nome}`}
+      style={{ width: 100, height: 100, borderRadius: '50%' }}
+    />
+    <text>{row.original.nome}</text>
+  </Col>
 
-    const onFetchError = (error : any) => {
-      console.error('Erro ao buscar profissionais:', error);
-      setError(error);
-    };
+  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
+    <text>Especialidade:</text>
+    <text>{row.original.especialidade}</text>
+  </Col>
 
-    fetchProfissionais(onFetchSuccess, onFetchError);
-  }, []);
+  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
+    <text>CPF:</text>
+    <text>{row.original.cpf}</text>
+  </Col>
 
-  console.log(profissionais)
+  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
+    <text>Data de Nascimento:</text>
+    <text>{row.original.dataNascimento}</text>
+  </Col>
 
+  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
+    <text>Email:</text>
+    <text>{row.original.email}</text>
+  </Col>
+
+  {/* Add more fields as needed */}
+</Row>
+</Row>
+
+
+  );
+  
+  
+  
   return (
     <div className="container">
       <Typography
@@ -157,25 +190,30 @@ export default function Professional() {
           <ProfessionalFormModal
             show={modalShow}
             handleClose={() => setModalShow(false)}
+            onUpdate={onUpdate}
           />
         </div>
 
         <div className="tabela">
-        <CustomTable 
-            columns={columns} 
-            data={currentPageData} 
-            expandedRows={expandedRows}
-            toggleRowExpanded={toggleRowExpanded}
-            renderRowSubComponent={renderRowSubComponent}
-    
-          />
-
+          {loading ? (
+            <MuiTableSkeleton />
+          ) : (
+            <CustomTable
+              columns={columns}
+              data={profissionais}
+              expandedRows={expandedRows}
+              toggleRowExpanded={toggleRowExpanded}
+              renderRowSubComponent={renderRowSubComponent}
+            />
+          )}
         </div>
         <div className="paginacao">
-         <CustomPagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
-
-        </div >
-        
+          <CustomPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );

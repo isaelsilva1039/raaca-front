@@ -1,3 +1,5 @@
+import { API } from "@/core/api/api";
+
 // Definindo a interface para representar os dados de resposta para um profissional
 interface Profissional {
     id: number;
@@ -10,10 +12,12 @@ interface Profissional {
   }
   
   export const fetchProfissionais = async (
+    currentPage: number,
+
     onSuccess: (profissionais: Profissional[]) => void, // Callback para sucesso
     onError: (error: any) => void // Callback para erro
   ) => {
-    const url = 'http://127.0.0.1:8000/api/racca/profissional/all';
+    const url = API + `/api/racca/profissional/all?page=${currentPage}&per_page=${8}`;
   
     const options = {
       method: 'GET',
