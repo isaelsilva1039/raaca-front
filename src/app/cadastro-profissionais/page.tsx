@@ -33,14 +33,12 @@ export default function Professional() {
 
   const [loading, setLoading] = useState(true);
 
-  const [isNovoMembro,setIsNovoMembro] = useState(false)
+  const [isNovoMembro, setIsNovoMembro] = useState(false);
 
   const toggleRowExpanded = (rowId: any) => {
     const newExpandedState = { ...expandedRows, [rowId]: !expandedRows[rowId] };
     setExpandedRows(newExpandedState);
   };
-
-
 
   const fetchProfissionaisAll = () => {
     setLoading(true);
@@ -59,21 +57,17 @@ export default function Professional() {
     };
 
     fetchProfissionais(currentPage, onFetchSuccess, onFetchError);
-  }
-
-
+  };
 
   useEffect(() => {
-    fetchProfissionaisAll()
+    fetchProfissionaisAll();
   }, [currentPage]);
 
-
   useEffect(() => {
-    if(isNovoMembro){
-      fetchProfissionaisAll()
-      setIsNovoMembro(false)
+    if (isNovoMembro) {
+      fetchProfissionaisAll();
+      setIsNovoMembro(false);
     }
-    
   }, [isNovoMembro]);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -113,54 +107,49 @@ export default function Professional() {
 
   const onUpdate = () => {
     setIsNovoMembro(true);
-  }
-  
+  };
+
   const renderRowSubComponent = ({ row }: any) => (
-    <Row style={{
-        padding:'0 70px 0 60px',
-        borderRadius: '4px',
-        background:' #fafafa'
+    <Row className="rowContainer">
+      <Row className="flexRow">
+        <Col className="columnFlex">
+          <img
+            src={row.original.avatarUrl || "path/to/default/avatar.jpg"}
+            alt={`Avatar de ${row.original.nome}`}
+            className="avatarImage"
+          />
 
-    } }>
-  <Row style={{display:'flex' , justifyContent:'space-between' , alignItems:'center'}}>
-  <Col  style={{display:'flex' , gap:'10px' , alignItems:'center' , flexDirection:'row' , justifyContent:'center'}}>
-    <img
-      src={row.original.avatarUrl || "path/to/default/avatar.jpg"} // Caminho para um avatar padrão caso não exista
-      alt={`Avatar de ${row.original.nome}`}
-      style={{ width: 100, height: 100, borderRadius: '50%' }}
-    />
-    <text>{row.original.nome}</text>
-  </Col>
+          <Col className="columnStart">
+            <text className="text-header">Nome</text>
+            <small>{row.original.nome}</small>
+          </Col>
+        </Col>
 
-  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
-    <text>Especialidade:</text>
-    <text>{row.original.especialidade}</text>
-  </Col>
+        <Col className="columnStart">
+          <text className="text-header">Especialidade</text>
+          <small>{row.original.especialidade}</small>
+        </Col>
 
-  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
-    <text>CPF:</text>
-    <text>{row.original.cpf}</text>
-  </Col>
+        <Col className="columnStart">
+          <text className="text-header">CPF</text>
+          <small>{row.original.cpf}</small>
+        </Col>
 
-  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
-    <text>Data de Nascimento:</text>
-    <text>{row.original.dataNascimento}</text>
-  </Col>
+        <Col className="columnStart">
+          <text className="text-header">Data de Nascimento</text>
+          <small >{row.original.data_nascimento}</small>
+        </Col>
 
-  <Col  style={{display:'flex' , gap:'10px' , alignItems:'flex-start' , flexDirection:'column' , justifyContent:'flex-start'}}>
-    <text>Email:</text>
-    <text>{row.original.email}</text>
-  </Col>
+        <Col className="columnStart">
+          <text className="text-header">Email</text>
+          <small>{row.original.email}</small>
+        </Col>
 
-  {/* Add more fields as needed */}
-</Row>
-</Row>
-
-
+        {/* Adicione mais campos conforme necessário */}
+      </Row>
+    </Row>
   );
-  
-  
-  
+
   return (
     <div className="container">
       <Typography
