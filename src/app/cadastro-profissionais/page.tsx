@@ -2,8 +2,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import ProfessionalFormModal from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModal";
 
-import { Button, Col, Row } from "react-bootstrap";
-import { IconButton, Pagination, Tooltip, Typography } from "@mui/material";
+import { Button, Col, FormControl, InputGroup, Row } from "react-bootstrap";
+import { FilledInput, IconButton, Input, Pagination, TextField, Tooltip, Typography } from "@mui/material";
 import { useExpanded, useTable } from "react-table";
 import "../clientes/style.css";
 import "./styles.css";
@@ -16,6 +16,9 @@ import MuiTableSkeleton from "@/core/infra/ports/react/componentes/skeleton/MuiT
 import { FaTrash } from "react-icons/fa6";
 import { FaUserEdit } from "react-icons/fa";
 import ProfessionalFormModaleditar from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModaleditar";
+import ProfessionalFormModaleExcluir from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModaleExcluir";
+import moment from 'moment';
+import { TfiSearch } from "react-icons/tfi";
 
 interface IData {
   id: number;
@@ -26,19 +29,23 @@ interface IData {
 
 export default function Professional() {
   const [modalShow, setModalShow] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [profissionais, setProfissionais] = useState<IData[]>([]);
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [error, setError] = useState(null);
 
   const [expandedRows, setExpandedRows] = useState<any>({});
-
+  const [searchTerm, setSearchTerm] = useState<any>('');
   const [loading, setLoading] = useState(true);
-
   const [isNovoMembro, setIsNovoMembro] = useState(false);
-
   const [modalEditar, setModalEditar] = useState({
+    abriModal: false,
+    profissional : {}
+  });
+
+
+  const [modalExcluir, setModalExcluir] = useState({
     abriModal: false,
     profissional : {}
   });
@@ -64,8 +71,16 @@ export default function Professional() {
       setLoading(false);
     };
 
-    fetchProfissionais(currentPage, onFetchSuccess, onFetchError);
+
+    
+    fetchProfissionais(searchTerm ,currentPage, onFetchSuccess, onFetchError);
   };
+
+
+ 
+  const handleClicBuscar = () => {
+    fetchProfissionaisAll();
+  }
 
   useEffect(() => {
     fetchProfissionaisAll();
@@ -119,6 +134,15 @@ export default function Professional() {
   };
   
 
+  const onClose = () => {
+    setModalExcluir({abriModal: false , profissional: {}});
+  }
+
+
+  function formatDate(dateString: any) {
+    return moment (dateString).format("DD/MM/YYYY");
+  }
+
   const renderRowSubComponent = ({ row }: any) => (
     <Row className="rowContainer">
       <Row className="flexRow">
@@ -131,32 +155,32 @@ export default function Professional() {
 
           <Col className="columnStart">
             <text className="text-header">Nome</text>
-            <small>{row.original.nome}</small>
+            <small className="text-corpo" >{row.original.nome}</small>
           </Col>
         </Col>
 
         <Col className="columnStart">
           <text className="text-header">Especialidade</text>
-          <small>{row.original.especialidade}</small>
+          <small className="text-corpo" >{row.original.especialidade}</small>
         </Col>
 
         <Col className="columnStart">
           <text className="text-header">CPF</text>
-          <small>{row.original.cpf}</small>
+          <small className="text-corpo" >{row.original.cpf}</small>
         </Col>
 
         <Col className="columnStart">
           <text className="text-header">Data de Nascimento</text>
-          <small>{row.original.data_nascimento}</small>
+          <small className="text-corpo">{formatDate(row.original.data_nascimento)}</small>
         </Col>
 
         <Col className="columnStart">
           <text className="text-header">Email</text>
-          <small>{row.original.email}</small>
+          <small className="text-corpo" >{row.original.email}</small>
         </Col>
 
         <Col className="columnStart">
-          <text className="text-header">Ações</text>
+          {/* <text className="text-header">Ações</text> */}
           <Row className="botoes">
 
             <Tooltip title="Editar">
@@ -167,7 +191,7 @@ export default function Professional() {
             </Tooltip>
 
             <Tooltip title="Deletar">
-              <IconButton>
+              <IconButton onClick={() =>{setModalExcluir({abriModal: true, profissional:row?.original})}} >
                 <FaTrash color="red" size={14} />
               </IconButton>
             </Tooltip>
@@ -177,6 +201,7 @@ export default function Professional() {
       </Row>
     </Row>
   );
+
 
   return (
     <div className="container">
@@ -193,15 +218,36 @@ export default function Professional() {
       </Typography>
 
       <div className="sub-container-geral">
-        <div className="container-novo">
+        <Row className="container-novo">
+          <Col md={6}>
           <Button
             variant="primary"
             className="novo-profissional"
             onClick={() => setModalShow(true)}
           >
-            <IoPersonAddOutline /> Adicionar Novo Profissional
+            <IoPersonAddOutline /> Adicionar
           </Button>
-        </div>
+          </Col>
+         
+          <Col md={6} className="container-busca" >
+          
+          <FilledInput
+                className="input-busca"
+                inputMode='search'
+                margin="dense"
+                placeholder="Buscar..."
+                type="text"
+                fullWidth
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            
+                    <Button className="outline-secondary" onClick={ () => handleClicBuscar() } >
+                        <TfiSearch /> 
+                    </Button>
+  
+            </Col>
+        </Row>
 
         <div className="container-modal">
           <ProfessionalFormModal
@@ -219,8 +265,21 @@ export default function Professional() {
             onUpdate={onUpdate}
             profissionail={modalEditar.profissional}
           />
-    </div>
-         {/* {hendlerEditar()} */}
+       </div>
+
+
+
+       <div className="container-modal">
+          <ProfessionalFormModaleExcluir
+            show={modalExcluir.abriModal}
+            handleClose={() => setModalExcluir({abriModal: false, profissional:{}})}
+            onUpdate={onUpdate}
+            profissionail={modalExcluir.profissional}
+            onClose={onClose}
+          />
+       </div>
+       
+       
 
 
        <div className="abela">
