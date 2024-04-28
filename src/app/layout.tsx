@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { Sidebar } from '@/core/infra/ports/react/componentes/sidebar/Sidebar'
 import { MenuItem } from '@/core/infra/ports/react/componentes/menu/menuItem'
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import { Toaster } from "react-hot-toast";
 
 
