@@ -16,7 +16,11 @@
 }
 
 .navigation-root .logo .img {
-    width: 130px;
+    width: 250px;
+    height: 80px;
+    padding-left: 10px;
+    padding-right: 10px;
+
 }
 
 .navigation-root .span {
