@@ -1,9 +1,9 @@
 .content {
     background-color: #8434b9;
     display: flex;
-    justify-content: center; /* Centraliza o conteúdo horizontalmente */
-    align-items: center; /* Centraliza o conteúdo verticalmente */
-    height: 100vh; /* Faz com que o container ocupe 100% da altura da tela */
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
   }
   
   .login-container {
@@ -11,22 +11,22 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 90%; /* Define a largura máxima do container */
-    width: 300px; /* Define uma largura padrão para telas maiores */
+    max-width: 90%; 
+    width: 300px; 
     text-align: center;
   }
   
-  /* Media query para telas menores que 768px (tablets) */
+  
   @media (max-width: 768px) {
     .login-container {
-      width: 70%; /* Reduz a largura do container para telas menores */
+      width: 70%; 
     }
   }
   
-  /* Media query para telas menores que 576px (dispositivos móveis) */
+  
   @media (max-width: 576px) {
     .login-container {
-      width: 90%; /* Reduz ainda mais a largura do container para dispositivos móveis */
+      width: 90%; 
     }
   }
   
