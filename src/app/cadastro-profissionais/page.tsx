@@ -118,18 +118,6 @@ export default function Professional() {
     setIsNovoMembro(true);
   };
   
-  // const hendlerEditar = () => {
-
-  
-  //   return <div className="container-modal">
-  //         <ProfessionalFormModaleditar
-  //           show={modalEditar}
-  //           handleClose={() => setModalEditar({abriModal: false, profissional:{}})}
-  //           onUpdate={onUpdate}
-  //           profissionail={modalEditar.profissional}
-  //         />
-  //        </div>
-  // }
 
   const renderRowSubComponent = ({ row }: any) => (
     <Row className="rowContainer">

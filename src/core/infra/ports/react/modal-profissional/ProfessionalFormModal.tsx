@@ -11,9 +11,10 @@ import Avatar from "@mui/material/Avatar"; // Importando componente Avatar
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
 import { Dropdown } from "react-bootstrap";
-import { Alert, MenuItem, Tooltip } from "@mui/material";
+import { Alert, Autocomplete, MenuItem, Tooltip } from "@mui/material";
 import { enviarProfissional } from "./sevises/postProfissional";
 import LoadingSpinner from "../componentes/load/load";
+import { specialties } from "@/core/helpes/especialidades";
 
 interface ProfissionalData {
   nome: string;
@@ -25,16 +26,15 @@ interface ProfissionalData {
 }
 
 const ProfessionalFormModal = ({
-   show,
-   handleClose,
-   onUpdate = () => {} }: any) =>
-  {
-
+  show,
+  handleClose,
+  onUpdate = () => {},
+}: any) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [birthdate, setBirthdate] = useState("");
-  const [specialty, setSpecialty] = useState("");
+  const [specialty, setSpecialty] = useState<any| null>("");
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -59,12 +59,6 @@ const ProfessionalFormModal = ({
 
   const defaultAvatar = "/path_to_default_avatar.png"; // Caminho para sua imagem padrão
 
-  const specialties = [
-    { value: "cardiology", label: "Cardiologia" },
-    { value: "dermatology", label: "Dermatologia" },
-    { value: "neurology", label: "Neurologia" },
-    { value: "pediatrics", label: "Pediatria" },
-  ];
 
   const especialidadeIterator = specialties.values();
   const firstSpecialty = especialidadeIterator.next().value; // Obter o primeiro valor do iterador
@@ -76,7 +70,7 @@ const ProfessionalFormModal = ({
     dataNascimento: birthdate,
     especialidade: firstSpecialty ? firstSpecialty.value : "", // Usar o valor da primeira especialidade, se disponível
     email: email,
-    fileInput: document.querySelector('input[type="file"]')?.files?.[0] ?? null,
+    fileInput: (document.querySelector('input[type="file"]') as HTMLInputElement)?.files?.[0] ?? null,
   };
 
   // Exemplo de uso
@@ -91,13 +85,11 @@ const ProfessionalFormModal = ({
           setIsLoading(false);
           setIsFoto(true);
           setMensagem(data.mensagem);
-
         } else {
           setIsLoading(false);
           setIsSucess(true);
           setMensagem(data.mensagem);
-          onUpdate()
-
+          onUpdate();
         }
       },
       (error) => {
@@ -120,8 +112,8 @@ const ProfessionalFormModal = ({
     setPreview("");
 
     // Limpar o campo de entrada de arquivo
-    const fileInput = document.querySelector('input[type="file"]');
-    if (fileInput) fileInput.value = "";
+   const fileInput = document.querySelector('input[type="file"]');
+   if (fileInput) (fileInput as HTMLInputElement).value = "";
   };
 
   return (
@@ -212,21 +204,22 @@ const ProfessionalFormModal = ({
                 value={birthdate}
                 onChange={(e) => setBirthdate(e.target.value)}
               />
-              <TextField
-                select
-                label="Especialidade"
-                value={specialty}
-                onChange={(e) => setSpecialty(e.target.value)}
-                fullWidth
-                variant="outlined"
-                margin="dense"
-              >
-                {specialties.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Autocomplete
+                options={specialties}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Especialidade"
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                  />
+                )}
+                onChange={(event, newValue) => {
+                  setSpecialty(newValue?.value);
+                }}
+              />
             </>
           )}
         </DialogContent>

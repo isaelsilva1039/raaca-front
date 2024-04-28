@@ -11,13 +11,14 @@ import Avatar from "@mui/material/Avatar"; // Importando componente Avatar
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
 import { Dropdown } from "react-bootstrap";
-import { Alert, MenuItem, Tooltip } from "@mui/material";
+import { Alert, Autocomplete, MenuItem, Tooltip } from "@mui/material";
 import { enviarProfissional } from "./sevises/postProfissional";
 import LoadingSpinner from "../componentes/load/load";
 import { atualizarProfissional } from "./sevises/putProfissional";
+import { specialties } from "@/core/helpes/especialidades";
 
 interface ProfissionalData {
-  id:number
+  id: number;
   nome: string;
   cpf: string;
   dataNascimento: string;
@@ -27,18 +28,17 @@ interface ProfissionalData {
 }
 
 const ProfessionalFormModaleditar = ({
-   show,
-   handleClose,
-   profissionail,
-   onUpdate = () => {} }: any) =>
-  {
-
+  show,
+  handleClose,
+  profissionail,
+  onUpdate = () => {},
+}: any) => {
   const [id, setId] = useState(profissionail.id);
   const [name, setName] = useState(profissionail.nome);
   const [email, setEmail] = useState(profissionail.email);
   const [cpf, setCpf] = useState(profissionail.cpf);
   const [birthdate, setBirthdate] = useState(profissionail.data_nascimento);
-  const [specialty, setSpecialty] = useState('');
+  const [specialty, setSpecialty] = useState<any | null>("");
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -63,17 +63,8 @@ const ProfessionalFormModaleditar = ({
 
   const defaultAvatar = profissionail.avatarUrl; // Caminho para sua imagem padrão
 
-  const specialties = [
-    { value: "cardiology", label: "Cardiologia" },
-    { value: "dermatology", label: "Dermatologia" },
-    { value: "neurology", label: "Neurologia" },
-    { value: "pediatrics", label: "Pediatria" },
-  ];
-
   const especialidadeIterator = specialties.values();
   const firstSpecialty = especialidadeIterator.next().value;
-
-
 
   useEffect(() => {
     if (profissionail) {
@@ -83,16 +74,13 @@ const ProfessionalFormModaleditar = ({
       setCpf(profissionail.cpf);
       // setSpecialty(profissionail.especialidade);
       setBirthdate(profissionail.data_nascimento);
-  
+
       // Para o avatar
       if (profissionail.avatarUrl) {
         setPreview(profissionail.avatarUrl);
       }
     }
   }, [profissionail]);
-  
-  
-
 
   // Exemplo de como passar os dados para a função
   const dadosDoProfissional: ProfissionalData = {
@@ -102,35 +90,37 @@ const ProfessionalFormModaleditar = ({
     dataNascimento: birthdate,
     especialidade: specialty,
     email: email,
-    fileInput: document.querySelector('input[type="file"]')?.files?.[0] ?? null,
+    fileInput: (document.querySelector('input[type="file"]') as HTMLInputElement)?.files?.[0] ?? null,
   };
 
   // Exemplo de uso
   const handleclickSalvar = () => {
     setIsLoading(true);
 
+    atualizarProfissional(
+      dadosDoProfissional,
 
-    atualizarProfissional(dadosDoProfissional, 
-      
       (data) => {
-        setIsLoading(false);
-              setIsSucess(true);
-              setMensagem(data.mensagem);
-              handleLimpar()
-              onUpdate()
-
+        if (data.original.status === 400) {
+          setIsLoading(false);
+          setIsFoto(true);
+          setMensagem(data.original.mensagem);
+        } else {
+          setIsLoading(false);
+          setIsSucess(true);
+          setMensagem(data.original.mensagem);
+          handleLimpar();
+          onUpdate();
+        }
       },
       (error) => {
         setMensagem(error.mensagem);
         setIsSucess(false);
-
       }
     );
-  
   };
 
   const handleLimpar = () => {
-    setIsSucess(false);
     setName("");
     setEmail("");
     setCpf("");
@@ -141,12 +131,10 @@ const ProfessionalFormModaleditar = ({
 
     // Limpar o campo de entrada de arquivo
     const fileInput = document.querySelector('input[type="file"]');
-    if (fileInput) fileInput.value = "";
+    if (fileInput) (fileInput as HTMLInputElement).value = "";
   };
 
-
-
-  console.log(specialty)
+  console.log(specialty);
   return (
     <>
       <Dialog open={show} onClose={handleClose}>
@@ -169,7 +157,7 @@ const ProfessionalFormModaleditar = ({
                 hidden
                 onChange={handlePhotoChange}
                 required
-                
+                accept="image/png, image/jpeg"
               />
               {isFoto && (
                 <div style={{ padding: "12px 0px 12px 0px" }}>
@@ -187,12 +175,12 @@ const ProfessionalFormModaleditar = ({
               {isSucess && (
                 <div style={{ padding: "12px 0px 12px 0px" }}>
                   <Alert
-                    onClose={() => handleLimpar()}
+                    onClose={() => setIsSucess(false)}
                     onClick={() => setIsSucess(false)}
                     color="success"
                   >
                     {" "}
-                    Adicionado com sucesso{" "}
+                    Editado com sucesso{" "}
                   </Alert>
                 </div>
               )}
@@ -236,21 +224,23 @@ const ProfessionalFormModaleditar = ({
                 value={birthdate}
                 onChange={(e) => setBirthdate(e.target.value)}
               />
-              <TextField
-                select
-                label="Especialidade"
-                value={specialty}
-                onChange={(e) => setSpecialty(e.target.value)}
-                fullWidth
-                variant="outlined"
-                margin="dense"
-              >
-                {specialties.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+
+              <Autocomplete
+                options={specialties}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Especialidade"
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                  />
+                )}
+                onChange={(event, newValue) => {
+                  setSpecialty(newValue?.value);
+                }}
+              />
             </>
           )}
         </DialogContent>
