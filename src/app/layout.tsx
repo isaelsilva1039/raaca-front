@@ -59,6 +59,7 @@ export default function RootLayout({
   title: string;
 }) {
   const [isOpen, setIsOpen] = useState(false)
+ 
 
   const toggleMenu = () => {
     setIsOpen((prevIsOpen) => {
@@ -68,11 +69,14 @@ export default function RootLayout({
   }
 
   const route = usePathname();
+  // Determina se o usuário está na tela de login
+  const isLogin = route === '/' || route === '/login';
 
   useEffect(() => {
     if (route === '/')
-      window.location.href = '/dashboard'
-  }, []);
+      window.location.href = '/login'
+      
+  }, [route]);
 
   const items = menuItems.map((item, index) => {
     const props = {
@@ -96,8 +100,10 @@ export default function RootLayout({
     items,
     isOpen,
     children,
+    isLogin
   });
 }
+
 
 export const getLayout = (props: {
   onClick: () => void
@@ -105,20 +111,31 @@ export const getLayout = (props: {
   items: JSX.Element[]
   isOpen: boolean
   children: React.ReactNode
+  isLogin:any,
 }) => {
+
+  const classLogin = props.isLogin ? 'content-login' : 'content';
+
+
   return (
     <>
       <html className="h-screen w-screen">
         <body className={inter.className} style={{ background: "#EFF1F3" }}>
           <main>
+
             <div className="container">
-              <Sidebar
+      
+              {!props.isLogin && (
+                <Sidebar
                 onClick={props.onClick}
                 title={props.title}
                 items={props.items}
                 isOpen={props.isOpen}
               />
-              <div className="content" onClick={() => { if (props.isOpen) props.onClick() }}>
+              )
+            }
+              
+              <div className={classLogin} onClick={() => { if (props.isOpen) props.onClick() }}>
      
 
                 {props.children}
