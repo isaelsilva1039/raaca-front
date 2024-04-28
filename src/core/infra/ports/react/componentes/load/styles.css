@@ -8,7 +8,7 @@
     /* top: 0; */
     /* left: 0; */
     z-index: 9999;  /* Faz com que o spinner fique acima de outros elementos */
-    background: rgba(255, 255, 255, 0.568);
+    /* background: rgba(255, 255, 255, 0.568); */
   }
   
   .spinner {
