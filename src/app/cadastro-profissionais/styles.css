@@ -1,189 +1,215 @@
 .container {
-    padding-bottom: 20px;
- 
-    overflow-y: auto; /* Mantém a funcionalidade de rolagem */
-    scrollbar-width: none; /* Para Firefox */
+  padding-bottom: 20px;
 
-    .sub-container-geral {
+  overflow-y: auto; /* Mantém a funcionalidade de rolagem */
+  scrollbar-width: none; /* Para Firefox */
 
+  .sub-container-geral {
+    background: white;
+    /* height: 90vh; */
+    padding: 20px;
+    border-radius: 4px;
 
-        background: white;
-        /* height: 90vh; */
-        padding: 20px;
-        border-radius: 4px;
+    .container-novo {
+      display: flex;
+      padding: 12px;
+      justify-content: space-between;
+      gap: 10px;
 
-        .container-novo {
+      align-items: center;
 
-            display: flex;
-            padding: 12px;
-            float: right;
+      .container-busca {
+        /* height: 32px; */
+        display: flex;
 
-            .novo-profissional {
-                width: fit-content;
-                height: 32px;
-                border: none;
-                background: #a704f8;
-                color: white;
-                border-radius: 3px;
-                display: flex;
-                align-items: center;
-                padding: 12px;
-                gap: 4px;
-
-            }
-
-            .novo-profissional:hover {
-                background: #7c02b9;
-            }
+        align-items: center;
+        flex-direction: row;
+        .input-busca {
+            padding: 10px;
+          height: 30px !important ;
+          /* border: 1px slategray solid;   */
+          border-radius: 4px;
         }
 
-        .paginacao{
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+        .outline-secondary {
+          background: #a704f8;
+          height: 28px;
+          border: none;
+          color: #fafafa;
+          width: 32px;
+          border-radius: 4px;
+          cursor: pointer;
         }
+      }
+
+      .novo-profissional {
+        width: fit-content;
+        height: 32px;
+        border: none;
+        background: #a704f8;
+        color: white;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        padding: 12px;
+        gap: 4px;
+      }
+
+      .novo-profissional:hover {
+        background: #7c02b9;
+      }
     }
+
+    .paginacao {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+  }
 }
 
-
-
-
-
 /* modal expander */
-
 
 /* styles.css */
 
 .rowContainer {
-    /* padding: 0 70px 0 60px; */
-    border-radius: 4px;
-    background: #fafafa;
-    height: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* width: 100%; */
-    gap: 10px;
-
-
+  /* padding: 0 70px 0 60px; */
+  border-radius: 4px;
+  background: #fafafa;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* width: 100%; */
+  gap: 10px;
 }
 
 .flexRow {
-    padding: 0 5vw 0 5vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    /* gap: 10px; */
-    height: fit-content;
-    min-height: 150px;
+  padding: 0 5vw 0 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* gap: 10px; */
+  height: fit-content;
+  min-height: 150px;
 }
 
 .columnFlex {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
 }
 
 .columnStart {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  display: flex;
+  align-items: center;
+
+  .text-header {
     display: flex;
     gap: 10px;
-    align-items: flex-start;
-    flex-direction: column;
-    justify-content: flex-start;
+    font-weight: 300;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+      sans-serif;
+  }
 
+  .text-corpo {
+    font-weight: 200;
+  }
+  .botoes {
     display: flex;
+    gap: 10px;
     align-items: center;
-
-    .text-header{
-        display: flex;
-        gap: 10px;
-        font-weight: 200px;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    .botoes{
-        display: flex;
-        gap: 10px; 
-        align-items: center;
-        cursor: pointer;
-    }
+    cursor: pointer;
+  }
 }
 
 .avatarImage {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }
-
 
 @keyframes expand {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
-
-
-
-
 
 /* Estilos para dispositivos móveis (menos de 600px) */
 @media (max-width: 599px) {
-    .flexRow, .columnFlex, .columnStart {
-        flex-direction: column;
-        align-items: stretch;
-    }
+  .flexRow,
+  .columnFlex,
+  .columnStart {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .rowContainer {
-        padding: 20px;
-        height: auto;
-    }
+  .rowContainer {
+    padding: 20px;
+    height: auto;
+  }
 
-    .avatarImage {
-        width: 80px;
-        height: 80px;
-        align-self: center;
-    }
+  .avatarImage {
+    width: 80px;
+    height: 80px;
+    align-self: center;
+  }
 
-    .botoes {
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-    }
+  .botoes {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Estilos para tablets (600px a 900px) */
 @media (min-width: 600px) and (max-width: 899px) {
-    .flexRow {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
+  .flexRow {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
-    .columnFlex, .columnStart {
-        flex: 1 1 50%;
-    }
+  .columnFlex,
+  .columnStart {
+    flex: 1 1 50%;
+  }
 
-    .avatarImage {
-        width: 90px;
-        height: 90px;
-    }
+  .avatarImage {
+    width: 90px;
+    height: 90px;
+  }
 }
 
 /* Estilos para desktops (acima de 900px) */
 @media (min-width: 900px) {
-    .flexRow {
-        justify-content: space-between;
-    }
+  .flexRow {
+    justify-content: space-between;
+  }
 
-    .columnFlex, .columnStart {
-        flex: 1 1 20%;
-    }
+  .columnFlex,
+  .columnStart {
+    flex: 1 1 20%;
+  }
 
-    .avatarImage {
-        width: 100px;
-        height: 100px;
-    }
+  .avatarImage {
+    width: 100px;
+    height: 100px;
+  }
 }

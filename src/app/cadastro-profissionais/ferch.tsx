@@ -12,12 +12,12 @@ interface Profissional {
   }
   
   export const fetchProfissionais = async (
+    searchTerm : string,
     currentPage: number,
-
     onSuccess: (profissionais: Profissional[]) => void, // Callback para sucesso
     onError: (error: any) => void // Callback para erro
   ) => {
-    const url = API + `/api/racca/profissional/all?page=${currentPage}&per_page=${8}`;
+    const url = API + `/api/racca/profissional/all?page=${currentPage}&per_page=${8}&termo=${searchTerm}`;
   
     const options = {
       method: 'GET',

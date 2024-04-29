@@ -96,7 +96,7 @@ const ProfessionalFormModal = ({
         setIsLoading(false);
         setIsFoto(true);
 
-        setMensagem("Aconteceu um erro");
+        setMensagem('Esse cpf já existe');
       }
     );
   };

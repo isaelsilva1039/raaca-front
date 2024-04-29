@@ -7,6 +7,7 @@ interface ProfissionalData {
     especialidade: string;
     email: string;
     fileInput: File | null;
+
   }
   
   export const enviarProfissional = async (
@@ -23,7 +24,8 @@ interface ProfissionalData {
     formData.append('data_nascimento', dataNascimento);
     formData.append('especialidade', especialidade);
     formData.append('email', email);
-  
+
+
     if (fileInput) {
       formData.append('file', fileInput);
     }
