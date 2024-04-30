@@ -14,8 +14,31 @@ html {
 }
 
 
-.content-login{
+.barra-menu{
+ align-items: center;
+ justify-content: flex-end;
+ display: flex;
+ gap: 10px;
+ cursor: pointer;
+ color: cadetblue;
 
+
+ .barra-menu-btn{
+
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 10px;
+  width: fit-content;
+  padding: 10px;
+  background: white;
+  border-radius: 4px;
+
+ }
+}
+
+.barra-menu-btn:hover{
+  color: black;
 }
 
 

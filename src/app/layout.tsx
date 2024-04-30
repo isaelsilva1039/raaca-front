@@ -8,6 +8,7 @@ import { Sidebar } from "@/core/infra/ports/react/componentes/sidebar/Sidebar";
 import { MenuItem } from "@/core/infra/ports/react/componentes/menu/menuItem";
 import { Toaster } from "react-hot-toast";
 import { AuthGuard } from "@/core/helpes/withAuth";
+import { IoExitOutline } from "react-icons/io5";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -109,6 +110,13 @@ export const getLayout = (props: {
 }) => {
   const classLogin = props.isLogin ? "content-login" : "content";
 
+  const handleLogout = () => {
+    // Limpar localStorage
+    localStorage.clear();
+
+    window.location.href = "/";
+  };
+
   return (
     <>
       <html className="h-screen w-screen">
@@ -116,7 +124,7 @@ export const getLayout = (props: {
           <main>
             <div className="container">
               {!props.isLogin && (
-              <AuthGuard load={false}>
+                <AuthGuard load={false}>
                   <Sidebar
                     onClick={props.onClick}
                     title={props.title}
@@ -132,6 +140,15 @@ export const getLayout = (props: {
                   if (props.isOpen) props.onClick();
                 }}
               >
+                {!props.isLogin && (
+                  <div className="barra-menu">
+                    <a className="barra-menu-btn" onClick={() => handleLogout()}>
+                      Logout
+                      <IoExitOutline />
+                    </a>
+                  </div>
+                )}
+
                 {props.children}
               </div>
             </div>
