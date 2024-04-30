@@ -4,6 +4,10 @@ import React, { useState } from 'react';
 
 import "./style.css";
 import { postLogin } from './postLgin';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const Login: React.FC = () => {
 
@@ -12,13 +16,24 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
+  const [mensagem, setMensagem] = useState('');
+  
   // Função para lidar com a submissão do formulário
   const handleSubmit = () => {
     postLogin(
       email,
       senha,
       (data) =>{
-        console.log(data); // Log do data recebido
+        
+        if (!data.token){
+          setMensagem('Senha errada');
+
+          toast.error('Senha incorreta ou erro de login!');
+
+
+          return;
+        }
+
         localStorage.setItem('token', data.token); // Armazena o token no localStorage
         localStorage.setItem('user', JSON.stringify(data.user)); // Armazena os dados do usuário no localStorage
 
@@ -57,7 +72,9 @@ const Login: React.FC = () => {
           />
         </div>
         <button onClick={() => handleSubmit()} >Entrar</button>
-  
+        
+        <ToastContainer />
+
       <p>Não possue uma conta? </p>
       <p><a href= "https://api.whatsapp.com/send?phone=5537999137500&text=Ol%C3%A1,%20tenho%20interesse%20%20na%20RACCA%20SA%C3%9ADE"> Entre em contato com nosso time </a>
         <img className='whats' src="/img/logWhats.png"/>

@@ -114,6 +114,9 @@ export const getLayout = (props: {
     // Limpar localStorage
     localStorage.clear();
 
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
     window.location.href = "/";
   };
 

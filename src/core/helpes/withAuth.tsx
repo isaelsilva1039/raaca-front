@@ -10,7 +10,14 @@ export function AuthGuard({ children, load = true } : any) {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+
+    if(token === 'undefined'){
+
+      window.location.href = '/'
+    }
+
     if (!token) {
+
         window.location.href = '/'
     }else {
         setIsLoading(false);
