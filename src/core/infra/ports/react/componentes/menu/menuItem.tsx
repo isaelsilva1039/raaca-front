@@ -8,7 +8,7 @@ export const MenuItem = (props: {
     allowedTypes: number[],
 
     isActive: boolean
-}): JSX.Element | null => {  // Retorna JSX.Element ou null
+}): JSX.Element | null => {
 
 
 
