@@ -1,11 +1,24 @@
+import { useCliente } from "@/core/helpes/UserContext";
 import Link from "next/link"
 
 export const MenuItem = (props: {
     title: string,
     icone: string,
     route: string,
+    allowedTypes: number[],
+
     isActive: boolean
-}): JSX.Element => {
+}): JSX.Element | null => {  // Retorna JSX.Element ou null
+
+
+
+    const { user, token, logout } = useCliente();
+
+    if (!props.allowedTypes.includes(parseInt(user?.tipo))) {
+        return null;
+    }
+    
+
     return (
         <Link href={props.route}>
             {props.isActive ? (
