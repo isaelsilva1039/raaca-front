@@ -1,9 +1,9 @@
 
 /* Esconde a barra de rolagem em todos os navegadores */
-html, body {
+/* html, body {
     overflow: hidden;
   }
-  
+   */
 .list-top{
     display: flex;
     gap: 10px;

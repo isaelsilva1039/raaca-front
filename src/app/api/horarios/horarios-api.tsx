@@ -16,7 +16,8 @@ export const saveSchedule = async (
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(schedule),
+        body: JSON.stringify({ horarios: schedule }),
+
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -27,4 +28,34 @@ export const saveSchedule = async (
       onError(error); // Chamar callback de erro
     }
 };
+
+
+
+export const fetchSchedule = async (
+    token: any ,
+    onSuccess: (data: any) => void, 
+    onError: (error: any) => void 
+) => {
+    const url = API + '/api/racca/horarios/action/horario';
+
+    try {
+      const response = await fetch(url, {   
+        method: 'GET',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      onSuccess(data);
+    } catch (error) {
+      onError(error);
+    }
+};
+
+
 
