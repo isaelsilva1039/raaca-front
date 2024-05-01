@@ -21,10 +21,12 @@ html {
  gap: 10px;
  cursor: pointer;
  color: cadetblue;
+ margin-bottom: 40px;
+ width: fit-content;
+
 
 
  .barra-menu-btn{
-
   align-items: center;
   justify-content: center;
   display: flex;

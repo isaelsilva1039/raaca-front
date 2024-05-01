@@ -1,0 +1,57 @@
+.modal-backdrop {
+    border: rgba(132, 28, 180, 0.5);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: center;
+    padding: 20px;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    
+  }
+
+  
+  .modal-profile-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  
+  .modal-title {
+    color: purple;
+  }
+  
+  .modal-description {
+    color: purple;
+  }
+  
+  .modal-logout-btn {
+    background-color: rgb(109, 13, 153);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    align-items: center;
+    align-content: center;
+  }
+  
+  .modal-close-btn {
+    background-color: purple;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }

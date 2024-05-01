@@ -11,6 +11,7 @@ import { AuthGuard } from "@/core/helpes/withAuth";
 import { IoExitOutline } from "react-icons/io5";
 import { UserProvider } from "@/core/helpes/UserContext";
 import { LiaUserClockSolid } from "react-icons/lia";
+import Perfil from "./perfil/page";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -143,7 +144,6 @@ export const getLayout = (props: {
   const classLogin = props.isLogin ? "content-login" : "content";
 
   const handleLogout = () => {
-    // Limpar localStorage
     localStorage.clear();
 
     localStorage.removeItem('token');
@@ -178,13 +178,10 @@ export const getLayout = (props: {
               >
                 {!props.isLogin && (
                   <div className="barra-menu">
-                    <a className="barra-menu-btn" onClick={() => handleLogout()}>
-                      Logout
-                      <IoExitOutline />
-                    </a>
+                    <a><Perfil /></a>
                   </div>
                 )}
-
+                
                 {props.children}
               </div>
             </div>
