@@ -36,6 +36,7 @@ const Login: React.FC = () => {
 
         localStorage.setItem('token', data.token); // Armazena o token no localStorage
         localStorage.setItem('user', JSON.stringify(data.user)); // Armazena os dados do usuário no localStorage
+        localStorage.setItem('avatar_user', JSON.stringify(data.avatar )); // Armazena os dados do usuário no localStorage
 
         window.location.href ='/dashboard'
 

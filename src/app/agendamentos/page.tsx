@@ -1,13 +1,14 @@
-'use client'
+"use client";
 import DoctorCard from "@/core/infra/ports/react/componentes/doctor/cards-doctor";
 import { Doctor } from "@/core/infra/ports/react/componentes/doctor/types";
 import { Typography } from "@mui/material";
-import './styles.css'
+import "./styles.css";
 import CalendarComponent from "@/core/infra/ports/react/componentes/calendario/CalendarComponent";
-import styled from 'styled-components';
+import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { fetchProfissionais } from "../cadastro-profissionais/ferch";
 import { useCliente } from "@/core/helpes/UserContext";
+import AgendamentosSkeleton from "@/core/infra/ports/react/componentes/skeleton/AgendamentosSkeleton";
 
 interface IData {
   id: number;
@@ -17,18 +18,16 @@ interface IData {
 }
 
 export default function Agendamentos() {
-
-
   const [profissionais, setProfissionais] = useState<IData[]>([]);
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState<any>('');
+  const [searchTerm, setSearchTerm] = useState<any>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { token } = useCliente();
+  const { token, user } = useCliente();
 
   const fetchProfissionaisAll = () => {
     setLoading(true);
@@ -46,79 +45,84 @@ export default function Agendamentos() {
       setLoading(false);
     };
 
-       
-    fetchProfissionais(searchTerm ,currentPage, onFetchSuccess, onFetchError , token);
-  }
-
+    fetchProfissionais(
+      searchTerm,
+      currentPage,
+      onFetchSuccess,
+      onFetchError,
+      token
+    );
+  };
 
   useEffect(() => {
     fetchProfissionaisAll();
   }, []);
-  
+
   const testEvents = [
     {
-        title: 'Consulta Médica',
-        start: '2024-05-11T14:00:00',  // Data e hora de início do evento
-        end: '2024-05-12T15:00:00',    // Data e hora de término do evento
-        color: 'blue',                 // Cor opcional para o evento
-        description: 'Consulta médica com o Dr. Silva',
-        extendedProps: {
-          details: 'Detalhes adicionais aqui',
-          clientId: '123',  // Identificador único do cliente
-          clientName: 'João Silva',
-          clientImageUrl: 'https://randomuser.me/api/portraits/men/91.jpg'  // Nome do cliente
-        }
+      title: "Consulta Médica",
+      start: "2024-05-11T14:00:00", // Data e hora de início do evento
+      end: "2024-05-12T15:00:00", // Data e hora de término do evento
+      color: "blue", // Cor opcional para o evento
+      description: "Consulta médica com o Dr. Silva",
+      extendedProps: {
+        details: "Detalhes adicionais aqui",
+        clientId: "123", // Identificador único do cliente
+        clientName: "João Silva",
+        clientImageUrl: "https://randomuser.me/api/portraits/men/91.jpg", // Nome do cliente
+      },
     },
     {
-        title: 'Reunião de equipe',
-        start: '2024-05-11T09:00:00',
-        color: 'red',
-        description: 'Consulta médica com o Dr. Silva',
-        extendedProps: {
-          details: 'Detalhes adicionais aqui',
-          clientId: '123',  // Identificador único do cliente
-          clientName: 'João Silva',  // Nome do cliente
-          clientImageUrl: 'https://randomuser.me/api/portraits/men/91.jpg'
-        }
-    }
+      title: "Reunião de equipe",
+      start: "2024-05-11T09:00:00",
+      color: "red",
+      description: "Consulta médica com o Dr. Silva",
+      extendedProps: {
+        details: "Detalhes adicionais aqui",
+        clientId: "123", // Identificador único do cliente
+        clientName: "João Silva", // Nome do cliente
+        clientImageUrl: "https://randomuser.me/api/portraits/men/91.jpg",
+      },
+    },
     // Você pode adicionar mais eventos aqui conforme necessário
-];
-
-
+  ];
 
   return (
     <div className="container">
+      {loading ? (
+        <AgendamentosSkeleton />
+      ) : (
+        <>
+          <Typography
+            className="list-top"
+            sx={{
+              color: "#707EAE",
+              fontWeight: "500",
+              lineHeight: "24px",
+              fontSize: "15px",
+            }}
+          >
+            Menu / Agendamentos
+          </Typography>
 
-      <Typography
-        className="list-top"
-        sx={{
-          color: "#707EAE",
-          fontWeight: "500",
-          lineHeight: "24px",
-          fontSize: "15px",
-        }}
-      >
-        Menu / Agendamentos
-      </Typography>
+          <div className="container-page">
+            {user?.tipo == 1 && (
+              <div className="menu-profissionais">
+                <div className="card-lista-prof">
+                  <text className="text-item">Lista de profissionais</text>
+                </div>
 
-      <div className="container-page">
-      
-        <div className="menu-profissionais">
-        <div className="card-lista-prof">
-          <text className="text-item">
-            Lista de profissionais
-          </text>
-        
-        </div>
-          {profissionais.map((doctor) => (
-            <DoctorCard key={doctor.id} doctor={doctor} />
-          ))}
-        </div>
-        <div className="calendario">
-           <CalendarComponent events={testEvents}/>
-
-        </div>
-      </div>
+                {profissionais.map((doctor) => (
+                  <DoctorCard key={doctor.id} doctor={doctor} />
+                ))}
+              </div>
+            )}
+            <div className="calendario">
+              <CalendarComponent events={testEvents} />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

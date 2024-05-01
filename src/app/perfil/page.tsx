@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Transition } from 'react-transition-group';
 import Modal from '../../ui/components/modal';
 import './perfil.css';
+import { useCliente } from '@/core/helpes/UserContext';
+import Image from 'next/image';
+import AvatarImage from '@/core/infra/ports/react/componentes/avatar/avatar';
 
 const Perfil = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -32,6 +35,7 @@ const Perfil = () => {
     exiting: { transform: 'translateY(-20px)', opacity: 0 },
     exited: { transform: 'translateY(-20px)', opacity: 0 },
   };
+  const { user, token, logout , avatar_user } = useCliente();
 
   const handleLogout = () => {
     localStorage.clear();
@@ -40,10 +44,15 @@ const Perfil = () => {
     window.location.href = '/';
   };
 
+
+
+
   return (
-    <div>
+    <div className='container-p'>
       <div className="perfil-container" onClick={handlePerfilClick}>
-        <img src="./img/image.jpg" alt="Profile" className="profile-image" />
+
+      <AvatarImage  src={avatar_user}/>
+      <text > {user?.name} </text>
       </div>
       <Transition in={modalOpen} timeout={duration}>
         {state => (
