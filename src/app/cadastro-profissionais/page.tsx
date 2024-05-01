@@ -19,6 +19,7 @@ import ProfessionalFormModaleditar from "@/core/infra/ports/react/modal-profissi
 import ProfessionalFormModaleExcluir from "@/core/infra/ports/react/modal-profissional/ProfessionalFormModaleExcluir";
 import moment from 'moment';
 import { TfiSearch } from "react-icons/tfi";
+import { useCliente } from "@/core/helpes/UserContext";
 
 interface IData {
   id: number;
@@ -44,6 +45,7 @@ export default function Professional() {
     profissional : {}
   });
 
+  const { token } = useCliente();
 
   const [modalExcluir, setModalExcluir] = useState({
     abriModal: false,
@@ -73,7 +75,7 @@ export default function Professional() {
 
 
     
-    fetchProfissionais(searchTerm ,currentPage, onFetchSuccess, onFetchError);
+    fetchProfissionais(searchTerm ,currentPage, onFetchSuccess, onFetchError, token);
   };
 
 

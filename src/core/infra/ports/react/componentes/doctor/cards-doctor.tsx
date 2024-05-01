@@ -13,12 +13,12 @@ const DoctorCard: React.FC<DoctorCardProps> = ({ doctor }) => {
     <div className={'cardContainer'}>
       <img
         src={doctor.avatarUrl}
-        alt={doctor.name}
+        alt={doctor.nome}
         className={'avatar'}
       />
       <div className={'details'}>
-        <text className={'name'}>{doctor.name}</text>
-        <small className={'specialty'}>{doctor.specialty}</small>
+        <text className={'name'}>{doctor.nome}</text>
+        <small className={'specialty'}>{doctor.especialidade}</small>
       </div>
     </div>
   );

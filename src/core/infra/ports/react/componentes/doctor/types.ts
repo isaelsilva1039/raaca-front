@@ -1,8 +1,8 @@
 // types.ts
 export interface Doctor {
-    id: number;
-    name: string;
-    specialty: string;
-    avatarUrl: string;
+  id: number;
+  nome: string;
+  especialidade: string;
+  avatarUrl: string;
   }
   

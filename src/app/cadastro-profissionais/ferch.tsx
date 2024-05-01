@@ -15,7 +15,8 @@ interface Profissional {
     searchTerm : string,
     currentPage: number,
     onSuccess: (profissionais: Profissional[]) => void, // Callback para sucesso
-    onError: (error: any) => void // Callback para erro
+    onError: (error: any) => void ,
+    token: any
   ) => {
     const url = API + `/api/racca/profissional/all?page=${currentPage}&per_page=${8}&termo=${searchTerm}`;
   
@@ -23,6 +24,7 @@ interface Profissional {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
     };
   

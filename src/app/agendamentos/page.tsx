@@ -1,90 +1,59 @@
+'use client'
 import DoctorCard from "@/core/infra/ports/react/componentes/doctor/cards-doctor";
 import { Doctor } from "@/core/infra/ports/react/componentes/doctor/types";
 import { Typography } from "@mui/material";
 import './styles.css'
 import CalendarComponent from "@/core/infra/ports/react/componentes/calendario/CalendarComponent";
 import styled from 'styled-components';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchProfissionais } from "../cadastro-profissionais/ferch";
+import { useCliente } from "@/core/helpes/UserContext";
+
+interface IData {
+  id: number;
+  nome: string;
+  especialidade: string;
+  avatarUrl: string;
+}
+
+export default function Agendamentos() {
 
 
+  const [profissionais, setProfissionais] = useState<IData[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [error, setError] = useState(null);
 
-export default function SmartsPOS() {
-  const doctors: Doctor[] = [
-    {
-      id: 1,
-      name: "Dr. Jane Doe",
-      specialty: "Cardiologist",
-      avatarUrl: "https://randomuser.me/api/portraits/women/81.jpg",
-    },
-    {
-      id: 2,
-      name: "Dr. John Smith",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/82.jpg",
-    },
-    {
-      id: 3,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/83.jpg",
-    },
-    {
-      id: 4,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/84.jpg",
-    },
-    {
-      id: 5,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/85.jpg",
-    },
-    {
-      id: 6,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/86.jpg",
-    },
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState<any>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
-    {
-      id: 7,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/87.jpg",
-    },
+  const { token } = useCliente();
 
-    {
-      id: 8,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/88.jpg",
-    },
+  const fetchProfissionaisAll = () => {
+    setLoading(true);
+    const onFetchSuccess = (data: any) => {
+      setProfissionais(data.original.data);
+      setTotalItems(data.original.total);
+      setItemsPerPage(data.original.perPage);
 
-    {
-      id: 9,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/89.jpg",
-    },
+      setLoading(false);
+    };
 
-    {
-      id: 10,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/90.jpg",
-    },
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+      setError(error);
+      setLoading(false);
+    };
 
-    {
-      id: 11,
-      name: "Dr. Marcio",
-      specialty: "Dermatologist",
-      avatarUrl: "https://randomuser.me/api/portraits/men/91.jpg",
-    },
-    // Adicione mais médicos conforme necessário
-  ];
+       
+    fetchProfissionais(searchTerm ,currentPage, onFetchSuccess, onFetchError , token);
+  }
 
 
+  useEffect(() => {
+    fetchProfissionaisAll();
+  }, []);
   
   const testEvents = [
     {
@@ -141,7 +110,7 @@ export default function SmartsPOS() {
           </text>
         
         </div>
-          {doctors.map((doctor) => (
+          {profissionais.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}
         </div>
