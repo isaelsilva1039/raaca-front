@@ -1,8 +1,9 @@
-export interface TimePeriod {
+export interface TimeSlot {
     start: string;
     end: string;
   }
   
-  export interface Schedule {
-    [day: string]: TimePeriod[];
+  export interface WeeklySchedule {
+    [key: string]: TimeSlot[];
   }
+  

@@ -1,9 +1,5 @@
 
-/* Esconde a barra de rolagem em todos os navegadores */
-html, body {
-    overflow: hidden;
-  }
-  
+
 .list-top{
     display: flex;
     gap: 10px;
@@ -14,42 +10,13 @@ html, body {
     background: white;
     border-radius: 4px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: fit-content;
-    gap: 20px;
+    padding: 20px;
+    gap: 10px;
 
+}
 
-    .menu-profissionais{
-        padding: 18px 0px 0px 20px;
-        width: 350px;
-
-        height: 87vh;
-
-        overflow-y: auto; /* Mantém a funcionalidade de rolagem */
-        scrollbar-width: none; /* Para Firefox */
-
-        .card-lista-prof{
-            /* background: red; */
-            height: 54px;
-            padding-bottom: 16px;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-
-            .text-item{
-
-            }
-        }
-    }
-
-    .menu-profissionais::-webkit-scrollbar {
-        display: none; /* Para navegadores WebKit */
-      }
-
-    .calendario{
-        width: 100%;
-        height: 100%;
-
-
-    }
+.bt-remover{
+    height: 132px;
 }
