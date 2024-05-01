@@ -10,6 +10,8 @@ import { Toaster } from "react-hot-toast";
 import { AuthGuard } from "@/core/helpes/withAuth";
 import { IoExitOutline } from "react-icons/io5";
 import { UserProvider } from "@/core/helpes/UserContext";
+import { LiaUserClockSolid } from "react-icons/lia";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +34,13 @@ const menuItems = [
     icone: "./assets/rout-smart-pos.svg",
     route: "/agendamentos",
     allowedTypes: [1, 2, 3, 4]
+
+  },
+  {
+    title: "Meus horarios",
+    icone: "./assets/rout-grupos-acesso.svg",
+    route: "/meus-horario",
+    allowedTypes: [2]
 
   },
   {

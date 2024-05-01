@@ -2,7 +2,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 
 interface UserContextType {
-    user: any; // Aqui você pode especificar um tipo mais específico para o usuário
+    user: any;
     token: string | null;
     login: (userData: any, userToken: string) => void;
     logout: () => void;
