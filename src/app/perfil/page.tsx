@@ -53,7 +53,7 @@ const Perfil = () => {
       <div className="perfil-container" onClick={handlePerfilClick}>
 
       <AvatarImage  src={avatar_user}/>
-      <text > {user?.name} </text>
+      <text className='textoPerfil' > {user?.name} </text>
       </div>
       <Transition in={modalOpen} timeout={duration}>
         {state => (

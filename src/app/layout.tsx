@@ -97,7 +97,6 @@ export default function RootLayout({
   };
 
   const route = usePathname();
-  // Determina se o usuário está na tela de login
   const isLogin = route === "/" || route === "/login";
 
   useEffect(() => {
