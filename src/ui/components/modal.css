@@ -4,7 +4,6 @@
     justify-content: flex-end;
     align-items: center;
     align-content: center;
-    padding: 20px;
   }
   
   .modal-content {
@@ -19,13 +18,28 @@
     padding: 20px;
     
   }
+  .modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333; /* Cor do ícone de fechar */
+    font-size: 20px;
+  }
+  
+  .modal-close-btn:hover {
+    color: #000; /* Cor do ícone de fechar ao passar o mouse */
+  }
 
   
   .modal-profile-image {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-  }
+    box-shadow: 0 0 0 2px #7315ca, 0 0 0 2px #fadb51; 
+    }
   
   .modal-title {
     color: purple;
@@ -47,11 +61,36 @@
     align-content: center;
   }
   
-  .modal-close-btn {
-    background-color: purple;
-    color: white;
-    border: none;
+
+  .emailModal{
+    margin-bottom: 30px;
+  }
+
+  .modal-manage-btn {
+    background-color: transparent; 
+    color: #111111; 
+    border: 2px solid #000000; 
     padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  
+  .modal-manage-btn:focus {
+    outline: none;
+  }
+  
+  .modal-manage-btn svg {
+    font-size: 18px;
+  }
+
+  .modal-close-btn {
+    background-color: rgb(255, 255, 255);
+    color: rgba(148, 143, 143, 0.753);
+    margin-right: 15px;
+    margin-top: 15px;
+    border-radius: 50px;
     cursor: pointer;
   }
