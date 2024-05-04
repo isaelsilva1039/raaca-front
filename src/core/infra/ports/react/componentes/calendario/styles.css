@@ -77,3 +77,36 @@
 
 /* .fc-view-harness-active */
 /* .fc-view .fc-timegrid */
+
+
+.container-modal{
+    min-width: 400px;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    flex-direction: column;
+    /* background: #8502c7; */
+}
+
+
+.menu-profissionais-lista{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+
+.menu-profissionais-lista-item{
+  
+    display: flex;
+    align-items: center;
+
+
+
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input{
+  
+        display: flex;
+        align-items: center;
+        gap: 8px;    
+    }
+}

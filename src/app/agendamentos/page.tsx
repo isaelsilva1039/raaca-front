@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { fetchProfissionais } from "../cadastro-profissionais/ferch";
 import { useCliente } from "@/core/helpes/UserContext";
 import AgendamentosSkeleton from "@/core/infra/ports/react/componentes/skeleton/AgendamentosSkeleton";
+import { fetchEventos } from "../api/horarios/eventos";
 
 interface IData {
   id: number;
@@ -19,6 +20,9 @@ interface IData {
 
 export default function Agendamentos() {
   const [profissionais, setProfissionais] = useState<IData[]>([]);
+  
+  const [eventos, setEventos] = useState<any>({});
+
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [error, setError] = useState(null);
@@ -29,7 +33,10 @@ export default function Agendamentos() {
 
   const { token, user } = useCliente();
 
+  const [novoEventoState, setNovoEvento] = useState(false);
+
   const fetchProfissionaisAll = () => {
+    if(!token) return;
     setLoading(true);
     const onFetchSuccess = (data: any) => {
       setProfissionais(data.original.data);
@@ -54,38 +61,73 @@ export default function Agendamentos() {
     );
   };
 
+  const onUpdate = ( ) => {
+    setNovoEvento(true)
+  } 
+
+  const fetchMyEventos = () => {
+    if(!token) return;
+
+    setLoading(true);
+    const onFetchSuccess = (data: any) => {
+      setEventos(data.data);
+      console.log(data.data)
+      setLoading(false);
+    };
+
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+      setError(error);
+      setLoading(false);
+    };
+
+    fetchEventos(
+      onFetchSuccess,
+      onFetchError,
+      token
+    );
+  };
+
   useEffect(() => {
     fetchProfissionaisAll();
-  }, []);
+    fetchMyEventos()
+  }, [token]);
 
-  const testEvents = [
-    {
-      title: "Consulta Médica",
-      start: "2024-05-11T14:00:00", // Data e hora de início do evento
-      end: "2024-05-12T15:00:00", // Data e hora de término do evento
-      color: "blue", // Cor opcional para o evento
-      description: "Consulta médica com o Dr. Silva",
-      extendedProps: {
-        details: "Detalhes adicionais aqui",
-        clientId: "123", // Identificador único do cliente
-        clientName: "João Silva",
-        clientImageUrl: "https://randomuser.me/api/portraits/men/91.jpg", // Nome do cliente
-      },
-    },
-    {
-      title: "Reunião de equipe",
-      start: "2024-05-11T09:00:00",
-      color: "red",
-      description: "Consulta médica com o Dr. Silva",
-      extendedProps: {
-        details: "Detalhes adicionais aqui",
-        clientId: "123", // Identificador único do cliente
-        clientName: "João Silva", // Nome do cliente
-        clientImageUrl: "https://randomuser.me/api/portraits/men/91.jpg",
-      },
-    },
-    // Você pode adicionar mais eventos aqui conforme necessário
-  ];
+  useEffect(() => {
+
+  
+
+    if(novoEventoState){
+
+
+      if(!token) return;
+
+
+      const onFetchSuccess = (data: any) => {
+        setEventos(data.data);
+      };
+  
+      const onFetchError = (error: any) => {
+        console.error("Erro ao buscar profissionais:", error);
+        setError(error);
+        setLoading(false);
+      };
+
+
+      fetchEventos(
+        
+        onFetchSuccess,
+        onFetchError,
+        token
+      );
+      setNovoEvento(false)
+    }
+  }, [novoEventoState]);
+
+
+  
+  
+
 
   return (
     <div className="container">
@@ -118,7 +160,7 @@ export default function Agendamentos() {
               </div>
             )}
             <div className="calendario">
-              <CalendarComponent events={testEvents} />
+              <CalendarComponent events={eventos} onUpdate={onUpdate} />
             </div>
           </div>
         </>

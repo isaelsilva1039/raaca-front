@@ -21,6 +21,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { FaCheckCircle } from "react-icons/fa";
 
 
+
 import {
   FormControl,
   FormControlLabel,
@@ -29,6 +30,9 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import NovoAgendamentoModal from "./NovoAgendamentoModal";
+import { getProfissnionais } from "@/app/cadastro-profissionais/getProfissionais";
+import { useCliente } from "@/core/helpes/UserContext";
 
 interface eventInterface {
   title: string;
@@ -39,17 +43,138 @@ interface eventInterface {
   clientImageUrl: string;
 }
 
-const CalendarComponent = ({ events }: any) => {
+
+interface Event {
+  medico: {
+      name: string;
+      email: string;
+  };
+  cliente: {
+      name: string;
+      email: string;
+  };
+  start_time: string;
+  end_time: string;
+  status: string;
+  cliente_id: number;
+  medico_id: number;
+
+}
+
+interface TransformedEvent {
+  title: string;
+  start: Date;
+  color: string;
+  end: Date;
+  extendedProps: {
+      clientName: string;
+      clientEmail: string;
+      medicoName: string;
+      medicoEmail: string;
+      details: string;
+      clientId: number;
+      medicoId: number;
+  };
+}
+
+
+
+interface IData {
+  id: number;
+  nome: string;
+  especialidade: string;
+  avatarUrl: string;
+  user_id: number;
+}
+
+const CalendarComponent = ({ events , onUpdate}: any) => {
   const [modalOpen, setModalOpen] = useState(false); // Controla se a modal está aberta
   const [selectedEvent, setSelectedEvent] = useState<eventInterface | any>(
     null
   ); // Armazena o evento selecionado
 
   const [status, setStatus] = useState("realizado");
+  const [eventos, setEvents] = useState<TransformedEvent[]>([]); // Use o tipo definido
+  const [modalOpenNovo, setModalOpenNovo] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [profissionais, setProfissionais] = useState<IData[]>([]);
 
+  const { token } = useCliente();
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
   };
+
+
+  // Função para determinar a cor com base no status
+const getColorBasedOnStatus = (status: string): string => {
+  switch (status) {
+      case 'pendente':
+          return '#a704f8'; // Vermelho para pendentes
+      case 'confirmado':
+          return 'green'; // Verde para confirmados
+      case 'cancelado':
+          return 'red'; // Cinza para cancelados
+      case 'realizado':
+        return 'green'; // Cinza para cancelados
+      default:
+        return 'blue'; // Um padrão, talvez azul
+  }
+};
+
+
+  useEffect(() => {
+
+    if (events.length < 1) return;
+
+      const transformedEvents: TransformedEvent[] = Array.isArray(events) ? events.map((event: Event) => ({
+
+          title: `Consulta com ${event.medico.name}`,
+          start: new Date(event.start_time),
+          color: getColorBasedOnStatus(event.status),
+          end: new Date(event.end_time),
+          extendedProps: {
+              clientName: event.cliente.name,
+              clientEmail: event.cliente.email,
+              medicoName: event.medico.name,
+              medicoEmail: event.medico.email,
+              details: event.status,
+              clientId: event.cliente_id,
+              medicoId: event.medico_id
+          }
+        })) : [];
+
+      setEvents(transformedEvents);
+
+
+  }, [events]);
+
+
+
+
+  const getProfissnionaisAll = () => {
+    setLoading(true);
+    const onFetchSuccess = (data: any) => {
+      setProfissionais(data.original.profissionais);
+      console.log(data.original)
+      setLoading(false);
+    };
+
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+
+      setLoading(false);
+    };
+    
+    getProfissnionais(onFetchSuccess, onFetchError, token);
+
+  };
+
+
+  useEffect(() => {
+    getProfissnionaisAll()
+  }, [])
+
+
 
 
   const handleSave = () => {
@@ -71,10 +196,14 @@ const CalendarComponent = ({ events }: any) => {
     setModalOpen(true); // Abre a modal
   };
 
+
+
+
   // Função para fechar a modal
   const handleClose = () => {
     setStatus('realizado')
     setModalOpen(false);
+    setModalOpenNovo(false);
   };
 
   // Função para adicionar tooltip a cada evento no momento da montagem
@@ -86,6 +215,14 @@ const CalendarComponent = ({ events }: any) => {
     });
   };
 
+
+  // Função para abrir o modal de novo agendamento
+  const handleNewAppointmentClick = () => {
+    setModalOpenNovo(true);
+  };
+
+
+  
   return (
     <>
       <FullCalendar
@@ -94,9 +231,16 @@ const CalendarComponent = ({ events }: any) => {
         headerToolbar={{
           left: "prev,next today",
           center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+          right: "newAppointmentButton dayGridMonth,timeGridWeek,timeGridDay,listMonth",
         }}
-        events={events} // Passando os eventos para o calendário
+        customButtons={{
+
+          newAppointmentButton: {
+            text: ' + Novo',
+            click: handleNewAppointmentClick
+          }
+        }}
+        events={eventos} // Passando os eventos para o calendário
         editable={true}
         selectable={true}
         selectMirror={true}
@@ -180,6 +324,9 @@ const CalendarComponent = ({ events }: any) => {
           <Button className="btn-salvar" onClick={handleSave}>Salvar <FaCheckCircle /> </Button>
         </DialogActions>
       </Dialog>
+
+        <NovoAgendamentoModal  open={modalOpenNovo} handleClose={handleClose} medicos={profissionais} onUpdate={onUpdate}/>
+     
     </>
   );
 };
