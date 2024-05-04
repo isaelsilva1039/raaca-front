@@ -21,6 +21,10 @@ const AvatarImage = ({ src } : any) => {
     const cleanedAvatar = src ? src.replace(/^"|"$/g, '') : null;
 
     const url = formatImageUrl(cleanedAvatar)
+    
+    if(url == '/null') {
+      return <img src='./img/image.jpg'  className="profile-image"/>;
+    };
 
   return (
     <Image
