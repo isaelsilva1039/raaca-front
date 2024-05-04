@@ -10,7 +10,7 @@ html {
   top: 0;
   right: 0;
   bottom: 0;
-  padding: 20px;
+  padding: 10px;
 }
 
 
@@ -26,7 +26,22 @@ html {
 
 
 
- .barra-menu-btn{
+ 
+}
+
+.barra-menu-btn:hover{
+  color: black;
+}
+
+
+@media only screen and (max-width: 768px) {
+  .content {
+  
+    left: 0;
+  }
+}
+
+.barra-menu-btn{
   align-items: center;
   justify-content: center;
   display: flex;
@@ -37,16 +52,3 @@ html {
   border-radius: 4px;
 
  }
-}
-
-.barra-menu-btn:hover{
-  color: black;
-}
-
-
-@media only screen and (max-width: 768px) {
-  .content {
-    margin-top: 12px;
-    left: 0;
-  }
-}
