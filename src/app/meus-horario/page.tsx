@@ -1,20 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { WeeklySchedule, TimeSlot } from "./types";
 import {
+  Tabs,
+  Tab,
+  Box,
   Button,
   Card,
   CardContent,
   Typography,
   TextField,
-  Box,
-  Skeleton,
 } from "@mui/material";
-import { CiTrash } from "react-icons/ci";
-import { fetchSchedule, saveSchedule } from "../api/horarios/horarios-api";
-
-import { useCliente } from "@/core/helpes/UserContext";
 import ScheduleSkeleton from "@/core/infra/ports/react/componentes/skeleton/ScheduleSkeleton";
+import { useCliente } from "@/core/helpes/UserContext";
+import { fetchSchedule, saveSchedule } from "../api/horarios/horarios-api";
+import MonthsList from "@/core/infra/ports/react/componentes/mes/MonthSwitch";
 
 const defaultSchedule: WeeklySchedule = {
   segunda: [],
@@ -30,6 +30,7 @@ const SchedulePage: React.FC = () => {
   const [schedule, setSchedule] = useState<WeeklySchedule>(defaultSchedule);
   const { token } = useCliente();
   const [loading, setLoading] = useState(true);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const loadSchedule = async () => {
     setLoading(true);
@@ -37,10 +38,8 @@ const SchedulePage: React.FC = () => {
     try {
       await fetchSchedule(
         token,
-
         (data) => {
           setSchedule(data.original.data[0].horarios);
-          console.log(data.original.data[0].horarios);
           setLoading(false);
         },
         (error) => {
@@ -55,6 +54,10 @@ const SchedulePage: React.FC = () => {
   useEffect(() => {
     loadSchedule();
   }, [token]);
+
+  const handleTabChange = (event: React.SyntheticEvent, newIndex: number) => {
+    setTabIndex(newIndex);
+  };
 
   const handleAddTimeSlot = (day: string) => {
     const updatedSchedule = { ...schedule };
@@ -95,80 +98,105 @@ const SchedulePage: React.FC = () => {
     );
   };
 
+
   return (
     <Box className="container-a" sx={{ p: 3 }}>
       {loading ? (
         <ScheduleSkeleton />
-
       ) : (
-
         <>
-          <Typography 
-            className="list-top"
-            sx={{
-            color: "#707EAE",
-            fontWeight: "500",
-            lineHeight: "24px",
-            fontSize: "15px",
-            padding:'0 0 10px 0'
-            }}
-      >
-            Menu / Configurar Meus Horários
-          </Typography>
+          <Tabs style={{padding: '0 0 20px 0'}} value={tabIndex}
+              onChange={handleTabChange} 
+              centered 
+              variant="fullWidth"            
+              indicatorColor="secondary"
+              textColor="secondary">
 
-          {Object.keys(defaultSchedule).map((day) => (
-            <Card key={day} variant="outlined" sx={{ mb: 2 }}>
-              <CardContent>
-                <Typography variant="h6">
-                  {day.charAt(0).toUpperCase() + day.slice(1)}
-                </Typography>
-                {schedule[day].map((slot, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                      mb: 1,
-                      alignItems: "center",
-                    }}
-                  >
-                    <TextField
-                      label="Início"
-                      type="time"
-                      value={slot.start}
-                      onChange={(e) =>
-                        handleTimeChange(day, index, "start", e.target.value)
-                      }
-                      sx={{ width: "130px" }}
-                    />
-                    <TextField
-                      label="Fim"
-                      type="time"
-                      value={slot.end}
-                      onChange={(e) =>
-                        handleTimeChange(day, index, "end", e.target.value)
-                      }
-                      sx={{ width: "130px" }}
-                    />
+            <Tab label=" Configurar horários" 
+              
+            />
+            <Tab label="Liberar agenda" />
+
+            <Tab label="Bloquear dias" />
+          </Tabs>
+
+          {tabIndex === 0 && (
+            <>
+              <Typography
+                className="list-top"
+                sx={{
+                  color: "#707EAE",
+                  fontWeight: "500",
+                  lineHeight: "24px",
+                  fontSize: "15px",
+                  padding: "0 0 10px 0",
+                }}
+              >
+                Menu / Configurar Meus Horários
+              </Typography>
+
+              {Object.keys(defaultSchedule).map((day) => (
+                <Card key={day} variant="outlined" sx={{ mb: 2 }}>
+                  <CardContent>
+                    <Typography variant="h6">
+                      {day.charAt(0).toUpperCase() + day.slice(1)}
+                    </Typography>
+                    {schedule[day].map((slot, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          display: "flex",
+                          gap: 2,
+                          mb: 1,
+                          alignItems: "center",
+                        }}
+                      >
+                        <TextField
+                          label="Início"
+                          type="time"
+                          value={slot.start}
+                          onChange={(e) =>
+                            handleTimeChange(day, index, "start", e.target.value)
+                          }
+                          sx={{ width: "130px" }}
+                        />
+                        <TextField
+                          label="Fim"
+                          type="time"
+                          value={slot.end}
+                          onChange={(e) =>
+                            handleTimeChange(day, index, "end", e.target.value)
+                          }
+                          sx={{ width: "130px" }}
+                        />
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          onClick={() => handleRemoveTimeSlot(day, index)}
+                        >
+                          Remover
+                        </Button>
+                      </Box>
+                    ))}
                     <Button
                       variant="outlined"
-                      color="error"
-                      onClick={() => handleRemoveTimeSlot(day, index)}
+                      color="secondary"
+                      onClick={() => handleAddTimeSlot(day)}
                     >
-                      Remover
+                      Adicionar Horário
                     </Button>
-                  </Box>
-                ))}
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => handleAddTimeSlot(day)}
-                >
-                  Adicionar Horário
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </>
+          )}
+          {tabIndex === 1 && (
+            <Box>
+           
+             <MonthsList  token={token}/>
+
+            </Box>
+          )}
         </>
       )}
     </Box>

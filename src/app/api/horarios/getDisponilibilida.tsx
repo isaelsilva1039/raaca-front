@@ -36,3 +36,33 @@ export const getDisponibilidade = async (
 
 
 
+export const buscarHorariosDisponiveisMedico = async (
+  medicoId: number,
+  dia: string,
+  onSuccess: (data: any) => void,
+  onError: (error: any) => void,
+  token: any
+) => {
+  const url =  API + `/api/racca/agenda/agend-disponivel/${medicoId}?dia=${dia}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro HTTP! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    // Chama a função onSuccess passando os dados como argumento
+    onSuccess(data);
+  } catch (error) {
+    // Chama a função onError passando o erro como argumento
+    onError(error);
+  }
+};

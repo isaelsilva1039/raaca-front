@@ -38,7 +38,7 @@ const menuItems = [
 
   },
   {
-    title: "Meus horarios",
+    title: "Configurar agenda",
     icone: "./assets/rout-grupos-acesso.svg",
     route: "/meus-horario",
     allowedTypes: [2]

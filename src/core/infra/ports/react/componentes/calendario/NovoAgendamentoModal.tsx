@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,25 +6,26 @@ import {
   DialogActions,
   Button,
   FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  TextField,
+  Tabs,
+  Tab,
+  Grid,
+  Box,
+  Typography,
+  CircularProgress,
   IconButton,
   Alert,
-  AlertTitle,
 } from "@mui/material";
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
 import CloseIcon from "@mui/icons-material/Close";
-import { startOfDay } from "date-fns";
-import { getDisponibilidade } from "@/app/api/horarios/getDisponilibilida";
+import { format, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
 import { useCliente } from "@/core/helpes/UserContext";
 import { FcInfo } from "react-icons/fc";
 import { TbPointFilled } from "react-icons/tb";
+import MedicosHorizontalList from "./MedicosHorizontalList";
+import ScrollableDates from "./ScrollableDates";
+import { buscarHorariosDisponiveisMedico } from "@/app/api/horarios/getDisponilibilida";
 import { postNovoAgendamento } from "@/app/api/horarios/posAgendamento";
-
-
 
 interface Medico {
   id: number;
@@ -46,16 +47,20 @@ interface Props {
   onUpdate: () => void;
 }
 
-interface Evento {
-  medicoId: number;
-  horario: string;
-  descricao: string;
-}
-
-interface Horario {
-  start: string;
-  end: string;
-}
+const meses = [
+  { nome: "Janeiro", valor: 0 },
+  { nome: "Fevereiro", valor: 1 },
+  { nome: "Março", valor: 2 },
+  { nome: "Abril", valor: 3 },
+  { nome: "Maio", valor: 4 },
+  { nome: "Junho", valor: 5 },
+  { nome: "Julho", valor: 6 },
+  { nome: "Agosto", valor: 7 },
+  { nome: "Setembro", valor: 8 },
+  { nome: "Outubro", valor: 9 },
+  { nome: "Novembro", valor: 10 },
+  { nome: "Dezembro", valor: 11 },
+];
 
 const NovoAgendamentoModal: React.FC<Props> = ({
   open,
@@ -66,121 +71,142 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   const [medicoSelecionado, setMedicoSelecionado] = useState<number | string>(
     ""
   );
-  const [horario, setHorario] = useState<Horario>({ start: "", end: "" });
-
+  const [mesSelecionado, setMesSelecionado] = useState<number>(
+    new Date().getMonth()
+  );
+  const [diasMes, setDiasMes] = useState<Date[]>([]);
+  const [diaSelecionado, setDiaSelecionado] = useState<Date | null>(null);
   const [horariosDisponiveis, setHorariosDisponiveis] = useState<Horario[]>([]);
-  const [descricao, setDescricao] = useState<string>("");
   const { token } = useCliente();
-  const [alerta, setAlerta] = useState<any>({
-    aberto: false,
-    tipo: "info",
-    mensagem: "",
-  });
+  const [load, setLoad] = useState<boolean>(false);
+  const [isErro, setIsErro] = useState<boolean>(false);
 
-  const [mensagem, setMensagem] = useState<number | string>("");
-  const [isLiberadoEventoNovo, setIsLiberadoMarcarEvento] =
-    useState<boolean>(false);
-
-  const salvarAgendamento = (): void => {
-    
-    postNovoAgendamento(
-      medicoSelecionado,
-      horario.start,
-      horario.end,
-      token,
-      (data : any ) => {
-        setMensagem(data.mensagem);
-        setIsLiberadoMarcarEvento(false);
-
-        setAlerta({
-          aberto: true,
-          tipo: "success",
-          mensagem: data.mensagem,
-        });
-
-        handleClear()
-        setIsLiberadoMarcarEvento(false);
-
-      },
-      (error : any) => {
-        setMensagem(error?.mensagem);
-        setIsLiberadoMarcarEvento(false);
-      },
-
-    ) 
-      onUpdate()
-      setIsLiberadoMarcarEvento(false);
+  const handleMesChange = (mes: number) => {
+    setMesSelecionado(mes);
+    const inicioMes = startOfMonth(new Date(new Date().getFullYear(), mes, 1));
+    const fimMes = endOfMonth(new Date(new Date().getFullYear(), mes, 1));
+    const dias = eachDayOfInterval({ start: inicioMes, end: fimMes });
+    setDiasMes(dias);
+    setDiaSelecionado(null);
+    setHorariosDisponiveis([]);
   };
 
+  // Estado que mantém o índice do horário selecionado
+  const [horarioSelecionado, setHorarioSelecionado] = useState<null>(null);
 
+  // Estado que mantém o índice do horário selecionado
+  const [horarioSelecionadoState, setHorarioSelecionadoState] = useState<any>({
+    start: "",
+    end: "",
+  });
 
-  const handleClear = () => {
-    setMedicoSelecionado('')
-    setMensagem('');
-    setHorario({
-      start: '', end:''
-    })
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-    setIsLiberadoMarcarEvento(false);
-  }
+  const buscarHorariosDisponiveis = (medicoId: number, dia: string) => {
+    setLoad(true);
 
-  useEffect(() => {
-    if (medicoSelecionado && horario.start && horario.end) {
-      verificarDisponibilidade();
-    }
-  }, [medicoSelecionado, horario, token]);
-
-  const verificarDisponibilidade = () => {
-    getDisponibilidade(
-      medicoSelecionado,
-      horario.start,
-      horario.end,
-      (data) => {
-        setMensagem(data.mensagem);
-        setIsLiberadoMarcarEvento(data.erro);
-
-        if(data.erro){
-          setAlerta({
-            aberto: data.erro,
-            tipo: "info",
-            mensagem: data.mensagem,
-          });
-        }
-     
-
-        if(!data.erro){
-          setAlerta({
-            aberto: true,
-            tipo: "success",
-            mensagem: 'Horario livre',
-          });
-        }
-
+    buscarHorariosDisponiveisMedico(
+      medicoId,
+      dia,
+      (data: any) => {
+        setHorariosDisponiveis(data.data || []);
+        setLoad(false);
       },
-      (error) => {
-        setMensagem(error?.mensagem);
-        setIsLiberadoMarcarEvento(false);
+
+      (error: any) => {
+        setHorariosDisponiveis([]);
+        setLoad(false);
       },
       token
     );
-
-    setIsLiberadoMarcarEvento(false);
   };
 
-  const [slots, setSlots] = useState(() => {
-    const today = new Date();
-    const startOfToday = startOfDay(today);
-    return [
-      { start: startOfToday.toISOString(), end: startOfToday.toISOString() },
-    ];
-  });
+  const limparCampos = () => {
+    setDiaSelecionado(null), setDiasMes([]);
+    setHorarioSelecionado(null);
+    setHorariosDisponiveis([]);
+    setHorarioSelecionadoState({});
+    setMedicoSelecionado("");
+  };
 
-  const handleTimeChange = (field: keyof Horario, value: string) => {
-    setHorario((prev) => ({ ...prev, [field]: value }));
+  const salvarAgendamento = () => {
+    if (horarioSelecionadoState && diaSelecionado) {
+      const startTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${
+        horarioSelecionadoState?.start
+      }`;
+      const endTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${
+        horarioSelecionadoState?.end
+      }`;
+      postNovoAgendamento(
+        medicoSelecionado,
+        startTime,
+        endTime,
+        token,
+        (data: any) => {
+          // Ação de sucesso, ex: exibir uma mensagem ou atualizar a UI
+          console.log("Agendamento criado com sucesso:", data);
+          onUpdate();
+          limparCampos();
+          handleClose();
+        },
+        (error: any) => {
+          setIsErro(true);
+          console.error("Erro ao criar agendamento:", error);
+        }
+      );
+    } else {
+      console.error("Selecione um horário válido para salvar.");
+    }
+  };
+
+  const handleDiaClick = (dia: Date) => {
+    setDiaSelecionado(dia);
+    if (medicoSelecionado) {
+      const diaFormatado = format(dia, "yyyy-MM-dd");
+      buscarHorariosDisponiveis(Number(medicoSelecionado), diaFormatado);
+    }
+  };
+
+  // Atualiza automaticamente o mês atual ao selecionar um profissional
+  useEffect(() => {
+    if (medicoSelecionado) {
+      const mesAtual = new Date().getMonth();
+      setMesSelecionado(mesAtual);
+      const inicioMes = startOfMonth(
+        new Date(new Date().getFullYear(), mesAtual, 1)
+      );
+      const fimMes = endOfMonth(
+        new Date(new Date().getFullYear(), mesAtual, 1)
+      );
+      const dias = eachDayOfInterval({ start: inicioMes, end: fimMes });
+      setDiasMes(dias);
+      setDiaSelecionado(null);
+      setHorariosDisponiveis([]);
+    }
+  }, [medicoSelecionado]);
+
+  // Função para rolar as datas horizontalmente
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  // Função para selecionar um horário
+  const handleHorarioClick = (horario: any) => {
+    setHorarioSelecionado(horario);
+
+    setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} maxWidth="lg">
       <DialogTitle className="agenda-titele">
         <IconButton
           aria-label="close"
@@ -189,109 +215,136 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         >
           <CloseIcon />
         </IconButton>
-        <div style={{padding: '0px 0px 20px 0'}}>
+        <div style={{ padding: "0px 0px 20px 0" }}>
           <text>Novo agendamento</text>
         </div>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "row",
-            gap:'8px',
-            fontWeight:200
-          }}
-        >
-          <div>
-            <FcInfo size={42} />
-          </div>
-          <div style={{fontSize: '11px', display: 'flex', flexDirection: 'column', gap: '8px'}}>
-              <a><TbPointFilled /> Selecione um profissional para habilitar os campos de data.</a>
-              <a><TbPointFilled /> Verifique a disponibilidade ao definir as datas de início e fim.</a>
-              <a><TbPointFilled /> Confirme as informações para ativar o botão de salvar.</a>
-          </div>
-
-        </div>
       </DialogTitle>
-
       <DialogContent className="container-modal">
         <FormControl fullWidth>
-          <Select
-            labelId="medico-label"
-            className="menu-profissionais-lista-item"
-            value={medicoSelecionado}
-            label="Profissional"
-            onChange={(e) => setMedicoSelecionado(e.target.value)}
-          >
-            {medicos?.map((medico) => (
-              <MenuItem
-                key={medico?.user_id}
-                value={medico?.user_id}
-                className="menu-profissionais-lista"
+          <h2>Selecione um Profissional</h2>
+          <MedicosHorizontalList
+            medicos={medicos}
+            medicoSelecionado={medicoSelecionado}
+            setMedicoSelecionado={setMedicoSelecionado}
+          />
+        </FormControl>
+        {/* Verificar se um profissional foi selecionado */}
+        {medicoSelecionado && (
+          <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
+            <Box mt={2} mb={2}>
+              {/* Tabs para seleção de meses */}
+              <Tabs
+                value={mesSelecionado}
+                onChange={(event, newValue) => handleMesChange(newValue)}
+                variant="scrollable"
+                scrollButtons="auto"
+                indicatorColor="secondary"
+                textColor="secondary"
               >
-                <img className="profile-image" src={medico.avatarUrl} />
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {medico.nome}
-                  <small> {medico.especialidade}</small>
-                </div>
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+                {meses.map((mes, index) => (
+                  <Tab key={index} label={mes.nome} value={mes.valor} />
+                ))}
+              </Tabs>
 
-        <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
-          {slots.map((slot, index) => (
-            <>
-              <div key={index}>
-                <TextField
-                  label="Início"
-                  type="datetime-local"
-                  value={horario.start}
-                  onChange={(e) => handleTimeChange("start", e.target.value)}
-                  InputLabelProps={{ shrink: true }}
-                  sx={{ width: "250px" }}
-                  disabled={!medicoSelecionado} // Disable until a doctor is selected
+              <Box>
+                {/* Usa o componente ScrollableDates */}
+                <ScrollableDates
+                  diasMes={diasMes}
+                  diaSelecionado={diaSelecionado}
+                  handleDiaClick={handleDiaClick}
+                  scrollLeft={scrollLeft}
+                  scrollRight={scrollRight}
                 />
-                <TextField
-                  label="Fim"
-                  type="datetime-local"
-                  value={horario.end}
-                  onChange={(e) => handleTimeChange("end", e.target.value)}
-                  InputLabelProps={{ shrink: true }}
-                  sx={{ width: "250px" }}
-                  disabled={!medicoSelecionado} // Disable until a doctor is selected
-                />
-              </div>
-              {alerta.aberto && (
-                <Alert
-                  severity={alerta.tipo}
-                  onClose={() =>
-                    setAlerta((prev:any) => ({ ...prev, aberto: false }))
-                  }
-                >
-                  <AlertTitle>
-                    {alerta.tipo.charAt(0).toUpperCase() + alerta.tipo.slice(1)}
-                  </AlertTitle>
-                  {alerta.mensagem}
-                </Alert>
-              )}
+              </Box>
 
+              <Grid
+                container
+                spacing={2}
+                style={{
+                  padding: "0px 57px 0px 61px",
+                }}
+              >
+                {load ? (
+                  <Grid
+                    item
+                    xs={12}
+                    style={{ display: "flex", justifyContent: "center" }}
+                  >
+                    <CircularProgress color="secondary" />
+                  </Grid>
+                ) : (
+                  <>
+                    {horariosDisponiveis.length > 0 ? (
+                      horariosDisponiveis.map((horario, index) => (
+                        <Grid item xs={3} key={index}>
+                          <Button
+                            style={{
+                              color:
+                                horarioSelecionado === horario
+                                  ? "white "
+                                  : "#9c27b0",
+                              width: "100%",
+                              background:
+                                horarioSelecionado === horario
+                                  ? "#9c27b0"
+                                  : "white",
 
-            </>
-          ))}
-        </FormControl>
-        <TextField
-          fullWidth
-          label="Descrição"
-          variant="outlined"
-          margin="normal"
-          value={descricao}
-          onChange={(e) => setDescricao(e.target.value)}
-        />
+                              border:
+                                horarioSelecionado === horario
+                                  ? "#9c27b0 1px solid"
+                                  : "#9c27b0  1px solid",
+                            }}
+                            onClick={() => handleHorarioClick(horario)}
+                          >
+                            {horario.start} - {horario.end}
+                          </Button>
+                        </Grid>
+                      ))
+                    ) : (
+                      <Grid
+                        item
+                        xs={12}
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          padding: "50px",
+                        }}
+                      >
+                        Horários indisponíveis
+                      </Grid>
+                    )}
+                  </>
+                )}
+              </Grid>
+            </Box>
+          </FormControl>
+        )}
+
+        <>
+          {isErro && (
+            <div style={{ padding: "12px 0px 12px 0px" }}>
+              <Alert
+                onClose={() => setIsErro(false)}
+                onClick={() => setIsErro(false)}
+                color="error"
+              >
+                {"Tente novamente"}
+              </Alert>
+            </div>
+          )}
+        </>
       </DialogContent>
+
       <DialogActions>
-        <Button onClick={handleClose}>Cancelar</Button>
-        <Button onClick={salvarAgendamento} disabled={isLiberadoEventoNovo}>
+        <Button color="secondary" onClick={handleClose}>
+          Cancelar
+        </Button>
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={salvarAgendamento}
+          disabled={!horarioSelecionado}
+        >
           Salvar <FaCheckCircle />
         </Button>
       </DialogActions>
