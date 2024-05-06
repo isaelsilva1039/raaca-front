@@ -26,6 +26,7 @@ import MedicosHorizontalList from "./MedicosHorizontalList";
 import ScrollableDates from "./ScrollableDates";
 import { buscarHorariosDisponiveisMedico } from "@/app/api/horarios/getDisponilibilida";
 import { postNovoAgendamento } from "@/app/api/horarios/posAgendamento";
+import { fetchMes } from "@/app/api/horarios/horarios-api";
 
 interface Medico {
   id: number;
@@ -80,6 +81,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   const { token } = useCliente();
   const [load, setLoad] = useState<boolean>(false);
   const [isErro, setIsErro] = useState<boolean>(false);
+  const [monthe, setMonthe] = useState<any>([]);
 
   const handleMesChange = (mes: number) => {
     setMesSelecionado(mes);
@@ -119,6 +121,24 @@ const NovoAgendamentoModal: React.FC<Props> = ({
       },
       token
     );
+  };
+
+  const getMesAgenda = async () => {
+    const ativo = true;
+    if (!token) return;
+    if (!medicoSelecionado) return;
+    try {
+      await fetchMes(
+        token,
+        medicoSelecionado,
+        (data) => {
+          // console.log(data.data)
+          setMonthe(data.original.data);
+        },
+        (error) => {},
+        ativo
+      );
+    } catch (error) {}
   };
 
   const limparCampos = () => {
@@ -183,6 +203,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
       setDiaSelecionado(null);
       setHorariosDisponiveis([]);
     }
+
+    getMesAgenda();
   }, [medicoSelecionado]);
 
   // Função para rolar as datas horizontalmente
@@ -233,18 +255,22 @@ const NovoAgendamentoModal: React.FC<Props> = ({
           <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
             <Box mt={2} mb={2}>
               {/* Tabs para seleção de meses */}
-              <Tabs
-                value={mesSelecionado}
-                onChange={(event, newValue) => handleMesChange(newValue)}
-                variant="scrollable"
-                scrollButtons="auto"
-                indicatorColor="secondary"
-                textColor="secondary"
-              >
-                {meses.map((mes, index) => (
-                  <Tab key={index} label={mes.nome} value={mes.valor} />
-                ))}
-              </Tabs>
+
+              {monthe.length > 0 ? (
+                <>
+                  <Tabs
+                    value={mesSelecionado}
+                    onChange={(event, newValue) => handleMesChange(newValue)}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                    indicatorColor="secondary"
+                    textColor="secondary"
+                  >
+                    {monthe.map((mes: any, index: any) => (
+                      <Tab key={index} label={mes.mes} value={mes.value} />
+                    ))}
+                  </Tabs>
+              
 
               <Box>
                 {/* Usa o componente ScrollableDates */}
@@ -256,6 +282,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
                   scrollRight={scrollRight}
                 />
               </Box>
+
+
 
               <Grid
                 container
@@ -316,6 +344,12 @@ const NovoAgendamentoModal: React.FC<Props> = ({
                   </>
                 )}
               </Grid>
+
+              </>
+              ) : (
+                "Agendas não liberadas "
+              )}
+
             </Box>
           </FormControl>
         )}

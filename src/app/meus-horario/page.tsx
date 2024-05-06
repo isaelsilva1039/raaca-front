@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import ScheduleSkeleton from "@/core/infra/ports/react/componentes/skeleton/ScheduleSkeleton";
 import { useCliente } from "@/core/helpes/UserContext";
-import { fetchSchedule, saveSchedule } from "../api/horarios/horarios-api";
+import { fetchMes, fetchSchedule, saveSchedule } from "../api/horarios/horarios-api";
 import MonthsList from "@/core/infra/ports/react/componentes/mes/MonthSwitch";
 
 const defaultSchedule: WeeklySchedule = {
@@ -28,9 +28,11 @@ const defaultSchedule: WeeklySchedule = {
 
 const SchedulePage: React.FC = () => {
   const [schedule, setSchedule] = useState<WeeklySchedule>(defaultSchedule);
-  const { token } = useCliente();
+  const { token, user } = useCliente();
   const [loading, setLoading] = useState(true);
   const [tabIndex, setTabIndex] = useState(0);
+  const [monthe, setMonthe] = useState([]);
+  const [issTable, setIsTable] = useState(false);
 
   const loadSchedule = async () => {
     setLoading(true);
@@ -51,9 +53,50 @@ const SchedulePage: React.FC = () => {
     }
   };
 
+
+
+  const getMesAgenda = async () => {
+    const ativo = false
+    if (!token) return;
+    try {
+      await fetchMes(
+        token,
+        user.id,
+        (data) => {
+          // console.log(data.data)
+          setMonthe(data.original.data);
+        },
+        (error) => {
+
+        },
+        ativo
+      );
+    } catch (error) {
+   
+    }
+  };
+
+
+  
+
   useEffect(() => {
     loadSchedule();
-  }, [token]);
+    getMesAgenda()
+  }, [token ]);
+
+
+
+  useEffect(() => {
+
+    if(issTable){
+
+      getMesAgenda()
+      setIsTable(false);
+    }
+  }, [issTable]);
+
+  
+
 
   const handleTabChange = (event: React.SyntheticEvent, newIndex: number) => {
     setTabIndex(newIndex);
@@ -113,11 +156,11 @@ const SchedulePage: React.FC = () => {
               textColor="secondary">
 
             <Tab label=" Configurar horários" 
-              
+              onClick={() => setIsTable(true)}
             />
-            <Tab label="Liberar agenda" />
+            <Tab label="Liberar agenda" onClick={() => setIsTable(true)} />
 
-            <Tab label="Bloquear dias" />
+            <Tab label="Bloquear dias" onClick={() => setIsTable(true)}/>
           </Tabs>
 
           {tabIndex === 0 && (
@@ -193,7 +236,7 @@ const SchedulePage: React.FC = () => {
           {tabIndex === 1 && (
             <Box>
            
-             <MonthsList  token={token}/>
+             <MonthsList  token={token} apiMonths={monthe}/>
 
             </Box>
           )}

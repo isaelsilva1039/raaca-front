@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+'use client'
+
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Card,
@@ -7,17 +9,17 @@ import {
   Switch,
   Grid,
 } from "@mui/material";
-import { useCliente } from "@/core/helpes/UserContext";
+import { API } from "@/core/api/api";
 
 // Lista de meses com valores numéricos
 const months = [
   { name: "Janeiro", value: 0 },
   { name: "Fevereiro", value: 1 },
-  { name: "Março", value: 2 },
-  { name: "Abril", value: 3 },
-  { name: "Maio", value: 4 },
-  { name: "Junho", value: 5 },
-  { name: "Julho", value: 6 },
+  { name: "Março",  value: 2 },
+  { name: "Abril",  value: 3 },
+  { name: "Maio",   value: 4 },
+  { name: "Junho",  value: 5 },
+  { name: "Julho",  value: 6 },
   { name: "Agosto", value: 7 },
   { name: "Setembro", value: 8 },
   { name: "Outubro", value: 9 },
@@ -29,7 +31,7 @@ interface MonthSwitchProps {
   name: string;
   value: number;
   isActive: boolean;
-  toggleMonth: (value: number, mes: any) => void;
+  toggleMonth: (value: number, name: string) => void;
 }
 
 // Componente para cada item com switch
@@ -39,32 +41,26 @@ const MonthSwitch: React.FC<MonthSwitchProps> = ({
   isActive,
   toggleMonth,
 }) => {
-
-  
-
   return (
     <Card variant="outlined" sx={{ mb: 2 }}>
       <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h6">{name}</Typography>
-        <Switch checked={isActive} onChange={() => toggleMonth(value , name)} />
+        <Switch checked={isActive} onChange={() => toggleMonth(value, name)} />
       </CardContent>
     </Card>
   );
-};
+}
 
-
-
-// Função simulando chamada à API
-const sendMonthToggleToAPI = async (value: number, isActive: boolean, mes : any , token: any) => {
+// Função simulando chamada à API para alternar status
+const sendMonthToggleToAPI = async (value: number, isActive: boolean, name: string, token: string) => {
   try {
-    const response = await fetch("/api/months/toggle", {
+    const response = await fetch(`${API}/api/racca/agenda/create/liberar`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${token}`
-
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ value, isActive , mes }),
+      body: JSON.stringify({ value, isActive, name }),
     });
 
     if (!response.ok) {
@@ -75,21 +71,38 @@ const sendMonthToggleToAPI = async (value: number, isActive: boolean, mes : any 
   }
 };
 
+// Interface para os dados dos meses vindos da API
+interface ApiMonth {
+  value: number;
+  isActive: boolean;
+}
+
+interface MonthsListProps {
+  token: string | null;
+  apiMonths: ApiMonth[];
+}
+
 // Componente principal que lista os meses
-const MonthsList: React.FC = ({token} : any) => {
+const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths }) => {
+  // Combina a lista de meses fixa com os dados da API
 
+  const getInitialActiveMonths = (): number[] =>
+    apiMonths.filter((m) => m.isActive).map((m) => m.value);
 
-  const [activeMonths, setActiveMonths] = useState<number[]>([]);
+  const [activeMonths, setActiveMonths] = useState(getInitialActiveMonths);
 
   // Alterna o estado ativo/inativo de um mês usando seu valor numérico
-  const toggleMonth = (value: number , mes: any) => {
+  const toggleMonth = (value: number, name: string) => {
     const isActive = !activeMonths.includes(value);
     setActiveMonths((prev) =>
       isActive ? [...prev, value] : prev.filter((v) => v !== value)
     );
 
-    // Chama a API para alternar o status do mês
-    sendMonthToggleToAPI(value, isActive, mes , token);
+    if(token){
+      // Chama a API para alternar o status do mês
+      sendMonthToggleToAPI(value, isActive, name, token);
+    } 
+   
   };
 
   return (
@@ -104,7 +117,7 @@ const MonthsList: React.FC = ({token} : any) => {
           padding: "0 0 10px 0",
         }}
       >
-        Menu / Controle dos Mês
+        Menu / Controle dos Meses
       </Typography>
 
       <Grid container spacing={2}>

@@ -55,7 +55,37 @@ export const fetchSchedule = async (
     } catch (error) {
       onError(error);
     }
+
+  }
+
+
+
+export const fetchMes = async (
+  token: any ,
+  medico_id: any,
+  onSuccess: (data: any) => void, 
+  onError: (error: any) => void,
+  ativo : any,
+) => {
+  const url = API + `/api/racca/agenda/calendario/mes/${medico_id}?ativo=${ativo}`;
+
+  try {
+    const response = await fetch(url, {   
+      method: 'GET',
+      headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    onSuccess(data);
+  } catch (error) {
+    onError(error);
+  }
+
 };
-
-
 
