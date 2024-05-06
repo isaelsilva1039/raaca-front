@@ -33,6 +33,7 @@ const SchedulePage: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [monthe, setMonthe] = useState([]);
   const [issTable, setIsTable] = useState(false);
+  const [loadingMes, setLoadingMes] = useState(false);
 
   const loadSchedule = async () => {
     setLoading(true);
@@ -58,6 +59,7 @@ const SchedulePage: React.FC = () => {
   const getMesAgenda = async () => {
     const ativo = false
     if (!token) return;
+    setLoadingMes(true)
     try {
       await fetchMes(
         token,
@@ -65,9 +67,10 @@ const SchedulePage: React.FC = () => {
         (data) => {
           // console.log(data.data)
           setMonthe(data.original.data);
+          setLoadingMes(false)
         },
         (error) => {
-
+          setLoadingMes(false)
         },
         ativo
       );
@@ -236,7 +239,7 @@ const SchedulePage: React.FC = () => {
           {tabIndex === 1 && (
             <Box>
            
-             <MonthsList  token={token} apiMonths={monthe}/>
+             <MonthsList  token={token} apiMonths={monthe} loadingMes={loadingMes}/>
 
             </Box>
           )}

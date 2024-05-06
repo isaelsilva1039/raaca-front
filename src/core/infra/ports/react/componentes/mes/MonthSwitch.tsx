@@ -8,6 +8,7 @@ import {
   Typography,
   Switch,
   Grid,
+  CircularProgress,
 } from "@mui/material";
 import { API } from "@/core/api/api";
 
@@ -80,10 +81,11 @@ interface ApiMonth {
 interface MonthsListProps {
   token: string | null;
   apiMonths: ApiMonth[];
+  loadingMes: boolean;
 }
 
 // Componente principal que lista os meses
-const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths }) => {
+const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths, loadingMes }) => {
   // Combina a lista de meses fixa com os dados da API
 
   const getInitialActiveMonths = (): number[] =>
@@ -106,6 +108,16 @@ const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths }) => {
   };
 
   return (
+    
+    <>
+    {loadingMes ? (
+      <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+       <CircularProgress color="secondary" />
+      </div>
+
+    ):(
+      
+    
     <Box sx={{ p: 3 }}>
       <Typography
         className="list-top"
@@ -133,6 +145,9 @@ const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths }) => {
         ))}
       </Grid>
     </Box>
+    )}
+    </>
+    
   );
 };
 
