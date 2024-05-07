@@ -1,3 +1,14 @@
 .configuracaoPerfil{
-    background-color: white;
+    background-color: #ffffff;
+    justify-content: center; 
+    align-items: center;
+    justify-self: center; 
+    text-align: center;
+}
+
+.foto{
+    border: 2px rgb(180, 12, 12);
+    border-radius: 25%%;
+    height: 100px;
+    width: 100px;
 }

@@ -60,7 +60,7 @@ const Configuracoes = () => {
       <div>
       <div className="fotoPerfil">
   {fotoPerfil ? (
-    <img src={fotoPerfil} alt="Foto" />
+    <img src={fotoPerfil} alt="Foto" className='foto' />
   ) : (
     <div className="fotoPlaceholder">Foto</div>
   )}
