@@ -124,6 +124,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   };
 
   const getMesAgenda = async () => {
+    setLoad(true);
     const ativo = true;
     if (!token) return;
     if (!medicoSelecionado) return;
@@ -134,11 +135,16 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         (data) => {
           // console.log(data.data)
           setMonthe(data.original.data);
+          setLoad(false);
         },
-        (error) => {},
+        (error) => {
+          setLoad(false);
+        },
         ativo
       );
-    } catch (error) {}
+    } catch (error) {
+      // setLoad(false)
+    }
   };
 
   const limparCampos = () => {
@@ -254,102 +260,112 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         {medicoSelecionado && (
           <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
             <Box mt={2} mb={2}>
-              {/* Tabs para seleção de meses */}
-
-              {monthe.length > 0 ? (
+              {load ? (
+                <Grid
+                  item
+                  xs={12}
+                  style={{ display: "flex", justifyContent: "center" }}
+                >
+                  <CircularProgress color="secondary" />
+                </Grid>
+              ) : (
                 <>
-                  <Tabs
-                    value={mesSelecionado}
-                    onChange={(event, newValue) => handleMesChange(newValue)}
-                    variant="scrollable"
-                    scrollButtons="auto"
-                    indicatorColor="secondary"
-                    textColor="secondary"
-                  >
-                    {monthe.map((mes: any, index: any) => (
-                      <Tab key={index} label={mes.mes} value={mes.value} />
-                    ))}
-                  </Tabs>
-              
+                  {monthe.length > 0 ? (
+                    <>
+                      <Tabs
+                        value={mesSelecionado}
+                        onChange={(event, newValue) =>
+                          handleMesChange(newValue)
+                        }
+                        variant="scrollable"
+                        scrollButtons="auto"
+                        indicatorColor="secondary"
+                        textColor="secondary"
+                      >
+                        {monthe.map((mes: any, index: any) => (
+                          <Tab key={index} label={mes.mes} value={mes.value} />
+                        ))}
+                      </Tabs>
 
-              <Box>
-                {/* Usa o componente ScrollableDates */}
-                <ScrollableDates
-                  diasMes={diasMes}
-                  diaSelecionado={diaSelecionado}
-                  handleDiaClick={handleDiaClick}
-                  scrollLeft={scrollLeft}
-                  scrollRight={scrollRight}
-                />
-              </Box>
+                      <Box>
+                        {/* Usa o componente ScrollableDates */}
+                        <ScrollableDates
+                          diasMes={diasMes}
+                          diaSelecionado={diaSelecionado}
+                          handleDiaClick={handleDiaClick}
+                          scrollLeft={scrollLeft}
+                          scrollRight={scrollRight}
+                        />
+                      </Box>
 
-
-
-              <Grid
-                container
-                spacing={2}
-                style={{
-                  padding: "0px 57px 0px 61px",
-                }}
-              >
-                {load ? (
-                  <Grid
-                    item
-                    xs={12}
-                    style={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <CircularProgress color="secondary" />
-                  </Grid>
-                ) : (
-                  <>
-                    {horariosDisponiveis.length > 0 ? (
-                      horariosDisponiveis.map((horario, index) => (
-                        <Grid item xs={3} key={index}>
-                          <Button
-                            style={{
-                              color:
-                                horarioSelecionado === horario
-                                  ? "white "
-                                  : "#9c27b0",
-                              width: "100%",
-                              background:
-                                horarioSelecionado === horario
-                                  ? "#9c27b0"
-                                  : "white",
-
-                              border:
-                                horarioSelecionado === horario
-                                  ? "#9c27b0 1px solid"
-                                  : "#9c27b0  1px solid",
-                            }}
-                            onClick={() => handleHorarioClick(horario)}
-                          >
-                            {horario.start} - {horario.end}
-                          </Button>
-                        </Grid>
-                      ))
-                    ) : (
                       <Grid
-                        item
-                        xs={12}
+                        container
+                        spacing={2}
                         style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          padding: "50px",
+                          padding: "0px 57px 0px 61px",
                         }}
                       >
-                        Horários indisponíveis
+                        {load ? (
+                          <Grid
+                            item
+                            xs={12}
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <CircularProgress color="secondary" />
+                          </Grid>
+                        ) : (
+                          <>
+                            {horariosDisponiveis.length > 0 ? (
+                              horariosDisponiveis.map((horario, index) => (
+                                <Grid item xs={3} key={index}>
+                                  <Button
+                                    style={{
+                                      color:
+                                        horarioSelecionado === horario
+                                          ? "white "
+                                          : "#9c27b0",
+                                      width: "100%",
+                                      background:
+                                        horarioSelecionado === horario
+                                          ? "#9c27b0"
+                                          : "white",
+
+                                      border:
+                                        horarioSelecionado === horario
+                                          ? "#9c27b0 1px solid"
+                                          : "#9c27b0  1px solid",
+                                    }}
+                                    onClick={() => handleHorarioClick(horario)}
+                                  >
+                                    {horario.start} - {horario.end}
+                                  </Button>
+                                </Grid>
+                              ))
+                            ) : (
+                              <Grid
+                                item
+                                xs={12}
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  padding: "50px",
+                                }}
+                              >
+                                Horários indisponíveis
+                              </Grid>
+                            )}
+                          </>
+                        )}
                       </Grid>
-                    )}
-                  </>
-                )}
-              </Grid>
-
-              </>
-              ) : (
-                "Agendas não liberadas "
+                    </>
+                  ) : (
+                    "Agendas não liberadas "
+                  )}
+                </>
               )}
-
             </Box>
           </FormControl>
         )}
