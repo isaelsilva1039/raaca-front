@@ -4,10 +4,10 @@
     flex-direction: column;
     height: 100%;
     position: relative;
-    margin-top: 100px;
+    margin-top: 20px;
 
     .sair{
-        margin-top: 45vh;
+        /* margin-top: 45vh; */
         background: #2b3674;
         display: flex;
         align-items: center;

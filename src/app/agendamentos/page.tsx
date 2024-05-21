@@ -9,17 +9,23 @@ import { useEffect, useState } from "react";
 import { fetchProfissionais } from "../cadastro-profissionais/ferch";
 import { useCliente } from "@/core/helpes/UserContext";
 import AgendamentosSkeleton from "@/core/infra/ports/react/componentes/skeleton/AgendamentosSkeleton";
-import { fetchEventos } from "../api/horarios/eventos";
+import { fetchEventos, fetchEventosMedico } from "../api/horarios/eventos";
+import { FaFilterCircleXmark } from "react-icons/fa6";
+
+import { FiFilter as Filter } from "react-icons/fi";
+import { getProfissnionais } from "../cadastro-profissionais/getProfissionais";
+
 
 interface IData {
   id: number;
   nome: string;
   especialidade: string;
   avatarUrl: string;
+  user_id : number;
 }
 
 export default function Agendamentos() {
-  const [profissionais, setProfissionais] = useState<IData[]>([]);
+  const [profissionais, setProfissionais] = useState<any>([]);
   
   const [eventos, setEventos] = useState<any>({});
 
@@ -30,7 +36,7 @@ export default function Agendamentos() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState<any>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-
+  const [idSelect , setIdSelect] = useState<null | number>(null) 
   const { token, user } = useCliente();
 
   const [novoEventoState, setNovoEvento] = useState(false);
@@ -39,10 +45,11 @@ export default function Agendamentos() {
     if(!token) return;
     setLoading(true);
     const onFetchSuccess = (data: any) => {
-      setProfissionais(data.original.data);
-      setTotalItems(data.original.total);
-      setItemsPerPage(data.original.perPage);
 
+      setProfissionais(data?.original?.profissionais);
+      console.log(data)
+      setTotalItems(data?.original?.total);
+      setItemsPerPage(data?.original?.perPage);
       setLoading(false);
     };
 
@@ -52,14 +59,12 @@ export default function Agendamentos() {
       setLoading(false);
     };
 
-    fetchProfissionais(
-      searchTerm,
-      currentPage,
-      onFetchSuccess,
-      onFetchError,
-      token
-    );
+
+    getProfissnionais(onFetchSuccess, onFetchError, token);
+ 
   };
+
+
 
   const onUpdate = ( ) => {
     setNovoEvento(true)
@@ -70,8 +75,7 @@ export default function Agendamentos() {
 
     setLoading(true);
     const onFetchSuccess = (data: any) => {
-      setEventos(data.data);
-      console.log(data.data)
+      setEventos(data?.data);
       setLoading(false);
     };
 
@@ -93,15 +97,39 @@ export default function Agendamentos() {
     fetchMyEventos()
   }, [token]);
 
-  useEffect(() => {
 
-  
+  const fetchMyEventosFilter = () => {
+    if(!token) return;
+
+    const onFetchSuccess = (data: any) => {
+      setEventos(data.data);
+      setLoading(false);
+    };
+
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+      setError(error);
+      setLoading(false);
+    };
+
+    fetchEventosMedico(
+      onFetchSuccess,
+      onFetchError,
+      token,
+      idSelect
+    );
+  };
+
+
+  useEffect(() => {
+    fetchMyEventosFilter()
+  }, [idSelect]);
+
+  useEffect(() => {
 
     if(novoEventoState){
 
-
       if(!token) return;
-
 
       const onFetchSuccess = (data: any) => {
         setEventos(data.data);
@@ -115,7 +143,6 @@ export default function Agendamentos() {
 
 
       fetchEventos(
-        
         onFetchSuccess,
         onFetchError,
         token
@@ -125,9 +152,10 @@ export default function Agendamentos() {
   }, [novoEventoState]);
 
 
+  const onMedicoSelec = (id_user: any) => {
+    setIdSelect(id_user)
+  }
   
-  
-
 
   return (
     <div className="container">
@@ -152,10 +180,16 @@ export default function Agendamentos() {
               <div className="menu-profissionais">
                 <div className="card-lista-prof">
                   <text className="text-item">Lista de profissionais</text>
+                  {idSelect ? (
+                    <FaFilterCircleXmark color="#707EAE" onClick={ () => setIdSelect(null)} style={{cursor:'pointer'}}/>
+                  ) : (
+                    ''
+                  )}
+               
                 </div>
 
-                {profissionais.map((doctor) => (
-                  <DoctorCard key={doctor.id} doctor={doctor} />
+                {profissionais?.map((doctor : any) => (
+                  <DoctorCard doctor={doctor} onMedicoSelec={onMedicoSelec} idSelect={idSelect}/>
                 ))}
               </div>
             )}

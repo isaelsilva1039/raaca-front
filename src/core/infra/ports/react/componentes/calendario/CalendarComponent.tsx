@@ -19,8 +19,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import { FaCheckCircle } from "react-icons/fa";
-
-
+import { addMinutes, differenceInHours, format } from "date-fns";
 
 import {
   FormControl,
@@ -33,6 +32,7 @@ import {
 import NovoAgendamentoModal from "./NovoAgendamentoModal";
 import { getProfissnionais } from "@/app/cadastro-profissionais/getProfissionais";
 import { useCliente } from "@/core/helpes/UserContext";
+import EventModal from "./EventModal";
 
 interface eventInterface {
   title: string;
@@ -43,22 +43,24 @@ interface eventInterface {
   clientImageUrl: string;
 }
 
-
 interface Event {
   medico: {
-      name: string;
-      email: string;
+    name: string;
+    email: string;
+    avatar: any;
   };
   cliente: {
-      name: string;
-      email: string;
+    name: string;
+    email: string;
+    avatar: any;
   };
   start_time: string;
   end_time: string;
   status: string;
   cliente_id: number;
   medico_id: number;
-
+  created_at: any;
+  id: number;
 }
 
 interface TransformedEvent {
@@ -67,17 +69,19 @@ interface TransformedEvent {
   color: string;
   end: Date;
   extendedProps: {
-      clientName: string;
-      clientEmail: string;
-      medicoName: string;
-      medicoEmail: string;
-      details: string;
-      clientId: number;
-      medicoId: number;
+    clientName: string;
+    clientEmail: string;
+    medicoName: string;
+    medicoEmail: string;
+    details: string;
+    clientId: number;
+    medicoId: number;
+    medico_avatar: any;
+    cliente_avatar: any;
+    created_at: any;
+    id_evento: number;
   };
 }
-
-
 
 interface IData {
   id: number;
@@ -87,11 +91,12 @@ interface IData {
   user_id: number;
 }
 
-const CalendarComponent = ({ events , onUpdate}: any) => {
+const CalendarComponent = ({ events, onUpdate }: any) => {
   const [modalOpen, setModalOpen] = useState(false); // Controla se a modal está aberta
   const [selectedEvent, setSelectedEvent] = useState<eventInterface | any>(
     null
   ); // Armazena o evento selecionado
+
 
   const [status, setStatus] = useState("realizado");
   const [eventos, setEvents] = useState<TransformedEvent[]>([]); // Use o tipo definido
@@ -99,63 +104,62 @@ const CalendarComponent = ({ events , onUpdate}: any) => {
   const [loading, setLoading] = useState(true);
   const [profissionais, setProfissionais] = useState<IData[]>([]);
 
-  const { token } = useCliente();
+  const { token, user } = useCliente();
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
   };
 
-
   // Função para determinar a cor com base no status
-const getColorBasedOnStatus = (status: string): string => {
-  switch (status) {
-      case 'pendente':
-          return '#a704f8'; // Vermelho para pendentes
-      case 'confirmado':
-          return 'green'; // Verde para confirmados
-      case 'cancelado':
-          return 'red'; // Cinza para cancelados
-      case 'realizado':
-        return 'green'; // Cinza para cancelados
+  const getColorBasedOnStatus = (status: string): string => {
+    switch (status) {
+      case "pendente":
+        return "#a704f8"; // Vermelho para pendentes
+      case "confirmado":
+        return "green"; // Verde para confirmados
+      case "cancelado":
+        return "red"; // Cinza para cancelados
+      case "realizado":
+        return "green"; // Cinza para cancelados
       default:
-        return 'blue'; // Um padrão, talvez azul
-  }
-};
-
+        return "blue"; // Um padrão, talvez azul
+    }
+  };
 
   useEffect(() => {
+    // if (events.length < 1) return;
 
-    if (events.length < 1) return;
+    const transformedEvents: TransformedEvent[] = Array.isArray(events)
+      ? events.map((event: Event) => ({
 
-      const transformedEvents: TransformedEvent[] = Array.isArray(events) ? events.map((event: Event) => ({
-
-          title: `Consulta com ${event.medico.name}`,
+          title: `Consulta com ${user.tipo == 1 || user.tipo == 3 ? event.medico.name : event.cliente.name}`,
           start: new Date(event.start_time),
           color: getColorBasedOnStatus(event.status),
           end: new Date(event.end_time),
           extendedProps: {
-              clientName: event.cliente.name,
-              clientEmail: event.cliente.email,
-              medicoName: event.medico.name,
-              medicoEmail: event.medico.email,
-              details: event.status,
-              clientId: event.cliente_id,
-              medicoId: event.medico_id
-          }
-        })) : [];
+            id_evento: event.id,
+            clientName: event.cliente.name,
+            clientEmail: event.cliente.email,
+            medicoName: event.medico.name,
+            medicoEmail: event.medico.email,
+            details: event.status,
+            clientId: event.cliente_id,
+            medicoId: event.medico_id,
+            medico_avatar: event.medico.avatar,
+            cliente_avatar: event.cliente.avatar,
+            created_at: event.created_at,
+          },
+        }))
+      : [];
 
-      setEvents(transformedEvents);
-
-
+    setEvents(transformedEvents);
   }, [events]);
 
-
-
+  console.log(eventos);
 
   const getProfissnionaisAll = () => {
     setLoading(true);
     const onFetchSuccess = (data: any) => {
       setProfissionais(data.original.profissionais);
-      console.log(data.original)
       setLoading(false);
     };
 
@@ -164,29 +168,28 @@ const getColorBasedOnStatus = (status: string): string => {
 
       setLoading(false);
     };
-    
-    getProfissnionais(onFetchSuccess, onFetchError, token);
 
+    getProfissnionais(onFetchSuccess, onFetchError, token);
   };
 
-
   useEffect(() => {
-    getProfissnionaisAll()
-  }, [])
-
-
-
+    getProfissnionaisAll();
+  }, []);
 
   const handleSave = () => {
     if (selectedEvent) {
-      console.log(`Salvando o status '${status}' para o evento '${selectedEvent.title}'`);
+      console.log(
+        `Salvando o status '${status}' para o evento '${selectedEvent.title}'`
+      );
       // Aqui você pode fazer uma chamada de API para salvar o status no banco de dados
       // ou atualizar o estado global do evento se estiver usando um estado de gerenciamento como Redux ou Context API
-  
+
       // Simulando uma atualização bem sucedida
-      alert(`Status '${status}' salvo com sucesso para '${selectedEvent.title}'`);
-      handleClose();  // Fechar modal após salvar
-      setStatus('realizado')
+      alert(
+        `Status '${status}' salvo com sucesso para '${selectedEvent.title}'`
+      );
+      handleClose(); // Fechar modal após salvar
+      setStatus("realizado");
     }
   };
 
@@ -196,35 +199,36 @@ const getColorBasedOnStatus = (status: string): string => {
     setModalOpen(true); // Abre a modal
   };
 
-
-
-
   // Função para fechar a modal
   const handleClose = () => {
-    setStatus('realizado')
+    setStatus("realizado");
     setModalOpen(false);
     setModalOpenNovo(false);
   };
 
   // Função para adicionar tooltip a cada evento no momento da montagem
   const handleEventDidMount = ({ event, el }: any) => {
+    const formattedStart = format(new Date(event.start), "dd/MM/yyyy HH:mm:ss");
     tippy(el, {
-      content: `Title: ${event.title}<br>Start: ${event.start.toISOString()}`,
+      content: `Title: ${event.title}<br>Start: ${formattedStart}`,
       allowHTML: true,
       theme: "light",
     });
   };
-
 
   // Função para abrir o modal de novo agendamento
   const handleNewAppointmentClick = () => {
     setModalOpenNovo(true);
   };
 
+  const now = new Date();
+  const createdAt = new Date(selectedEvent?.extendedProps.created_at);
+  const hoursDiff = differenceInHours(now, createdAt);
 
+  const isUserTypeThree = user.tipo == 3;
+  const canShowOptionsForTypeThree = isUserTypeThree && hoursDiff <= 24;
+  const canShowAllOptions = !isUserTypeThree; // Tipo 1 e 2 podem ver todas as opções
 
-  
-  
   return (
     <>
       <FullCalendar
@@ -233,102 +237,60 @@ const getColorBasedOnStatus = (status: string): string => {
         headerToolbar={{
           left: "prev,next today",
           center: "title",
-          right: "newAppointmentButton dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+          right:
+            "newAppointmentButton dayGridMonth,timeGridWeek,timeGridDay,listMonth",
         }}
         customButtons={{
-
           newAppointmentButton: {
-            text: ' + Novo',
-            click: handleNewAppointmentClick
-          }
+            text: " + Novo",
+            click: handleNewAppointmentClick,
+          },
         }}
-        events={eventos} // Passando os eventos para o calendário
-        editable={true}
+        events={eventos}
+        editable={false}
         selectable={true}
         selectMirror={true}
         dayMaxEvents={true}
         weekends={true}
-        locale={ptLocale} // Definir o locale para português
-        eventDidMount={handleEventDidMount} // Garantir que o tooltip é aplicado a cada evento novo ou alterado
+        locale={ptLocale}
+        eventDidMount={handleEventDidMount}
         eventClick={handleEventClick}
+        aspectRatio={1.35}
+        // height="auto"
+        views={{
+          dayGridMonth: {
+            // Mês
+            titleFormat: { month: "long", year: "numeric" },
+          },
+          timeGridWeek: {
+            // Semana
+            titleFormat: { month: "short", day: "numeric" },
+          },
+          timeGridDay: {
+            // Dia
+            titleFormat: { month: "long", day: "numeric" },
+          },
+        }}
       />
 
-      <Dialog open={modalOpen} onClose={handleClose}>
-        <DialogTitle className="agenda-titele">
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            style={{ position: "absolute", right: "8px", top: "8px" }}
-          >
-            <CloseIcon />
-          </IconButton>
-          {selectedEvent?.title}
-        </DialogTitle>
-        <DialogContent className="agenda-informacao">
-          <text className="text">Informação sobre agenda</text>
-          <DialogContentText className="detalhes">
+      <EventModal
+        open={modalOpen}
+        handleClose={handleClose}
+        selectedEvent={selectedEvent}
+        status={status}
+        canShowOptionsForTypeThree={canShowOptionsForTypeThree}
+        canShowAllOptions={canShowAllOptions}
+        handleSave={handleSave}
+        medicos={profissionais}
+        onUpdate={onUpdate}
+      />
 
-          <div className="container-cliente">
-            <img
-                key={1}
-                src={selectedEvent?.extendedProps?.clientImageUrl}
-                alt={selectedEvent?.extendedProps?.clientName}
-                className={'avatar'}
-            />
-              {/* <text className="text">Cliente:</text> */}
-              <text>{selectedEvent?.extendedProps.clientName}</text>
-            </div>
-
-            <div>
-              <text className="text">De </text>{" "}
-              {selectedEvent && selectedEvent.start.toISOString()}
-              <text className="text"> ate </text>
-              {selectedEvent && selectedEvent.end?.toISOString()}
-            </div>
-
-
-            <div>
-              <text className="text">Details:</text>
-
-              <text>{selectedEvent?.extendedProps.details}</text>
-            </div>
-          </DialogContentText>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Status do Evento</FormLabel>
-            <RadioGroup
-              row
-              aria-label="status"
-              name="row-radio-buttons-group"
-              value={status}
-              onChange={handleStatusChange}
-            >
-              <FormControlLabel
-                value="realizado"
-                control={<Radio />}
-                label="Realizado"
-              />
-              <FormControlLabel
-                value="cancelado"
-                control={<Radio />}
-                label="Cancelado"
-              />
-              <FormControlLabel
-                value="remarcado"
-                control={<Radio />}
-                label="Remarcado"
-              />
-            </RadioGroup>
-    
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button className="btn-fechar" onClick={handleClose}>fechar</Button>
-          <Button className="btn-salvar" onClick={handleSave}>Salvar <FaCheckCircle /> </Button>
-        </DialogActions>
-      </Dialog>
-
-        <NovoAgendamentoModal  open={modalOpenNovo} handleClose={handleClose} medicos={profissionais} onUpdate={onUpdate}/>
-     
+      <NovoAgendamentoModal
+        open={modalOpenNovo}
+        handleClose={handleClose}
+        medicos={profissionais}
+        onUpdate={onUpdate}
+      />
     </>
   );
 };

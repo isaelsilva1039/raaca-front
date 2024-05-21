@@ -201,7 +201,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="lg">
+    <Dialog open={open} onClose={handleClose}  fullWidth maxWidth={'xl'}>
+         {/* <Dialog open={open} onClose={handleClose} fullWidth maxWidth={remarcado ? 'xl' : 'md'}> */}
       <DialogTitle className="agenda-titele">
         <IconButton
           aria-label="close"
@@ -246,9 +247,6 @@ const NovoAgendamentoModal: React.FC<Props> = ({
                         diasMes={diasMes}
                         diaSelecionado={diaSelecionado}
                         handleDiaClick={handleDiaClick}
-                        scrollLeft={scrollLeft}
-                        scrollRight={scrollRight}
-                        // scrollContainerRef={scrollContainerRef}
                       />
                       <HorarioList
                         horariosDisponiveis={horariosDisponiveis}

@@ -85,3 +85,9 @@
   .fc-theme-standard{
    padding: 0px 24px 0px 24px;
   }
+
+
+.cardContainer.selected {
+  background-color: #a704f8; /* Cor de fundo para indicar seleção */
+  color: aliceblue;
+}

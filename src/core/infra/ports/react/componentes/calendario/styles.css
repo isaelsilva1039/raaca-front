@@ -23,7 +23,7 @@
     .detalhes{
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 12px;
 
         .container-cliente{
             display: flex;
@@ -33,6 +33,8 @@
 
             img{
                 border: #8502c7 1px solid;
+                display: flex;
+                align-items: center;
             }
         }
     }
@@ -72,7 +74,9 @@
 
 
 .fc-listMonth-view  {
+    /* height: fit-content; */
     height: 80vh;
+
 }
 
 /* .fc-view-harness-active */
@@ -80,7 +84,6 @@
 
 
 .container-modal{
-    min-width: 400px;
     display: flex;
     gap: 10px;
     padding: 22px;
@@ -110,3 +113,33 @@
         gap: 8px;    
     }
 }
+
+
+
+/* CSS para responsividade da barra de ferramentas do FullCalendar */
+@media (max-width: 768px) {
+    .fc-header-toolbar {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .fc-toolbar-chunk {
+      margin-bottom: 10px; /* Adiciona espaço entre os elementos quando empilhados verticalmente */
+    }
+  
+    .fc-button {
+      font-size: 12px; /* Reduz o tamanho do texto dos botões */
+      padding: 5px 10px; /* Ajusta o padding para tornar os botões menores */
+    }
+  }
+
+  
+
+  /* Ajustes adicionais para botões customizados em telas pequenas */
+@media (max-width: 768px) {
+    .fc-newAppointmentButton-button { /* Ajuste o seletor conforme necessário */
+      font-size: 12px;
+      padding: 3px 6px;
+    }
+  }
+  

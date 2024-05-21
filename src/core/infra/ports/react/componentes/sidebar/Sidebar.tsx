@@ -12,19 +12,10 @@ export const Sidebar = (props: {
             <div>
                 <div className={`navigation-root ${props.isOpen ? 'open' : ''}`}>
                     <div className="logo">
-                        <img className="img" src="./img/logoRacca.png" />
+                        {/* <text className='agend'>Agendamento </text> */}
+                        <img className="img" src="https://raccasaude.com.br/wp-content/uploads/2023/11/sem-fundo-inteira-01-1.png" />
                     </div>
-                    <img
-                        src='./assets/separator.svg'
-                        style={{
-                            position: 'absolute',
-                            top: '100px',
-                            left: '0',
-                            width: '100%',
-                            height: '1px',
-                            backgroundSize: 'cover',
-                            backgroundPosition: '50% 50%',
-                        }} />
+                  
                     <Menu menuItems={props.items} />
                 </div>
             </div>

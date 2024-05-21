@@ -15,15 +15,15 @@
     border-radius: 4px;
     display: flex;
     flex-direction: row;
-    height: 93vh;
+    height: fit-content;
     gap: 20px;
-
+    overflow-y: auto;
 
     .menu-profissionais{
         padding: 18px 0px 0px 20px;
         width: 350px;
 
-        height: 87vh;
+        height: 90vh;
 
         overflow-y: auto; /* Mantém a funcionalidade de rolagem */
         scrollbar-width: none; /* Para Firefox */
@@ -33,7 +33,8 @@
             height: 54px;
             padding-bottom: 16px;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
+
             display: flex;
 
             .text-item{
@@ -48,8 +49,40 @@
 
     .calendario{
         width: 100%;
-        height: 100%;
+        height: fit-content;
 
 
+    }
+}
+
+
+
+
+/* Ajustes para telas pequenas */
+@media (max-width: 767px) {
+    .container-page {
+        flex-direction: column; /* Altera para layout vertical em telas pequenas */
+    }
+
+    .menu-profissionais {
+        padding: 18px 0px 0px 20px;
+        width: 100%; /* Ajusta a largura para a tela inteira */
+        min-height: 50px; /* Altura mínima para garantir visibilidade */
+        flex-direction: row; /* Itens alinhados horizontalmente */
+        overflow-x: auto; /* Habilita a rolagem horizontal */
+        overflow-y: hidden; /* Desabilita a rolagem vertical */
+        white-space: nowrap; /* Evita a quebra de linha dos itens internos */
+    }
+    
+
+    .menu-profissionais .DoctorCard {
+        display: inline-block; /* Cards como blocos inline para fluírem na linha */
+        width: auto; /* Ajuste automático da largura baseado no conteúdo */
+        margin-right: 20px; /* Espaço entre os cards */
+    }
+
+    .calendario {
+        width: 100%; /* Ajusta a largura para a tela inteira após a lista de profissionais */
+        height: calc(93vh - 100px); /* Ajusta a altura subtraindo a altura estimada dos cards */
     }
 }
