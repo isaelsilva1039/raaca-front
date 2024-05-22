@@ -210,7 +210,7 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
   const handleEventDidMount = ({ event, el }: any) => {
     const formattedStart = format(new Date(event.start), "dd/MM/yyyy HH:mm:ss");
     tippy(el, {
-      content: `Title: ${event.title}<br>Start: ${formattedStart}`,
+      content: `${event.title}<br>Start: ${formattedStart}`,
       allowHTML: true,
       theme: "light",
     });
@@ -256,7 +256,6 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
         eventDidMount={handleEventDidMount}
         eventClick={handleEventClick}
         aspectRatio={1.35}
-        // height="auto"
         views={{
           dayGridMonth: {
             // Mês

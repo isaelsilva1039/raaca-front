@@ -30,9 +30,13 @@ import { useCliente } from "@/core/helpes/UserContext";
 import MesTabs from "./MesTabs";
 import ScrollableDates from "./ScrollableDates";
 import HorarioList from "./HorarioList";
-import { postNovoAgendamento, updateAgendamento } from "@/app/api/horarios/posAgendamento";
+import {
+  postNovoAgendamento,
+  updateAgendamento,
+} from "@/app/api/horarios/posAgendamento";
 import { fetchMes } from "@/app/api/horarios/horarios-api";
 import { buscarHorariosDisponiveisMedico } from "@/app/api/horarios/getDisponilibilida";
+import LoadingSpinner from "../load/load";
 
 interface Medico {
   id: number;
@@ -71,6 +75,7 @@ const EventModal = ({
   const [horariosDisponiveis, setHorariosDisponiveis] = useState<Horario[]>([]);
   const [monthe, setMonthe] = useState<any>([]);
   const [load, setLoad] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [loadMes, setLoadMes] = useState<boolean>(false);
   const [isErro, setIsErro] = useState<boolean>(false);
   const [horarioSelecionado, setHorarioSelecionado] = useState<null>(null);
@@ -85,8 +90,6 @@ const EventModal = ({
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
   };
-
-
 
   const buscarHorariosDisponiveis = (medicoId: number, dia: string) => {
     setLoad(true);
@@ -134,36 +137,40 @@ const EventModal = ({
     setMedicoSelecionado("");
   };
 
-  console.log(status)
-
+  console.log(status);
 
   const salvarAgendamento = () => {
+    setLoading(true);
+    let startTime, endTime;
 
-        let startTime, endTime;
+    if (diaSelecionado && horarioSelecionadoState) {
+      startTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${
+        horarioSelecionadoState.start
+      }`;
+      endTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${
+        horarioSelecionadoState.end
+      }`;
+    }
 
-        if (diaSelecionado && horarioSelecionadoState) {
-            startTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${horarioSelecionadoState.start}`;
-            endTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${horarioSelecionadoState.end}`;
-        }
-
-      updateAgendamento(
-        selectedEvent?.extendedProps?.id_evento,
-        medicoSelecionado,
-        startTime,
-        endTime,
-        token,
-        status,
-        (data: any) => {
-          onUpdate();
-          limparCampos();
-          handleClose();
-        },
-        (onError: any) => {
-          setIsErro(true);
-          console.error("Erro ao criar agendamento:", onError);
-        }
-      );
-    
+    updateAgendamento(
+      selectedEvent?.extendedProps?.id_evento,
+      medicoSelecionado,
+      startTime,
+      endTime,
+      token,
+      status,
+      (data: any) => {
+        onUpdate();
+        limparCampos();
+        setLoading(false);
+        handleClose();
+      },
+      (onError: any) => {
+        setIsErro(true);
+        setLoading(false);
+        console.error("Erro ao criar agendamento:", onError);
+      }
+    );
   };
 
   const handleDiaClick = (dia: Date) => {
@@ -174,7 +181,7 @@ const EventModal = ({
     }
   };
 
-  console.log(selectedEvent)
+  console.log(selectedEvent);
 
   const handleMesChange = (mes: number) => {
     setMesSelecionado(mes);
@@ -224,7 +231,12 @@ const EventModal = ({
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} fullWidth maxWidth={remarcado ? 'xl' : 'md'}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth={remarcado ? "xl" : "md"}
+      >
         <DialogTitle className="agenda-titele">
           <IconButton
             aria-label="close"
@@ -247,149 +259,166 @@ const EventModal = ({
             <text>{selectedEvent?.extendedProps.medicoName}</text>
           </div>
         </DialogTitle>
-        <DialogContent className="agenda-informacao">
-          <text className="text">Informação sobre agenda</text>
-          {!remarcado && (
-            <DialogContentText className="detalhes">
-              <div className="container-cliente">
-                <img
-                  key={1}
-                  src={selectedEvent?.extendedProps?.cliente_avatar}
-                  alt={selectedEvent?.extendedProps?.clientName}
-                  className={"avatar"}
-                />
-                <text>{selectedEvent?.extendedProps.clientName}</text>
-              </div>
-              <div>
-                <text className="text">De </text>
-                {selectedEvent &&
-                  format(new Date(selectedEvent.start), "dd/MM/yyyy HH:mm:ss")}
-                <text className="text"> até </text>
-                {selectedEvent &&
-                  selectedEvent.end &&
-                  format(
-                    addMinutes(new Date(selectedEvent.end), 1),
-                    "dd/MM/yyyy HH:mm:ss"
-                  )}
-              </div>
-              <div>
-                <text className="text">status :</text>
-                <text>{selectedEvent?.extendedProps.details}</text>
-              </div>
-            </DialogContentText>
-          )}
-          <DialogContentText>
-            {canShowOptionsForTypeThree ? (
-              <FormControl component="fieldset">
-                <FormLabel component="legend">
-                  Atualizar status agendamento
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="status"
-                  name="row-radio-buttons-group"
-                  value={status}
-                  onChange={handleStatusChange}
-                >
-                  <FormControlLabel
-                    value="cancelado"
-                    control={<Radio />}
-                    label="Cancelado"
-                  />
-                  <FormControlLabel
-                    value="remarcado"
-                    control={<Radio />}
-                    label="Remarcado"
-                  />
-                </RadioGroup>
-              </FormControl>
-            ) : (
-              <FormControl component="fieldset">
-                <FormLabel component="legend">
-                  Atualizar status agendamento
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-label="status"
-                  name="row-radio-buttons-group"
-                  value={status}
-                  onChange={handleStatusChange}
-                >
-                  <FormControlLabel
-                    value="realizado"
-                    control={<Radio />}
-                    label="Realizado"
-                    onClick={() => setRemarcado(false)}
-                  />
-                  <FormControlLabel
-                    value="cancelado"
-                    control={<Radio />}
-                    onClick={() => setRemarcado(false)}
-                    label="Cancelado"
-                  />
-                  <FormControlLabel
-                    value="remarcado"
-                    control={<Radio />}
-                    onClick={() => setRemarcado(true)}
-                    label="Remarcado"
-                  />
-                </RadioGroup>
-              </FormControl>
-            )}
-          </DialogContentText>
 
-          {remarcado && (
-            <FormControl fullWidth>
-              <h2>Selecione um Profissional</h2>
-              <MedicosHorizontalList
-                medicos={medicos}
-                medicoSelecionado={medicoSelecionado}
-                setMedicoSelecionado={setMedicoSelecionado}
-              />
-
-              {medicoSelecionado && (
-                <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
-                  <Box mt={2} mb={2}>
-                    {loadMes ? (
-                      <Grid
-                        item
-                        xs={12}
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <CircularProgress color="secondary" />
-                      </Grid>
-                    ) : (
-                      <>
-                        {monthe.length > 0 ? (
-                          <>
-                            <MesTabs
-                              monthe={monthe}
-                              mesSelecionado={mesSelecionado}
-                              handleMesChange={handleMesChange}
-                            />
-                            <ScrollableDates
-                              diasMes={diasMes}
-                              diaSelecionado={diaSelecionado}
-                              handleDiaClick={handleDiaClick}
-                            />
-                            <HorarioList
-                              horariosDisponiveis={horariosDisponiveis}
-                              horarioSelecionado={horarioSelecionado}
-                              handleHorarioClick={handleHorarioClick}
-                              load={load}
-                            />
-                          </>
-                        ) : (
-                          "Agendas não liberadas"
-                        )}
-                      </>
+        {loading ? (
+          <Grid
+            item
+            xs={12}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            <CircularProgress color="secondary" />
+          </Grid>
+        ) : (
+          <DialogContent className="agenda-informacao">
+            <text className="text">Informação sobre agenda</text>
+            {!remarcado && (
+              <DialogContentText className="detalhes">
+                <div className="container-cliente">
+                  <img
+                    key={1}
+                    src={selectedEvent?.extendedProps?.cliente_avatar}
+                    alt={selectedEvent?.extendedProps?.clientName}
+                    className={"avatar"}
+                  />
+                  <text>{selectedEvent?.extendedProps.clientName}</text>
+                </div>
+                <div>
+                  <text className="text">De </text>
+                  {selectedEvent &&
+                    format(
+                      new Date(selectedEvent.start),
+                      "dd/MM/yyyy HH:mm:ss"
                     )}
-                  </Box>
+                  <text className="text"> até </text>
+                  {selectedEvent &&
+                    selectedEvent.end &&
+                    format(
+                      addMinutes(new Date(selectedEvent.end), 1),
+                      "dd/MM/yyyy HH:mm:ss"
+                    )}
+                </div>
+                <div>
+                  <text className="text">status :</text>
+                  <text>{selectedEvent?.extendedProps.details}</text>
+                </div>
+              </DialogContentText>
+            )}
+            <DialogContentText>
+              {canShowOptionsForTypeThree ? (
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">
+                    Atualizar status agendamento
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="status"
+                    name="row-radio-buttons-group"
+                    value={status}
+                    onChange={handleStatusChange}
+                  >
+                    <FormControlLabel
+                      value="cancelado"
+                      control={<Radio />}
+                      label="Cancelado"
+                    />
+                    <FormControlLabel
+                      value="remarcado"
+                      control={<Radio />}
+                      label="Remarcado"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              ) : (
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">
+                    Atualizar status agendamento
+                  </FormLabel>
+                  <RadioGroup
+                    row
+                    aria-label="status"
+                    name="row-radio-buttons-group"
+                    value={status}
+                    onChange={handleStatusChange}
+                  >
+                    <FormControlLabel
+                      value="realizado"
+                      control={<Radio />}
+                      label="Realizado"
+                      onClick={() => setRemarcado(false)}
+                    />
+                    <FormControlLabel
+                      value="cancelado"
+                      control={<Radio />}
+                      onClick={() => setRemarcado(false)}
+                      label="Cancelado"
+                    />
+                    <FormControlLabel
+                      value="remarcado"
+                      control={<Radio />}
+                      onClick={() => setRemarcado(true)}
+                      label="Remarcado"
+                    />
+                  </RadioGroup>
                 </FormControl>
               )}
-            </FormControl>
-          )}
-        </DialogContent>
+            </DialogContentText>
+
+            {remarcado && (
+              <FormControl fullWidth>
+                <h2>Selecione um Profissional</h2>
+                <MedicosHorizontalList
+                  medicos={medicos}
+                  medicoSelecionado={medicoSelecionado}
+                  setMedicoSelecionado={setMedicoSelecionado}
+                />
+
+                {medicoSelecionado && (
+                  <FormControl
+                    fullWidth
+                    style={{ display: "flex", gap: "10px" }}
+                  >
+                    <Box mt={2} mb={2}>
+                      {loadMes ? (
+                        <Grid
+                          item
+                          xs={12}
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <CircularProgress color="secondary" />
+                        </Grid>
+                      ) : (
+                        <>
+                          {monthe.length > 0 ? (
+                            <>
+                              <MesTabs
+                                monthe={monthe}
+                                mesSelecionado={mesSelecionado}
+                                handleMesChange={handleMesChange}
+                              />
+                              <ScrollableDates
+                                diasMes={diasMes}
+                                diaSelecionado={diaSelecionado}
+                                handleDiaClick={handleDiaClick}
+                              />
+                              <HorarioList
+                                horariosDisponiveis={horariosDisponiveis}
+                                horarioSelecionado={horarioSelecionado}
+                                handleHorarioClick={handleHorarioClick}
+                                load={load}
+                              />
+                            </>
+                          ) : (
+                            "Agendas não liberadas"
+                          )}
+                        </>
+                      )}
+                    </Box>
+                  </FormControl>
+                )}
+              </FormControl>
+            )}
+          </DialogContent>
+        )}
         <DialogActions>
           <Button className="btn-fechar" onClick={handleClose}>
             fechar

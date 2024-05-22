@@ -115,6 +115,11 @@
 }
 
 
+.fc-event {
+    cursor: pointer;
+}
+
+
 
 /* CSS para responsividade da barra de ferramentas do FullCalendar */
 @media (max-width: 768px) {

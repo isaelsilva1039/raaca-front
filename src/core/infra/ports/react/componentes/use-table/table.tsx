@@ -31,7 +31,7 @@ const CustomTable = ({ columns, data, expandedRows, toggleRowExpanded, renderRow
       <tbody {...getTableBodyProps() } key={columns?.id}>
         {rows.map(row => {
           prepareRow(row);
-          const isExpanded = expandedRows[row.original.id];
+          const isExpanded = expandedRows[row?.original?.id];
           return (
             <>
               <tr {...row.getRowProps()  } onClick={() => toggleRowExpanded(row.original.id) } key={row?.original?.id}>
