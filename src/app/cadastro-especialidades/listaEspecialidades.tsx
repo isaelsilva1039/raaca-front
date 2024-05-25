@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { IconButton, Tooltip } from '@mui/material';
+import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
 const tableStyles = {
   maxWidth: '100%',
@@ -12,7 +14,6 @@ const tableStyles = {
 };
 
 const tableHeaderStyles = {
-  
   color: '#a500f7',
   padding: '10px',
   textAlign: 'center',
@@ -97,8 +98,16 @@ const SpecialtyList = ({ specialties, onDelete, onEdit }) => {
               <td style={{ ...tableCellStyles, width: '40%', textAlign: 'center', paddingLeft: '10px' }}>{specialty.description}</td>
               <td style={{ ...tableCellStyles, width: '30%', fontSize: '14px', color: '#666' }}>{specialty.duration}</td>
               <td style={{ ...tableCellStyles, width: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <button onClick={() => handleDelete(specialty.id)} style={{ ...buttonStyles, marginRight: '5px' }}>Excluir</button>
-                <button onClick={() => handleEdit(specialty)} style={{ ...buttonStyles, backgroundColor: '#ffc107' }}>Editar</button>
+                <Tooltip title="Editar">
+                  <IconButton onClick={() => handleEdit(specialty)}>
+                    <FaUserEdit size={18} color="#707EAE" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Deletar">
+                  <IconButton onClick={() => handleDelete(specialty.id)}>
+                    <FaTrash color="red" size={14} />
+                  </IconButton>
+                </Tooltip>
               </td>
             </tr>
           ))}

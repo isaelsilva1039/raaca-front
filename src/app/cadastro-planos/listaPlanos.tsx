@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { IconButton, Tooltip } from '@mui/material';
+import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
 const tableStyles = {
   maxWidth: '100%',
@@ -94,42 +96,31 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
           {currentPlans.map((plan) => (
             <tr key={plan.id} style={tableRowStyles}>
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.id}</td>
-              <td style={{ ...tableCellStyles, width: '20%', textAlign: 'center', paddingLeft: '10px' }}>{plan.description}</td>
-              <td style={{ ...tableCellStyles, width: '15%', fontSize: '14px
-              }}>{plan.consultationCount}</td>
-              <td style={{ ...tableCellStyles, width: '35%', fontSize: '14px' }}>{plan.textoplano}</td>
+              <td style={{ ...tableCellStyles, width: '20%' }}>{plan.description}</td>
+              <td style={{ ...tableCellStyles, width: '15%' }}>{plan.consultationCount}</td>
+              <td style={{ ...tableCellStyles, width: '35%' }}>{plan.textoplano}</td>
               <td style={{ ...tableCellStyles, width: '20%', display: 'flex', justifyContent: 'center' }}>
-                <button
-                  onClick={() => handleEdit(plan)}
-                  style={{ ...buttonStyles, marginRight: '10px' }}
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => handleDelete(plan.id)}
-                  style={{ ...buttonStyles, backgroundColor: '#dc3545' }}
-                >
-                  Excluir
-                </button>
+                <Tooltip title="Editar">
+                  <IconButton onClick={() => handleEdit(plan)}>
+                    <FaUserEdit size={18} color="#707EAE" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Deletar">
+                  <IconButton onClick={() => handleDelete(plan.id)}>
+                    <FaTrash color="red" size={14} />
+                  </IconButton>
+                </Tooltip>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div style={paginationStyles}>
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          style={iconButtonStyles}
-        >
+        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} style={iconButtonStyles}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
         <span>{currentPage} de {totalPages}</span>
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          style={iconButtonStyles}
-        >
+        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} style={iconButtonStyles}>
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>
