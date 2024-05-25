@@ -1,4 +1,5 @@
 import { Button, Grid, CircularProgress } from "@mui/material";
+import './HorarioList.css'; // Certifique-se de que o caminho está correto
 
 interface HorarioListProps {
   horariosDisponiveis: any[];
@@ -17,18 +18,13 @@ const HorarioList: React.FC<HorarioListProps> = ({
     <Grid
       container
       spacing={2}
-      style={{
-        padding: "0px 57px 0px 61px",
-      }}
+      className="gridContainer"
     >
       {load ? (
         <Grid
           item
           xs={12}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
+          className="gridItem"
         >
           <CircularProgress color="secondary" />
         </Grid>
@@ -36,14 +32,10 @@ const HorarioList: React.FC<HorarioListProps> = ({
         <>
           {horariosDisponiveis.length > 0 ? (
             horariosDisponiveis.map((horario, index) => (
-              <Grid item xs={3} key={index}>
+              <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
+
                 <Button
-                  style={{
-                    color: horarioSelecionado === horario ? "white " : "#9c27b0",
-                    width: "100%",
-                    background: horarioSelecionado === horario ? "#9c27b0" : "white",
-                    border: horarioSelecionado === horario ? "#9c27b0 1px solid" : "#9c27b0 1px solid",
-                  }}
+                  className={`button ${horarioSelecionado === horario ? 'buttonSelected' : 'buttonNotSelected'}`}
                   onClick={() => handleHorarioClick(horario)}
                 >
                   {horario.start} - {horario.end}
@@ -54,11 +46,7 @@ const HorarioList: React.FC<HorarioListProps> = ({
             <Grid
               item
               xs={12}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                padding: "50px",
-              }}
+              className="indisponivel"
             >
               Horários indisponíveis
             </Grid>

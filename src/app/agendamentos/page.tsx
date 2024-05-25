@@ -1,7 +1,7 @@
 "use client";
 import DoctorCard from "@/core/infra/ports/react/componentes/doctor/cards-doctor";
 import { Doctor } from "@/core/infra/ports/react/componentes/doctor/types";
-import { Typography } from "@mui/material";
+import { CircularProgress, Grid, Skeleton, Typography } from "@mui/material";
 import "./styles.css";
 import CalendarComponent from "@/core/infra/ports/react/componentes/calendario/CalendarComponent";
 import styled from "styled-components";
@@ -9,18 +9,23 @@ import { useEffect, useState } from "react";
 import { fetchProfissionais } from "../cadastro-profissionais/ferch";
 import { useCliente } from "@/core/helpes/UserContext";
 import AgendamentosSkeleton from "@/core/infra/ports/react/componentes/skeleton/AgendamentosSkeleton";
-import { fetchEventos } from "../api/horarios/eventos";
+import { fetchEventos, fetchEventosMedico } from "../api/horarios/eventos";
+import { FaFilterCircleXmark } from "react-icons/fa6";
+
+import { FiFilter as Filter } from "react-icons/fi";
+import { getProfissnionais } from "../cadastro-profissionais/getProfissionais";
 
 interface IData {
   id: number;
   nome: string;
   especialidade: string;
   avatarUrl: string;
+  user_id: number;
 }
 
 export default function Agendamentos() {
-  const [profissionais, setProfissionais] = useState<IData[]>([]);
-  
+  const [profissionais, setProfissionais] = useState<any>([]);
+
   const [eventos, setEventos] = useState<any>({});
 
   const [totalItems, setTotalItems] = useState(0);
@@ -30,19 +35,20 @@ export default function Agendamentos() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState<any>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-
+  const [idSelect, setIdSelect] = useState<null | number>(null);
   const { token, user } = useCliente();
-
+  const [loadingEventosMedico, setLoadingEventosMedico] =
+    useState<boolean>(false);
   const [novoEventoState, setNovoEvento] = useState(false);
 
   const fetchProfissionaisAll = () => {
-    if(!token) return;
+    if (!token) return;
     setLoading(true);
     const onFetchSuccess = (data: any) => {
-      setProfissionais(data.original.data);
-      setTotalItems(data.original.total);
-      setItemsPerPage(data.original.perPage);
-
+      setProfissionais(data?.original?.profissionais);
+      console.log(data);
+      setTotalItems(data?.original?.total);
+      setItemsPerPage(data?.original?.perPage);
       setLoading(false);
     };
 
@@ -52,26 +58,19 @@ export default function Agendamentos() {
       setLoading(false);
     };
 
-    fetchProfissionais(
-      searchTerm,
-      currentPage,
-      onFetchSuccess,
-      onFetchError,
-      token
-    );
+    getProfissnionais(onFetchSuccess, onFetchError, token);
   };
 
-  const onUpdate = ( ) => {
-    setNovoEvento(true)
-  } 
+  const onUpdate = () => {
+    setNovoEvento(true);
+  };
 
   const fetchMyEventos = () => {
-    if(!token) return;
+    if (!token) return;
 
     setLoading(true);
     const onFetchSuccess = (data: any) => {
-      setEventos(data.data);
-      console.log(data.data)
+      setEventos(data?.data);
       setLoading(false);
     };
 
@@ -81,53 +80,61 @@ export default function Agendamentos() {
       setLoading(false);
     };
 
-    fetchEventos(
-      onFetchSuccess,
-      onFetchError,
-      token
-    );
+    fetchEventos(onFetchSuccess, onFetchError, token);
   };
 
   useEffect(() => {
     fetchProfissionaisAll();
-    fetchMyEventos()
+    fetchMyEventos();
   }, [token]);
 
+  const fetchMyEventosFilter = () => {
+    if (!token) return;
+
+    setLoadingEventosMedico(true);
+
+    const onFetchSuccess = (data: any) => {
+      setEventos(data.data);
+      setLoading(false);
+      setLoadingEventosMedico(false);
+    };
+
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+      setError(error);
+      setLoading(false);
+      setLoadingEventosMedico(false);
+    };
+
+    fetchEventosMedico(onFetchSuccess, onFetchError, token, idSelect);
+  };
+
   useEffect(() => {
+    fetchMyEventosFilter();
+  }, [idSelect]);
 
-  
-
-    if(novoEventoState){
-
-
-      if(!token) return;
-
+  useEffect(() => {
+    if (novoEventoState) {
+      if (!token) return;
 
       const onFetchSuccess = (data: any) => {
         setEventos(data.data);
       };
-  
+
       const onFetchError = (error: any) => {
         console.error("Erro ao buscar profissionais:", error);
         setError(error);
         setLoading(false);
       };
 
-
-      fetchEventos(
-        
-        onFetchSuccess,
-        onFetchError,
-        token
-      );
-      setNovoEvento(false)
+      fetchEventos(onFetchSuccess, onFetchError, token);
+      setNovoEvento(false);
     }
   }, [novoEventoState]);
 
-
-  
-  
-
+  const onMedicoSelec = (id_user: any) => {
+    setIdSelect(id_user);
+  };
 
   return (
     <div className="container">
@@ -152,15 +159,42 @@ export default function Agendamentos() {
               <div className="menu-profissionais">
                 <div className="card-lista-prof">
                   <text className="text-item">Lista de profissionais</text>
+                  {idSelect ? (
+                    <FaFilterCircleXmark
+                      color="#707EAE"
+                      onClick={() => setIdSelect(null)}
+                      style={{ cursor: "pointer" }}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </div>
 
-                {profissionais.map((doctor) => (
-                  <DoctorCard key={doctor.id} doctor={doctor} />
+                {profissionais?.map((doctor: any) => (
+                  <DoctorCard
+                    doctor={doctor}
+                    onMedicoSelec={onMedicoSelec}
+                    idSelect={idSelect}
+                  />
                 ))}
               </div>
             )}
             <div className="calendario">
-              <CalendarComponent events={eventos} onUpdate={onUpdate} />
+              {loadingEventosMedico ? (
+                <Grid
+                  item
+                  xs={12}
+                  sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", height: 500 }}
+
+                >
+                     <CircularProgress color="secondary" />
+                      <Typography variant="h6" sx={{ mt: 2 }} color="secondary">
+                        Carregando...
+                      </Typography>
+                </Grid>
+              ) : (
+                <CalendarComponent events={eventos} onUpdate={onUpdate} />
+              )}
             </div>
           </div>
         </>

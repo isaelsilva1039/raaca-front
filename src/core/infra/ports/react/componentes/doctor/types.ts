@@ -4,5 +4,6 @@ export interface Doctor {
   nome: string;
   especialidade: string;
   avatarUrl: string;
+  user_id: number;
   }
   

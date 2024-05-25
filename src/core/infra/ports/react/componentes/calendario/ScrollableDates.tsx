@@ -6,22 +6,30 @@ interface Props {
   diasMes: Date[];
   diaSelecionado: Date | null;
   handleDiaClick: (dia: Date) => void;
-  scrollLeft: () => void;
-  scrollRight: () => void;
 }
 
 const ScrollableDates: React.FC<Props> = ({
   diasMes,
   diaSelecionado,
   handleDiaClick,
-  scrollLeft,
-  scrollRight,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const tomorrow= startOfToday();
   
-  const today = addDays(tomorrow, 1); // A partir de amanhã
+  const today = addDays(tomorrow, 1);
 
+   // Funções para rolar as datas horizontalmente
+   const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
 
   return (
     <Box mt={2} mb={2} style={{ display: "flex", alignItems: "center" }}>
