@@ -5,7 +5,6 @@ const formContainerStyles = {
   flexDirection: 'column',
   alignItems: 'center',
   padding: '20px',
-  border: '2px solid #a500f7',
   borderRadius: '8px',
   backgroundColor: '#f9f9f9',
 };

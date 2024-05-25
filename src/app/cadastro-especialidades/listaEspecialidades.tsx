@@ -83,8 +83,7 @@ const SpecialtyList = ({ specialties, onDelete, onEdit }) => {
 
   return (
     <div style={tableStyles}>
-      <h2 style={tableHeaderStyles}>Especialidades Cadastradas</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '5px' }}>
+      <table style={{ width: '100%', }}>
         <thead>
           <tr style={{ ...tableRowStyles, background: '#fafafa', textTransform: 'uppercase', fontSize: '14px', color: '#686868', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
             <th style={{ ...tableCellStyles, width: '10%' }}>ID</th>
