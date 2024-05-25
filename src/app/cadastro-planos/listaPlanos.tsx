@@ -24,6 +24,8 @@ const tableRowStyles = {
   alignItems: 'center',
   borderBottom: '1px solid #ddd',
   padding: '10px',
+  transition: 'transform 0.3s ease-in-out',
+  cursor: 'pointer',
 };
 
 const tableCellStyles = {
@@ -82,9 +84,9 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
   return (
     <div style={tableStyles}>
       <h2 style={tableHeaderStyles}>Planos Cadastrados</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '5px' }}>
         <thead>
-          <tr style={{ ...tableRowStyles, background: '#f0f0f0', textTransform: 'uppercase', fontSize: '14px' }}>
+          <tr style={{ ...tableRowStyles, background: '#f0f0f0', textTransform: 'uppercase', fontSize: '14px', color: '#686868', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
             <th style={{ ...tableCellStyles, width: '10%' }}>ID</th>
             <th style={{ ...tableCellStyles, width: '20%' }}>Descrição</th>
             <th style={{ ...tableCellStyles, width: '15%' }}>Consultas/Mês</th>
@@ -94,7 +96,7 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
         </thead>
         <tbody>
           {currentPlans.map((plan) => (
-            <tr key={plan.id} style={tableRowStyles}>
+            <tr key={plan.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.id}</td>
               <td style={{ ...tableCellStyles, width: '20%' }}>{plan.description}</td>
               <td style={{ ...tableCellStyles, width: '15%' }}>{plan.consultationCount}</td>
