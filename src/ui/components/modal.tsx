@@ -1,6 +1,6 @@
 import React from 'react';
 import './modal.css'; 
-import { AiOutlineClose, AiOutlineSetting } from 'react-icons/ai'; // Importando ícones
+import { AiOutlineClose, AiOutlineSetting } from 'react-icons/ai'; 
 import { useCliente } from '@/core/helpes/UserContext';
 
 interface ModalProps {

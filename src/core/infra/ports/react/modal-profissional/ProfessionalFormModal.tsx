@@ -7,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Avatar from "@mui/material/Avatar"; // Importando componente Avatar
+import Avatar from "@mui/material/Avatar";
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
 import { Dropdown } from "react-bootstrap";

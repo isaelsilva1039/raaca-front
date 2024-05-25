@@ -3,7 +3,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['127.0.0.1', 'racca.store'], 
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'racca.store',
+        pathname: '/api/racca/profissional/avatar/**',
+      },
+    ],
   },
 }
 
