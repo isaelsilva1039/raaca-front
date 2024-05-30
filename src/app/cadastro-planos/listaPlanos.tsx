@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { IconButton, Tooltip } from '@mui/material';
+import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
 const tableStyles = {
   maxWidth: '100%',
@@ -22,6 +24,8 @@ const tableRowStyles = {
   alignItems: 'center',
   borderBottom: '1px solid #ddd',
   padding: '10px',
+  transition: 'transform 0.3s ease-in-out',
+  cursor: 'pointer',
 };
 
 const tableCellStyles = {
@@ -80,9 +84,9 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
   return (
     <div style={tableStyles}>
       <h2 style={tableHeaderStyles}>Planos Cadastrados</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', boxShadow: '0 1px 3px rgba(0,0,0,0.1)', borderRadius: '5px' }}>
         <thead>
-          <tr style={{ ...tableRowStyles, background: '#f0f0f0', textTransform: 'uppercase', fontSize: '14px' }}>
+          <tr style={{ ...tableRowStyles, background: '#f0f0f0', textTransform: 'uppercase', fontSize: '14px', color: '#686868', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
             <th style={{ ...tableCellStyles, width: '10%' }}>ID</th>
             <th style={{ ...tableCellStyles, width: '20%' }}>Descrição</th>
             <th style={{ ...tableCellStyles, width: '15%' }}>Consultas/Mês</th>
@@ -92,44 +96,33 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
         </thead>
         <tbody>
           {currentPlans.map((plan) => (
-            <tr key={plan.id} style={tableRowStyles}>
+            <tr key={plan.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.id}</td>
-              <td style={{ ...tableCellStyles, width: '20%', textAlign: 'center', paddingLeft: '10px' }}>{plan.description}</td>
-              <td style={{ ...tableCellStyles, width: '15%', fontSize: '14px
-              }}>{plan.consultationCount}</td>
-              <td style={{ ...tableCellStyles, width: '35%', fontSize: '14px' }}>{plan.textoplano}</td>
+              <td style={{ ...tableCellStyles, width: '20%' }}>{plan.description}</td>
+              <td style={{ ...tableCellStyles, width: '15%' }}>{plan.consultationCount}</td>
+              <td style={{ ...tableCellStyles, width: '35%' }}>{plan.textoplano}</td>
               <td style={{ ...tableCellStyles, width: '20%', display: 'flex', justifyContent: 'center' }}>
-                <button
-                  onClick={() => handleEdit(plan)}
-                  style={{ ...buttonStyles, marginRight: '10px' }}
-                >
-                  Editar
-                </button>
-                <button
-                  onClick={() => handleDelete(plan.id)}
-                  style={{ ...buttonStyles, backgroundColor: '#dc3545' }}
-                >
-                  Excluir
-                </button>
+                <Tooltip title="Editar">
+                  <IconButton onClick={() => handleEdit(plan)}>
+                    <FaUserEdit size={18} color="#707EAE" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Deletar">
+                  <IconButton onClick={() => handleDelete(plan.id)}>
+                    <FaTrash color="red" size={14} />
+                  </IconButton>
+                </Tooltip>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div style={paginationStyles}>
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          style={iconButtonStyles}
-        >
+        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} style={iconButtonStyles}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
         <span>{currentPage} de {totalPages}</span>
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          style={iconButtonStyles}
-        >
+        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} style={iconButtonStyles}>
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>

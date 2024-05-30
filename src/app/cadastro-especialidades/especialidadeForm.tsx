@@ -2,15 +2,11 @@ import React, { useState, useEffect } from 'react';
 
 const formStyles = {
 
-  margin: '15px auto',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  border: '2px solid #a500f7',
   borderRadius: '8px',
   backgroundColor: '#f9f9f9',
-  padding: '10px',
-  
 };
 
 const inputRowStyles = {
@@ -26,7 +22,6 @@ const labelStyles = {
 
 const tableHeaderStyles = {
   color: '#a500f7',
-  padding: '10px',
   textAlign: 'center',
   maxWidth: '100%',
   

@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import SpecialtyForm from './especialidadeForm';
 import SpecialtyList from './listaEspecialidades';
 
+const homeStyles = {
+  backgroundColor: '#fff',
+  padding: '20px',
+};
+
 const Home = () => {
   const [specialties, setSpecialties] = useState([]);
   const [nextId, setNextId] = useState(1);
@@ -10,20 +15,18 @@ const Home = () => {
 
   const handleSubmit = (specialty) => {
     const newSpecialty = {
-      id: nextId, 
+      id: nextId,
       description: specialty.description,
       duration: specialty.duration,
     };
 
     if (editData) {
-      
       const updatedSpecialties = specialties.map(item =>
         item.id === specialty.id ? { ...specialty } : item
       );
       setSpecialties(updatedSpecialties);
       setEditData(null);
     } else {
-     
       setSpecialties([...specialties, newSpecialty]);
       setNextId(nextId + 1);
     }
@@ -34,15 +37,15 @@ const Home = () => {
   };
 
   const handleEdit = (specialty) => {
-    setEditData(specialty); 
+    setEditData(specialty);
   };
 
   const handleCancel = () => {
-    setEditData(null); 
+    setEditData(null);
   };
 
   return (
-    <div>
+    <div style={homeStyles}>
       <SpecialtyForm onSubmit={handleSubmit} initialData={editData} onCancel={handleCancel} />
       <SpecialtyList specialties={specialties} onDelete={handleDelete} onEdit={handleEdit} />
     </div>

@@ -27,7 +27,7 @@ const CustomTable: React.FC<ICustomTableProps> = ({
       columns,
       data,
     },
-    useExpanded 
+    useExpanded
   );
 
   return (

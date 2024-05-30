@@ -6,8 +6,6 @@ import PlanList from './listaPlanos';
 const mainContainerStyles = {
   margin: '20px auto',
   padding: '20px',
-  border: '2px solid #a500f7',
-  borderRadius: '8px',
   backgroundColor: '#fff',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
 };
