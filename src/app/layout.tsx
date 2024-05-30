@@ -86,9 +86,6 @@ export default function RootLayout({
   const [isOpen, setIsOpen] = useState(false);
 
 
-  // const { user, token, logout } = useCliente();
-
-
   const toggleMenu = () => {
     setIsOpen((prevIsOpen) => {
       open = !prevIsOpen;
@@ -102,9 +99,6 @@ export default function RootLayout({
   useEffect(() => {
     if (route === "/") window.location.href = "/login";
   }, [route]);
-
-
-
 
 
   const items = menuItems.map((item, index) => {
@@ -140,19 +134,11 @@ export const getLayout = (props: {
   children: React.ReactNode;
   isLogin: any;
 }) => {
+
   const classLogin = props.isLogin ? "content-login" : "content";
 
-  const handleLogout = () => {
-    localStorage.clear();
-
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-
-    window.location.href = "/";
-  };
-
   return (
-    <UserProvider >
+    <UserProvider>
     <>
       <html className="h-screen w-screen">
         <body className={inter.className} style={{ background: "#EFF1F3" }}>

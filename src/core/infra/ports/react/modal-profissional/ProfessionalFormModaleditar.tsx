@@ -134,7 +134,6 @@ const ProfessionalFormModaleditar = ({
     if (fileInput) (fileInput as HTMLInputElement).value = "";
   };
 
-  console.log(specialty);
   return (
     <>
       <Dialog open={show} onClose={handleClose}>

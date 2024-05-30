@@ -150,7 +150,11 @@ export default function Professional() {
       <Row className="flexRow">
         <Col className="columnFlex">
           <img
-            src={row.original.avatarUrl || "path/to/default/avatar.jpg"}
+          src={
+            row.original?.avatarUrl
+              ? row.original.avatarUrl
+              : "/img/avatar1.png"
+          }
             alt={`Avatar de ${row.original.nome}`}
             className="avatarImage"
           />

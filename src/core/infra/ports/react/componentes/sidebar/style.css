@@ -1,78 +1,75 @@
 .navigation-root {
-    background-color: white;
-    height: 100vh;
-    position: fixed;
-    width: 250px;
-    z-index: 2;
+  background-color: white;
+  height: 100vh;
+  position: fixed;
+  width: 250px;
+  z-index: 2;
 }
 
 .navigation-root .logo {
-    display: flex;
+  display: flex;
   align-items: center;
   justify-content: center; /* Centraliza o texto horizontalmente */
   padding: 20px 50px; /* Aumenta o padding para um visual mais espaçoso */
   background-color: #fff; /* Fundo branco, neutro e limpo */
   border-bottom: 2px solid #ddd; /* Linha sutil para separação visual */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Sombra leve para efeito de profundidade */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra leve para efeito de profundidade */
 }
 
-
 .agend {
-    font-size: 24px; /* Tamanho de fonte adequado para cabeçalhos */
-    font-weight: bold; /* Texto em negrito para maior impacto */
-    color: #5a5a5a; /* Cor sutil, moderna mas destacada */
-    letter-spacing: 1px; /* Espaçamento entre as letras para um efeito mais refinado */
-  }
-
+  font-size: 24px; /* Tamanho de fonte adequado para cabeçalhos */
+  font-weight: bold; /* Texto em negrito para maior impacto */
+  color: #5a5a5a; /* Cor sutil, moderna mas destacada */
+  letter-spacing: 1px; /* Espaçamento entre as letras para um efeito mais refinado */
+}
 
 .navigation-root .logo .img {
-    width: 250px;
-    height: 80px;
-    padding-left: 10px;
-    padding-right: 10px;
-
+  width: 250px;
+  height: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .navigation-root .span {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 @media only screen and (max-width: 768px) {
-    #menu-btn {
-        background: #7c02b9;
-        border: none;
-        font-size: 36px;
-        cursor: pointer;
-        width: 100%;
-        display: block;
-        text-align: start;
-        z-index: 1;
-        position: absolute;
-        color: #FFFFFF;
-        padding-left: 12px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-    }
+  #menu-btn {
+    background: #7c02b9;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    width: 100%;
+    display: block;
+    text-align: start;
+    z-index: 1;
+    position: absolute;
+    color: #ffffff;
+    padding-left: 12px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
 
-    #menu-btn .title {
-        font-size: 24px;
-        font-weight: 700;
-        line-height: 30px;
-        letter-spacing: -0.32px;
-        color: #FFFFFF;
-        margin-left: 24px;
-        align-self: center;
-    }
+  #menu-btn .title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: -0.32px;
+    color: #ffffff;
+    margin-left: 24px;
+    align-self: center;
+  }
 
-    .navigation-root {
-        width: 0;
-        overflow: hidden;
-        transition: width 0.3s ease;
-    }
+  .navigation-root {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+  }
 
-    .navigation-root.open {
-        background-color: white;
-        width: 250px;
-    }
+  .navigation-root.open {
+    background-color: white;
+    width: 250px;
+  }
 }

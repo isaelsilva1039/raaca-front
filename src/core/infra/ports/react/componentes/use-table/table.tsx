@@ -3,7 +3,12 @@ import { useTable, useExpanded } from 'react-table';
 
 const CustomTable = ({ columns, data, expandedRows, toggleRowExpanded, renderRowSubComponent }: any) => {
 
-
+  if (!columns || !data) {
+    return <div>Dados não disponíveis.</div>;
+  }
+  
+  
+  console.log(data);
 
   const {
     getTableProps,
@@ -34,7 +39,7 @@ const CustomTable = ({ columns, data, expandedRows, toggleRowExpanded, renderRow
           const isExpanded = expandedRows[row?.original?.id];
           return (
             <>
-              <tr {...row.getRowProps()  } onClick={() => toggleRowExpanded(row.original.id) } key={row?.original?.id}>
+              <tr {...row.getRowProps()  } onClick={() => toggleRowExpanded(row?.original?.id) } key={row?.original?.id}>
                 {row.cells.map(cell => (
                   <td {...cell.getCellProps()  } key={cell?.row?.id}>{cell.render("Cell")  }</td>
                 ))}

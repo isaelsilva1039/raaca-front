@@ -47,7 +47,6 @@ const Perfil = () => {
 
 
 
-
   return (
     <div className='container-p'>
       <div className="perfil-container" onClick={handlePerfilClick}>
@@ -58,7 +57,7 @@ const Perfil = () => {
       <Transition in={modalOpen} timeout={duration}>
         {state => (
           <div className="modal-container" style={{ ...defaultStyle, ...(transitionStyles[state as keyof TransitionStyles] || {}) }}>
-            {modalOpen && <Modal onClose={handleCloseModal} handleLogout={handleLogout} profilePhoto="./img/image.jpg" />}
+            {modalOpen && <Modal onClose={handleCloseModal} handleLogout={handleLogout} profilePhoto="/img/avatar1.png" />}
           </div>
         )}
       </Transition>

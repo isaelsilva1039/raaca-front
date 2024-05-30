@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-const avatarPadrao = '/img/default-avatar.jpg';  // Caminho correto para imagem padrão local
+const avatarPadrao = '/img/avatar1.png';  // Caminho correto para imagem padrão local
 
 // Exemplo de função para garantir que a URL é válida
 function formatImageUrl(url : any) {
@@ -23,7 +23,7 @@ const AvatarImage = ({ src } : any) => {
     const url = formatImageUrl(cleanedAvatar)
     
     if(url == '/null') {
-      return <img src='./img/image.jpg'  className="profile-image"/>;
+      return <img src='/img/avatar1.png'  className="profile-image"/>;
     };
 
   return (

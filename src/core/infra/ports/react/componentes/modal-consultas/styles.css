@@ -1,0 +1,30 @@
+.btn-salvar{
+    background: #A500F7;
+    color: white;
+}
+
+
+
+.btn-salvar:hover{
+    background: #8502c7;
+    color: white;
+}
+
+.btn-fechar{
+    color: #A500F7;
+    /* color: white; */
+}
+
+
+.img-previw{
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    display: block;
+    border:#8502c7 2px solid
+}
+
+
+.avatar{
+    border:#8502c7 1px solid
+}
