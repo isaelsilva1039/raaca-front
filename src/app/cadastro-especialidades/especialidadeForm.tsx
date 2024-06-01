@@ -1,33 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
-const formStyles = {
-
+// Definição correta de estilos com tipagem apropriada para TypeScript
+const formStyles: React.CSSProperties = {
   display: 'flex',
-  flexDirection: 'column',
+  flexDirection: 'column',  // Corretamente tipado
   alignItems: 'center',
   borderRadius: '8px',
   backgroundColor: '#f9f9f9',
 };
 
-const inputRowStyles = {
+const inputRowStyles: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   borderBottom: '1px solid #ddd',
   padding: '10px',
 };
 
-const labelStyles = {
+const labelStyles: React.CSSProperties = {
   marginRight: '10px',
 };
 
-const tableHeaderStyles = {
+const tableHeaderStyles: React.CSSProperties = {
   color: '#a500f7',
   textAlign: 'center',
   maxWidth: '100%',
-  
 };
 
-const inputStyles = {
+const inputStyles: React.CSSProperties = {
   width: 'calc(100% - 20px)',
   padding: '8px',
   border: '1px solid #ddd',
@@ -35,7 +34,7 @@ const inputStyles = {
   fontSize: '14px',
 };
 
-const buttonRowStyles = {
+const buttonRowStyles: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -43,7 +42,7 @@ const buttonRowStyles = {
   marginTop: '10px',
 };
 
-const buttonStyles = {
+const buttonStyles: React.CSSProperties = {
   marginLeft: '10px',
   padding: '10px 20px',
   border: 'none',
@@ -54,11 +53,12 @@ const buttonStyles = {
   cursor: 'pointer',
 };
 
-const SpecialtyForm = ({ onSubmit, initialData, onCancel }) => {
-  const [id, setId] = useState(null);
+const SpecialtyForm = ({ onSubmit, initialData, onCancel }: any) => {
+  const [id, setId] = useState<number | null>(null);
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+
   useEffect(() => {
     if (initialData) {
       setId(initialData.id);
@@ -71,7 +71,7 @@ const SpecialtyForm = ({ onSubmit, initialData, onCancel }) => {
     }
   }, [initialData]);
 
-  const formatDuration = (value) => {
+  const formatDuration = (value: string) => {
     let formattedValue = value.replace(/\D/g, '');
 
     if (formattedValue.length > 2) {
@@ -83,14 +83,14 @@ const SpecialtyForm = ({ onSubmit, initialData, onCancel }) => {
     return formattedValue;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit({ id, description, duration });
     setId(null);
     setDescription('');
     setDuration('');
-    setShowAlert(true); 
-    setTimeout(() => setShowAlert(false), 3000); 
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000);
   };
 
   return (
@@ -100,9 +100,9 @@ const SpecialtyForm = ({ onSubmit, initialData, onCancel }) => {
           Informações salvas com sucesso!
         </div>
       )}
-      
+
       <form style={formStyles} onSubmit={handleSubmit}>
-      <h2 style={tableHeaderStyles}>Cadastrar Especialidades</h2>
+        <h2 style={tableHeaderStyles}>Cadastrar Especialidades</h2>
         <div style={inputRowStyles}>
           <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
             <label style={labelStyles}>Descrição:</label>
@@ -121,7 +121,7 @@ const SpecialtyForm = ({ onSubmit, initialData, onCancel }) => {
               value={duration}
               onChange={(e) => setDuration(formatDuration(e.target.value))}
               placeholder="hh:mm"
-              maxLength="5"
+              // maxLength="5"
               required
               style={inputStyles}
             />

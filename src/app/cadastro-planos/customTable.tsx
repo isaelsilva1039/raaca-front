@@ -10,8 +10,8 @@ interface IData {
 interface ICustomTableProps {
   columns: any;
   data: IData[];
-  expandedRows: { [key: number]: boolean };
-  toggleRowExpanded: (rowId: number) => void;
+  expandedRows: any;
+  toggleRowExpanded: (rowId: any) => void;
   renderRowSubComponent: (props: { row: Row<IData> }) => JSX.Element;
 }
 
@@ -33,32 +33,36 @@ const CustomTable: React.FC<ICustomTableProps> = ({
   return (
     <table {...getTableProps()} className="table">
       <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+        {headerGroups.map((headerGroup, hgIndex) => (  // Added hgIndex for unique key
+          <tr {...headerGroup.getHeaderGroupProps()} key={`header-group-${hgIndex}`}>
+            {headerGroup.headers.map((column, columnIndex) => (  // Added columnIndex for unique key
+              <th {...column.getHeaderProps()} key={`header-${columnIndex}`}>
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
+        {rows.map((row, rowIndex) => {  // Added rowIndex for unique key
           prepareRow(row);
-          const isExpanded = expandedRows[row.id];
+          const isExpanded = expandedRows[rowIndex];
           return (
-            <React.Fragment key={row.id}>
-              <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row.id)}>
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+            <React.Fragment key={`row-${row.id}`}>
+              <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row?.id)}>
+                {row.cells.map((cell, cellIndex) => (  // Added cellIndex for unique key
+                  <td {...cell.getCellProps()} key={`cell-${row.id}-${cellIndex}`}>
+                    {cell.render('Cell')}
+                  </td>
                 ))}
               </tr>
-              {isExpanded ? (
-                <tr>
+              {isExpanded && (
+                <tr key={`expanded-row-${row.id}`}>
                   <td colSpan={columns.length}>
                     {renderRowSubComponent({ row })}
                   </td>
                 </tr>
-              ) : null}
+              )}
             </React.Fragment>
           );
         })}

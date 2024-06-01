@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTable, useExpanded, Row } from 'react-table';
+import { useTable, useExpanded } from 'react-table';
 
 interface IData {
   id: number;
@@ -10,9 +10,9 @@ interface IData {
 interface ICustomTableProps {
   columns: any;
   data: IData[];
-  expandedRows: { [key: number]: boolean };
-  toggleRowExpanded: (rowId: number) => void;
-  renderRowSubComponent: (props: { row: Row<IData> }) => JSX.Element;
+  expandedRows: { [key: string]: boolean };
+  toggleRowExpanded: (rowId: string) => void;
+  renderRowSubComponent: (props: { row: any }) => JSX.Element;
 }
 
 const CustomTable: React.FC<ICustomTableProps> = ({
@@ -34,31 +34,36 @@ const CustomTable: React.FC<ICustomTableProps> = ({
     <table {...getTableProps()} className="table">
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr {...headerGroup.getHeaderGroupProps()} key={`header-group-${headerGroup.id}`}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps()} key={`column-${column.id}`}>
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         ))}
       </thead>
       <tbody {...getTableBodyProps()}>
-        {rows.map(row => {
+        {rows.map((row, rowIndex) => {
           prepareRow(row);
-          const isExpanded = expandedRows[row.id];
+          const isExpanded = expandedRows[row.id.toString()];
           return (
-            <React.Fragment key={row.id}>
-              <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row.id)}>
-                {row.cells.map(cell => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+            <React.Fragment key={`row-fragment-${row.id}`}>
+              <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row.id.toString())}>
+                {row.cells.map((cell, cellIndex) => (
+                  <td {...cell.getCellProps()} key={`cell-${row.id}-${cellIndex}`}>
+                    {cell.render('Cell')}
+                  </td>
                 ))}
               </tr>
-              {isExpanded ? (
-                <tr>
+
+              {isExpanded && (
+                <tr key={`expanded-${row.id}`}>
                   <td colSpan={columns.length}>
                     {renderRowSubComponent({ row })}
                   </td>
                 </tr>
-              ) : null}
+              )}
             </React.Fragment>
           );
         })}

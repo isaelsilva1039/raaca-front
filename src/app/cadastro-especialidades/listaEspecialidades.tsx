@@ -4,7 +4,7 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
-const tableStyles = {
+const tableStyles: React.CSSProperties = {
   maxWidth: '100%',
   margin: '20px auto',
   border: '1px solid #ccc',
@@ -13,13 +13,13 @@ const tableStyles = {
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
 };
 
-const tableHeaderStyles = {
+const tableHeaderStyles: React.CSSProperties = {
   color: '#a500f7',
   padding: '10px',
-  textAlign: 'center',
+  textAlign: 'center',  // Corretamente tipado agora
 };
 
-const tableRowStyles = {
+const tableRowStyles: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   borderBottom: '1px solid #ddd',
@@ -28,14 +28,14 @@ const tableRowStyles = {
   cursor: 'pointer', // Cursor apontando ao passar o mouse sobre a linha
 };
 
-const tableCellStyles = {
+const tableCellStyles: React.CSSProperties = {
   flex: 1,
   padding: '10px',
   fontSize: '16px',
-  textAlign: 'center',
+  textAlign: 'center',  // Corretamente tipado agora
 };
 
-const buttonStyles = {
+const buttonStyles: React.CSSProperties = {
   padding: '6px 12px',
   border: 'none',
   borderRadius: '4px',
@@ -45,14 +45,14 @@ const buttonStyles = {
   cursor: 'pointer',
 };
 
-const paginationStyles = {
+const paginationStyles: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   marginTop: '20px',
 };
 
-const iconButtonStyles = {
+const iconButtonStyles: React.CSSProperties = {
   ...buttonStyles,
   backgroundColor: 'transparent',
   color: '#a500f7',
@@ -60,18 +60,18 @@ const iconButtonStyles = {
   padding: '5px',
 };
 
-const SpecialtyList = ({ specialties, onDelete, onEdit }) => {
+const SpecialtyList = ({ specialties, onDelete, onEdit } : any) => {
   const [currentPage, setCurrentPage] = useState(1);
   const specialtiesPerPage = 5;
 
-  const handleDelete = (id) => {
+  const handleDelete = (id : any) => {
     if (window.confirm('Tem certeza que deseja excluir esta especialidade?')) {
       onDelete(id);
       alert('Especialidade excluída com sucesso!');
     }
   };
 
-  const handleEdit = (specialty) => {
+  const handleEdit = (specialty : any) => {
     onEdit(specialty);
   };
 
@@ -93,7 +93,7 @@ const SpecialtyList = ({ specialties, onDelete, onEdit }) => {
           </tr>
         </thead>
         <tbody>
-          {currentSpecialties.map((specialty) => (
+          {currentSpecialties.map((specialty : any) => (
             <tr key={specialty.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px', }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
               <td style={{ ...tableCellStyles, width: '10%' }}>{specialty.id}</td>
               <td style={{ ...tableCellStyles, width: '40%', textAlign: 'center', paddingLeft: '10px' }}>{specialty.description}</td>

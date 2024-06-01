@@ -1,6 +1,20 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 
-const formContainerStyles = {
+interface PlanData {
+  id?: number;
+  description: string;
+  consultationCount: string;
+  textoplano: string;
+}
+
+interface PlanFormProps {
+  onSubmit: any;
+  initialData: any;
+  onCancel: () => void;
+}
+
+const formContainerStyles: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -9,26 +23,26 @@ const formContainerStyles = {
   backgroundColor: '#f9f9f9',
 };
 
-const formRowStyles = {
+const formRowStyles: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'space-between',
   width: '100%',
   marginBottom: '20px',
 };
 
-const labelStyles = {
+const labelStyles: React.CSSProperties = {
   marginRight: '10px',
   fontWeight: 'bold',
 };
 
-const inputStyles = {
+const inputStyles: React.CSSProperties = {
   flex: '1',
   padding: '10px',
   border: '1px solid #ccc',
   borderRadius: '4px',
 };
 
-const textareaStyles = {
+const textareaStyles: React.CSSProperties = {
   flex: '1',
   padding: '10px',
   border: '1px solid #ccc',
@@ -36,13 +50,13 @@ const textareaStyles = {
   height: '100px',
 };
 
-const buttonContainerStyles = {
+const buttonContainerStyles: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   marginTop: '20px',
 };
 
-const buttonStyles = {
+const buttonStyles: React.CSSProperties = {
   padding: '10px 20px',
   border: 'none',
   borderRadius: '4px',
@@ -50,35 +64,33 @@ const buttonStyles = {
   cursor: 'pointer',
 };
 
-const saveButtonStyles = {
+const saveButtonStyles: React.CSSProperties = {
   ...buttonStyles,
   backgroundColor: '#a500f7',
   color: '#fff',
   marginRight: '10px',
 };
 
-const cancelButtonStyles = {
+const cancelButtonStyles: React.CSSProperties = {
   ...buttonStyles,
   backgroundColor: '#dc3545',
   color: '#fff',
 };
 
-const PlanForm = ({ onSubmit, initialData, onCancel }) => {
-  const [description, setDescription] = useState('');
-  const [consultationCount, setConsultationCount] = useState('');
-  const [textoplano, setTextoplano] = useState('');
+const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel }) => {
+  const [description, setDescription] = useState<string>(initialData.description);
+  const [consultationCount, setConsultationCount] = useState<string>(initialData.consultationCount);
+  const [textoplano, setTextoplano] = useState<string>(initialData.textoplano);
 
   useEffect(() => {
-    if (initialData) {
-      setDescription(initialData.description || '');
-      setConsultationCount(initialData.consultationCount || '');
-      setTextoplano(initialData.textoplano || '');
-    }
+    setDescription(initialData.description);
+    setConsultationCount(initialData.consultationCount);
+    setTextoplano(initialData.textoplano);
   }, [initialData]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit({ id: initialData.id || null, description, consultationCount, textoplano });
+    onSubmit({ id: initialData.id, description, consultationCount, textoplano });
     setDescription('');
     setConsultationCount('');
     setTextoplano('');

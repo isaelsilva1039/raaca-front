@@ -1,10 +1,25 @@
+'use client'
+
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
-const tableStyles = {
+// interface Plan {
+//   id: number;
+//   description: string;
+//   consultationCount: number;
+//   textoplano: string;
+// }
+
+interface PlanListProps {
+  plans: any;
+  onDelete: (id: number) => void;
+  onEdit: (plan: any) => void;
+}
+
+const tableStyles: React.CSSProperties = {
   maxWidth: '100%',
   margin: '20px auto',
   border: '1px solid #ccc',
@@ -13,13 +28,13 @@ const tableStyles = {
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
 };
 
-const tableHeaderStyles = {
+const tableHeaderStyles: React.CSSProperties = {
   color: '#a500f7',
   padding: '10px',
   textAlign: 'center',
 };
 
-const tableRowStyles = {
+const tableRowStyles: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   borderBottom: '1px solid #ddd',
@@ -28,50 +43,39 @@ const tableRowStyles = {
   cursor: 'pointer',
 };
 
-const tableCellStyles = {
+const tableCellStyles: React.CSSProperties = {
   flex: 1,
   padding: '10px',
   fontSize: '16px',
   textAlign: 'center',
 };
 
-const buttonStyles = {
-  padding: '6px 12px',
-  border: 'none',
-  borderRadius: '4px',
-  backgroundColor: '#a500f7',
-  color: '#fff',
-  fontSize: '14px',
-  cursor: 'pointer',
-};
-
-const paginationStyles = {
+const paginationStyles: React.CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   marginTop: '20px',
 };
 
-const iconButtonStyles = {
-  ...buttonStyles,
-  backgroundColor: 'transparent',
+const iconButtonStyles: React.CSSProperties = {
+  background: 'transparent',
   color: '#a500f7',
   margin: '0 10px',
   padding: '5px',
 };
 
-const PlanList = ({ plans, onDelete, onEdit }) => {
+const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const plansPerPage = 5;
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este plano?')) {
       onDelete(id);
       alert('Plano excluído com sucesso!');
     }
   };
 
-  const handleEdit = (plan) => {
+  const handleEdit = (plan: any) => {
     onEdit(plan);
   };
 
@@ -79,7 +83,7 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
   const indexOfFirstPlan = indexOfLastPlan - plansPerPage;
   const currentPlans = plans.slice(indexOfFirstPlan, indexOfLastPlan);
 
-  const totalPages = Math.max(Math.ceil(plans.length / plansPerPage), 1);
+  const totalPages = Math.ceil(plans.length / plansPerPage);
 
   return (
     <div style={tableStyles}>
@@ -95,7 +99,7 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
           </tr>
         </thead>
         <tbody>
-          {currentPlans.map((plan) => (
+          {currentPlans.map((plan : any) => (
             <tr key={plan.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.id}</td>
               <td style={{ ...tableCellStyles, width: '20%' }}>{plan.description}</td>
@@ -118,11 +122,11 @@ const PlanList = ({ plans, onDelete, onEdit }) => {
         </tbody>
       </table>
       <div style={paginationStyles}>
-        <button onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} style={iconButtonStyles}>
+        <button onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} style={iconButtonStyles}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
         <span>{currentPage} de {totalPages}</span>
-        <button onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} style={iconButtonStyles}>
+        <button onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} style={iconButtonStyles}>
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
       </div>

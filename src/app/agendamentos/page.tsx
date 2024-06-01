@@ -315,6 +315,7 @@ export default function Agendamentos() {
 
                     {profissionais?.map((doctor: any) => (
                       <DoctorCard
+                        key={doctor.id}
                         doctor={doctor}
                         onMedicoSelec={onMedicoSelec}
                         idSelect={idSelect}

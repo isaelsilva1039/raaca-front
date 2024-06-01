@@ -111,12 +111,16 @@ export default function RootLayout({
       isActive: route === item.route,
     };
 
-    return   <UserProvider > <MenuItem {...props} key={index} /> </UserProvider>;
+    // Mover a chave para o componente mais externo dentro do map
+    return <UserProvider key={index}>
+              <MenuItem {...props} />
+           </UserProvider>;
   });
+
 
   const title = route.replace("/", "");
 
-  return getLayout({
+  return layout({
     onClick: toggleMenu,
     title,
     items,
@@ -126,7 +130,7 @@ export default function RootLayout({
   });
 }
 
-export const getLayout = (props: {
+export const layout = (props: {
   onClick: () => void;
   title: string;
   items: JSX.Element[];

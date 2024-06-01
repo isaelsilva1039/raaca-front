@@ -1,16 +1,22 @@
-'use client';
+'use client'
 import React, { useState } from 'react';
 import PlanForm from './planForm';
 import PlanList from './listaPlanos';
 
-const mainContainerStyles = {
+interface Plan {
+  id: number | null;
+  description?: string;  // Exemplo de propriedade, ajuste conforme as propriedades reais do seu plano
+  // Adicione outras propriedades relevantes para o plano aqui
+}
+
+const mainContainerStyles: React.CSSProperties = {
   margin: '20px auto',
   padding: '20px',
   backgroundColor: '#fff',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
 };
 
-const addButtonStyles = {
+const addButtonStyles: React.CSSProperties = {
   marginBottom: '20px',
   padding: '10px 20px',
   border: 'none',
@@ -21,24 +27,24 @@ const addButtonStyles = {
   cursor: 'pointer',
 };
 
-const MainPage = () => {
-  const [plans, setPlans] = useState([]);
-  const [editingPlan, setEditingPlan] = useState(null);
+const MainPage: React.FC = () => {
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
 
-  const handleAddPlan = (plan) => {
+  const handleAddPlan = (plan: Plan) => {
     if (plan.id === null) {
-      plan.id = plans.length + 1;
+      plan.id = plans.length + 1;  // Garante que o novo plano tenha um ID único
       setPlans([...plans, plan]);
     } else {
       setPlans(plans.map(p => (p.id === plan.id ? plan : p)));
     }
   };
 
-  const handleDeletePlan = (id) => {
+  const handleDeletePlan = (id: number) => {
     setPlans(plans.filter(plan => plan.id !== id));
   };
 
-  const handleEditPlan = (plan) => {
+  const handleEditPlan = (plan: Plan) => {
     setEditingPlan(plan);
   };
 
@@ -48,7 +54,7 @@ const MainPage = () => {
 
   return (
     <div style={mainContainerStyles}>
-      <button style={addButtonStyles} onClick={() => setEditingPlan({})}>
+      <button style={addButtonStyles} onClick={() => setEditingPlan({ id: null })}>
         Adicionar Plano
       </button>
       {editingPlan && (
