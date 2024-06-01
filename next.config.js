@@ -2,6 +2,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export', // Adicionado para permitir a exportação estática
   images: {
     remotePatterns: [
       {
