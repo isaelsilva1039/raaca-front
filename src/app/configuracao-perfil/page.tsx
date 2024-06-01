@@ -11,7 +11,7 @@ const Profile = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handlePasswordChange = async (e) => {
+  const handlePasswordChange = async (e :any) => {
     e.preventDefault();
 
     if (newPassword !== confirmNewPassword) {
