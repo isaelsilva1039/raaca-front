@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
@@ -123,11 +123,11 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
       </table>
       <div style={paginationStyles}>
         <button onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} style={iconButtonStyles}>
-          <FontAwesomeIcon icon={faChevronLeft} />
+          {/* <FontAwesomeIcon icon={faChevronLeft} /> */}
         </button>
         <span>{currentPage} de {totalPages}</span>
         <button onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} style={iconButtonStyles}>
-          <FontAwesomeIcon icon={faChevronRight} />
+          {/* <FontAwesomeIcon icon={faChevronRight} /> */}
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
@@ -120,7 +120,7 @@ const SpecialtyList = ({ specialties, onDelete, onEdit } : any) => {
           style={iconButtonStyles}
           disabled={currentPage === 1}
         >
-          <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+          {/* <FontAwesomeIcon icon={faChevronLeft} size="lg" /> */}
         </button>
         <span style={{ margin: '0 10px', fontSize: '16px', lineHeight: '32px' }}>
           Página {currentPage} de {totalPages}
@@ -130,7 +130,7 @@ const SpecialtyList = ({ specialties, onDelete, onEdit } : any) => {
           style={iconButtonStyles}
           disabled={currentPage === totalPages}
         >
-          <FontAwesomeIcon icon={faChevronRight} size="lg" />
+          {/* <FontAwesomeIcon icon={faChevronRight} size="lg" /> */}
         </button>
       </div>
     </div>
