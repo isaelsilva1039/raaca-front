@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+// import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
