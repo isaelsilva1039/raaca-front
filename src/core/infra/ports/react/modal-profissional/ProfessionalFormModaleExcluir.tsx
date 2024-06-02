@@ -119,7 +119,7 @@ const ProfessionalFormModaleExcluir = ({
   return (
     <>
       <Dialog open={show} onClose={handleClose}>
-        <DialogTitle>Adicionar Novo Profissional</DialogTitle>
+        <DialogTitle>Excluir profissional</DialogTitle>
         <DialogContent>
           Tem certeza que deseja excluir profissional ? 
         </DialogContent>
