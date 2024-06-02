@@ -6,9 +6,10 @@ interface CondicionalDisplayProps {
   isAtingido: boolean;
   isPrazoPassado: boolean;
   isLiberdo: boolean;
+  podeAgendarConsultas: boolean;
 }
 
-const CondicionalDisplay: React.FC<CondicionalDisplayProps> = ({ isAtingido, isPrazoPassado, isLiberdo }) => {
+const CondicionalDisplay: React.FC<CondicionalDisplayProps> = ({ isAtingido, isPrazoPassado, isLiberdo, podeAgendarConsultas }) => {
 
     return (
       <Box sx={{
@@ -51,6 +52,13 @@ const CondicionalDisplay: React.FC<CondicionalDisplayProps> = ({ isAtingido, isP
             O prazo para realizar as consultas expirou.
           </Typography>
         )}
+
+        {podeAgendarConsultas && isLiberdo && (
+            <Typography variant="subtitle1" color={'GrayText'} sx={{ mb: 3 }}>
+                Você agendou todas as consultas que seu plano atual permite
+              </Typography>
+          )}
+
       </Box>
     );
   }

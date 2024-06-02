@@ -42,13 +42,13 @@ const MedicosHorizontalList: React.FC<Props> = ({ medicos, medicoSelecionado, se
 
     const scrollLeftFunc = () => {
         if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' }); // Ajuste a distância de rolagem
+            scrollContainerRef.current.scrollBy({ left: -120, behavior: 'smooth' }); // Ajuste a distância de rolagem
         }
     };
 
     const scrollRightFunc = () => {
         if (scrollContainerRef.current) {
-            scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' }); // Ajuste a distância de rolagem
+            scrollContainerRef.current.scrollBy({ left: 120, behavior: 'smooth' }); // Ajuste a distância de rolagem
         }
     };
 

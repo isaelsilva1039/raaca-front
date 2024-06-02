@@ -20,6 +20,7 @@ import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import { FaCheckCircle } from "react-icons/fa";
 import { addMinutes, differenceInHours, format } from "date-fns";
+import { TbAlertCircleFilled } from "react-icons/tb";
 
 import {
   FormControl,
@@ -91,7 +92,8 @@ interface IData {
   user_id: number;
 }
 
-const CalendarComponent = ({ events, onUpdate }: any) => {
+
+const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quantidadeConsultasPendente, quantideDeConsultasQuePodeRealizar }: any) => {
   const [modalOpen, setModalOpen] = useState(false); // Controla se a modal está aberta
   const [selectedEvent, setSelectedEvent] = useState<eventInterface | any>(
     null
@@ -126,8 +128,7 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
   };
 
   useEffect(() => {
-    // if (events.length < 1) return;
-
+    
     const transformedEvents: TransformedEvent[] = Array.isArray(events)
       ? events.map((event: Event) => ({
 
@@ -154,7 +155,7 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
     setEvents(transformedEvents);
   }, [events]);
 
-  console.log(eventos);
+
 
   const getProfissnionaisAll = () => {
     setLoading(true);
@@ -174,7 +175,7 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
 
   useEffect(() => {
     getProfissnionaisAll();
-  }, []);
+  }, [token]);
 
   const handleSave = () => {
     if (selectedEvent) {
@@ -188,25 +189,24 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
       alert(
         `Status '${status}' salvo com sucesso para '${selectedEvent.title}'`
       );
-      handleClose(); // Fechar modal após salvar
+      handleClose(); 
       setStatus("realizado");
     }
   };
 
-  // Função para lidar com o clique no evento
+
   const handleEventClick = ({ event }: any) => {
     setSelectedEvent(event);
     setModalOpen(true); // Abre a modal
   };
 
-  // Função para fechar a modal
+
   const handleClose = () => {
     setStatus("realizado");
     setModalOpen(false);
     setModalOpenNovo(false);
   };
 
-  // Função para adicionar tooltip a cada evento no momento da montagem
   const handleEventDidMount = ({ event, el }: any) => {
     const formattedStart = format(new Date(event.start), "dd/MM/yyyy HH:mm:ss");
     tippy(el, {
@@ -216,7 +216,7 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
     });
   };
 
-  // Função para abrir o modal de novo agendamento
+
   const handleNewAppointmentClick = () => {
     setModalOpenNovo(true);
   };
@@ -227,7 +227,12 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
 
   const isUserTypeThree = user.tipo == 3;
   const canShowOptionsForTypeThree = isUserTypeThree && hoursDiff <= 24;
-  const canShowAllOptions = !isUserTypeThree; // Tipo 1 e 2 podem ver todas as opções
+  const canShowAllOptions = !isUserTypeThree;
+
+  let podeAgendarConsultas = true;
+  if(user.tipo == 3) {
+     podeAgendarConsultas = quantidadeConsultasPendente < quantideDeConsultasQuePodeRealizar
+  }
 
   return (
     <>
@@ -256,6 +261,7 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
         eventDidMount={handleEventDidMount}
         eventClick={handleEventClick}
         aspectRatio={1.35}
+        dateClick={() => setModalOpenNovo(true)}
         views={{
           dayGridMonth: {
             // Mês
@@ -289,6 +295,8 @@ const CalendarComponent = ({ events, onUpdate }: any) => {
         handleClose={handleClose}
         medicos={profissionais}
         onUpdate={onUpdate}
+        loading={loading}
+        podeAgendarConsultas={podeAgendarConsultas}
       />
     </>
   );

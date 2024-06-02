@@ -12,6 +12,7 @@ import { IoExitOutline } from "react-icons/io5";
 import { UserProvider } from "@/core/helpes/UserContext";
 import { LiaUserClockSolid } from "react-icons/lia";
 import Perfil from "./perfil/page";
+import Head from "next/head";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -145,6 +146,10 @@ export const layout = (props: {
     <UserProvider>
     <>
       <html className="h-screen w-screen">
+        <head>
+          <link rel="icon" href="https://raccasaude.com.br/wp-content/uploads/2023/11/sem-fundo-simbolo-01-100x100.png" />
+          <title>Racca Saude</title>
+        </head>
         <body className={inter.className} style={{ background: "#EFF1F3" }}>
           <main>
             <div className="container">

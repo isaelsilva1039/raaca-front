@@ -24,6 +24,8 @@ import { fetchMes } from "@/app/api/horarios/horarios-api";
 import MesTabs from "./MesTabs";
 import HorarioList from "./HorarioList";
 import { useCliente } from "@/core/helpes/UserContext";
+import { CircularProgressbar } from "react-circular-progressbar";
+import CondicionalDisplay from "../CondicionalDisplay/CondicionalDisplay";
 
 interface Medico {
   id: number;
@@ -43,6 +45,8 @@ interface Props {
   handleClose: () => void;
   medicos: Medico[];
   onUpdate: () => void;
+  loading: boolean;
+  podeAgendarConsultas: boolean;
 }
 
 const NovoAgendamentoModal: React.FC<Props> = ({
@@ -50,6 +54,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   handleClose,
   medicos,
   onUpdate,
+  loading,
+  podeAgendarConsultas,
 }) => {
   const { token, user } = useCliente();
   const [medicoSelecionado, setMedicoSelecionado] = useState<number | string>(
@@ -119,6 +125,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   };
 
   const salvarAgendamento = () => {
+    setLoad(true);
     if (horarioSelecionadoState && diaSelecionado) {
       const startTime = `${format(diaSelecionado, "yyyy-MM-dd")}T${
         horarioSelecionadoState?.start
@@ -132,12 +139,14 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         endTime,
         token,
         (data: any) => {
+          setLoad(false);
           onUpdate();
           limparCampos();
           handleClose();
         },
         (error: any) => {
           setIsErro(true);
+          setLoad(false);
           console.error("Erro ao criar agendamento:", error);
         }
       );
@@ -187,22 +196,19 @@ const NovoAgendamentoModal: React.FC<Props> = ({
     setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
-  // Função para rolar as datas horizontalmente
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
+  const renderPageLimite = () => {
+    return (
+      <CondicionalDisplay
+        isAtingido={false}
+        isPrazoPassado={false}
+        isLiberdo={true}
+        podeAgendarConsultas={true}
+      />
+    );
   };
 
   return (
-    <Dialog open={open} onClose={handleClose}  fullWidth maxWidth={'xl'}>
-         {/* <Dialog open={open} onClose={handleClose} fullWidth maxWidth={remarcado ? 'xl' : 'md'}> */}
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth={"xl"}>
       <DialogTitle className="agenda-titele">
         <IconButton
           aria-label="close"
@@ -213,83 +219,114 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         </IconButton>
         <div style={{ padding: "0px 0px 20px 0" }}>Novo agendamento</div>
       </DialogTitle>
-      <DialogContent className="container-modal">
-        <FormControl fullWidth>
-          <h2>Selecione um Profissional</h2>
-          <MedicosHorizontalList
-            medicos={medicos}
-            medicoSelecionado={medicoSelecionado}
-            setMedicoSelecionado={setMedicoSelecionado}
-          />
-        </FormControl>
 
-        {medicoSelecionado && (
-          <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
-            <Box mt={2} mb={2}>
-              {loadMes ? (
-                <Grid
-                  item
-                  xs={12}
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <CircularProgress color="secondary" />
-                </Grid>
-              ) : (
-                <>
-                  {monthe.length > 0 ? (
-                    <>
-                      <MesTabs
-                        monthe={monthe}
-                        mesSelecionado={mesSelecionado}
-                        handleMesChange={handleMesChange}
-                      />
-                      <ScrollableDates
-                        diasMes={diasMes}
-                        diaSelecionado={diaSelecionado}
-                        handleDiaClick={handleDiaClick}
-                      />
-                      <HorarioList
-                        horariosDisponiveis={horariosDisponiveis}
-                        horarioSelecionado={horarioSelecionado}
-                        handleHorarioClick={handleHorarioClick}
-                        load={load}
-                      />
-                    </>
-                  ) : (
-                    "Agendas não liberadas"
-                  )}
-                </>
-              )}
-            </Box>
-          </FormControl>
-        )}
-
-        {isErro && (
-          <div style={{ padding: "12px 0px 12px 0px" }}>
-            <Alert
-              onClose={() => setIsErro(false)}
-              onClick={() => setIsErro(false)}
-              color="error"
-            >
-              Tente novamente
-            </Alert>
-          </div>
-        )}
-      </DialogContent>
-
-      <DialogActions>
-        <Button color="secondary" onClick={handleClose}>
-          Cancelar
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={salvarAgendamento}
-          disabled={!horarioSelecionado}
+      {loading ? (
+        <Grid
+          item
+          xs={12}
+          style={{ display: "flex", justifyContent: "center" }}
         >
-          Salvar <FaCheckCircle />
-        </Button>
-      </DialogActions>
+          <CircularProgress color="secondary" />
+        </Grid>
+      ) : (
+        <>
+          {podeAgendarConsultas ? (
+            <>
+              <DialogContent className="container-modal">
+                <FormControl fullWidth>
+                  <h2>Selecione um Profissional</h2>
+                  <MedicosHorizontalList
+                    medicos={medicos}
+                    medicoSelecionado={medicoSelecionado}
+                    setMedicoSelecionado={setMedicoSelecionado}
+                  />
+                </FormControl>
+
+                {medicoSelecionado && (
+                  <FormControl
+                    fullWidth
+                    style={{ display: "flex", gap: "10px" }}
+                  >
+                    <Box mt={2} mb={2}>
+                      {loadMes ? (
+                        <Grid
+                          item
+                          xs={12}
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <CircularProgress color="secondary" />
+                        </Grid>
+                      ) : (
+                        <>
+                          {monthe.length > 0 ? (
+                            <>
+                              <MesTabs
+                                monthe={monthe}
+                                mesSelecionado={mesSelecionado}
+                                handleMesChange={handleMesChange}
+                              />
+                              <ScrollableDates
+                                diasMes={diasMes}
+                                diaSelecionado={diaSelecionado}
+                                handleDiaClick={handleDiaClick}
+                              />
+                              <HorarioList
+                                horariosDisponiveis={horariosDisponiveis}
+                                horarioSelecionado={horarioSelecionado}
+                                handleHorarioClick={handleHorarioClick}
+                                load={load}
+                              />
+                            </>
+                          ) : (
+                            <Grid
+                              item
+                              xs={12}
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              Agendas não liberadas
+                            </Grid>
+                          )}
+                        </>
+                      )}
+                    </Box>
+                  </FormControl>
+                )}
+
+                {isErro && (
+                  <div style={{ padding: "12px 0px 12px 0px" }}>
+                    <Alert
+                      onClose={() => setIsErro(false)}
+                      onClick={() => setIsErro(false)}
+                      color="error"
+                    >
+                      Tente novamente
+                    </Alert>
+                  </div>
+                )}
+              </DialogContent>
+
+              <DialogActions>
+                <Button color="secondary" onClick={handleClose}>
+                  Cancelar
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  onClick={salvarAgendamento}
+                  disabled={!horarioSelecionado}
+                >
+                  Salvar <FaCheckCircle />
+                </Button>
+              </DialogActions>
+            </>
+          ) : (
+            renderPageLimite()
+          )}
+        </>
+      )}
     </Dialog>
   );
 };

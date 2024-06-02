@@ -129,7 +129,22 @@
     }
   
     .fc-toolbar-chunk {
-      margin-bottom: 10px; /* Adiciona espaço entre os elementos quando empilhados verticalmente */
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .fc-newAppointmentButton-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row; 
+            width: max-content;
+        }
+
+        .calendario{
+            height: 100vh
+        }
     }
   
     .fc-button {
@@ -140,11 +155,42 @@
 
   
 
-  /* Ajustes adicionais para botões customizados em telas pequenas */
-@media (max-width: 768px) {
-    .fc-newAppointmentButton-button { /* Ajuste o seletor conforme necessário */
-      font-size: 12px;
-      padding: 3px 6px;
-    }
+
+
+
+ .fc-newAppointmentButton-button {
+    background: #8502c7 !important;
+    color: white !important; /* Cor do texto */
+    border: none !important; /* Remova a borda se desejar */
+    padding: 8px 16px !important; /* Espaçamento interno */
+    border-radius: 4px !important; /* Bordas arredondadas */
+    cursor: pointer !important; /* Muda o cursor para pointer */
   }
   
+  .fc-newAppointmentButton-button:hover {
+    background: #8b0dca !important;
+  }
+
+
+  
+  .message-container {
+    padding: 8px;
+    width: fit-content;
+    /* margin-top: 20px; */
+    background-color: #f8d7da;
+    color: #721c24;
+    /* border: 1px solid #f5c6cb; */
+    border-radius: 5px;
+    font-family: Arial;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }  
+
+
+  .container-a{
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

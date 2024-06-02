@@ -319,11 +319,13 @@ const EventModal = ({
                     <FormControlLabel
                       value="cancelado"
                       control={<Radio />}
+                      onClick={() => setRemarcado(false)}
                       label="Cancelado"
                     />
                     <FormControlLabel
                       value="remarcado"
                       control={<Radio />}
+                      onClick={() => setRemarcado(true)}
                       label="Remarcado"
                     />
                   </RadioGroup>
@@ -408,7 +410,16 @@ const EventModal = ({
                               />
                             </>
                           ) : (
-                            "Agendas não liberadas"
+                            <Grid
+                              item
+                              xs={12}
+                              style={{
+                                display: "flex",
+                                justifyContent: "center",
+                              }}
+                            >
+                              Agendas não liberadas
+                            </Grid>
                           )}
                         </>
                       )}

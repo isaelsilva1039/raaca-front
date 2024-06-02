@@ -98,11 +98,14 @@ export default function Agendamentos() {
     useState<boolean>(false);
   const [novoEventoState, setNovoEvento] = useState(false);
 
+  const [quantidadeConsultasPendente, setQuantidadeConsultasPendente] = useState(0);
+  const [quantideDeConsultasQuePodeRealizar, setQuantideDeConsultasQuePodeRealizar] = useState(0);
+  
+  
   // Estado para verificar as condições
   const [isAtingido, setIsAtingido] = useState(false);
   const [isPrazoPassado, setIsPrazoPassado] = useState(false);
   const [isLiberdo, serIsNotLiberado] = useState(true);
-
 
   const fetchProfissionaisAll = () => {
     if (!token) return;
@@ -133,6 +136,7 @@ export default function Agendamentos() {
     setLoading(true);
     const onFetchSuccess = (data: any) => {
       setEventos(data?.data);
+      setQuantidadeConsultasPendente(data?.count)
       setLoading(false);
     };
 
@@ -146,26 +150,26 @@ export default function Agendamentos() {
   };
 
   useEffect(() => {
-    /** Cliente tipo 3 */
+    if (!token) return;
     if (user?.tipo == 3) {
       getMe();
     }
 
     fetchProfissionaisAll();
     fetchMyEventos();
-  }, [token]);
+  }, [token, novoEventoState]);
+
 
   const getMe = () => {
     if (!token) return;
 
     const onFetchSuccess = (data: any) => {
-      console.log(data);
+
       setUsuarioCliente(data);
       validateConsultas(data?.consultas);
     };
 
     const onFetchError = (error: any) => {};
-
     getVerificarAgendasLiberadas(token, onFetchSuccess, onFetchError);
   };
 
@@ -191,9 +195,10 @@ export default function Agendamentos() {
   };
 
   useEffect(() => {
-    if(idSelect){
+    if (!token) return;
+    if (idSelect) {
       fetchMyEventosFilter();
-    }else{
+    } else {
       setLoadingEventosMedico(true);
       const onFetchSuccess = (data: any) => {
         setLoadingEventosMedico(false);
@@ -205,13 +210,11 @@ export default function Agendamentos() {
         console.error("Erro ao buscar profissionais:", error);
         setError(error);
         setLoadingEventosMedico(false);
-
       };
 
       fetchEventos(onFetchSuccess, onFetchError, token);
       setNovoEvento(false);
     }
-
   }, [idSelect]);
 
   useEffect(() => {
@@ -238,20 +241,22 @@ export default function Agendamentos() {
   };
 
   const validateConsultas = (consultas: Consulta[]) => {
-
-    if(consultas.length < 1 ) {
-      serIsNotLiberado(false)
+  
+    if (consultas.length < 1) {
+      serIsNotLiberado(false);
       return;
     }
 
     const today = new Date();
     consultas.forEach((consulta) => {
+      setQuantideDeConsultasQuePodeRealizar(consulta.quantidade_consultas)
       const fimData = new Date(consulta.fim_data);
 
       if (consulta.quantidade_realizada >= consulta.quantidade_consultas) {
         setIsAtingido(true);
       } else {
         setIsAtingido(false);
+        
       }
 
       if (fimData < today) {
@@ -268,6 +273,7 @@ export default function Agendamentos() {
         isAtingido={isAtingido}
         isPrazoPassado={isPrazoPassado}
         isLiberdo={isLiberdo}
+        podeAgendarConsultas={true}
       />
     );
   };
@@ -291,11 +297,8 @@ export default function Agendamentos() {
             >
               Menu / Agendamentos
             </Typography>
-            {isAtingido || isPrazoPassado || !isLiberdo? (
-              <div  > 
-                 {renderPageLimite()}
-              </div>
-           
+            {isAtingido || isPrazoPassado || !isLiberdo ? (
+              <div>{renderPageLimite()}</div>
             ) : (
               <div className="container-page">
                 {user?.tipo == 1 && (
@@ -342,7 +345,14 @@ export default function Agendamentos() {
                       </Typography>
                     </Grid>
                   ) : (
-                    <CalendarComponent events={eventos} onUpdate={onUpdate} />
+                    <CalendarComponent
+                      events={eventos}
+                      onUpdate={onUpdate}
+                      isAtingido={isAtingido}
+                      isPrazoPassado={isPrazoPassado}
+                      quantidadeConsultasPendente={quantidadeConsultasPendente}
+                      quantideDeConsultasQuePodeRealizar={quantideDeConsultasQuePodeRealizar}
+                    />
                   )}
                 </div>
               </div>
