@@ -27,7 +27,7 @@ const AvatarImage = ({ src } : any) => {
     };
 
   return (
-    <Image
+    <img
       src={url ? url : avatarPadrao }
       width={100}  // Exemplo de largura
       height={100}  // Exemplo de altura
