@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+// export default ProfessionalFormModal;
+// components/ProfessionalFormModal.js
+import React, { useState, useRef, MutableRefObject } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -8,7 +10,9 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
-import { Alert, Autocomplete } from "@mui/material";
+import { Dropdown } from "react-bootstrap";
+import { Alert, Autocomplete, MenuItem, Tooltip } from "@mui/material";
+import { enviarProfissional } from "./sevises/postProfissional";
 import LoadingSpinner from "../componentes/load/load";
 import { specialties } from "@/core/helpes/especialidades";
 
@@ -30,18 +34,18 @@ const ProfessionalFormModal = ({
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [birthdate, setBirthdate] = useState("");
-  const [specialty, setSpecialty] = useState<any>('');
+  const [specialty, setSpecialty] = useState<any| null>("");
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSucess, setIsSucess] = useState(false);
   const [isFoto, setIsFoto] = useState(false);
   const [mensagem, setMensagem] = useState("");
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<any>(null);
 
-  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
+  const handlePhotoChange = (event: any) => {
+    const file = event.target.files[0];
     if (file) {
       setPhoto(file);
       setPreview(URL.createObjectURL(file));
@@ -49,122 +53,185 @@ const ProfessionalFormModal = ({
   };
 
   const handleAvatarClick = () => {
-    fileInputRef.current?.click();
+    fileInputRef?.current.click();
   };
 
- useEffect(() => {
-  // Limpa o campo de arquivo quando 'photo' é removido ou alterado
-  if (fileInputRef.current && photo === null) {
-    fileInputRef.current.value = "";
-  }
-}, [photo]);
+  const defaultAvatar = "/path_to_default_avatar.png"; // Caminho para sua imagem padrão
 
 
-  const handleSaveClick = () => {
+  const especialidadeIterator = specialties.values();
+  const firstSpecialty = especialidadeIterator.next().value; // Obter o primeiro valor do iterador
+
+  // Exemplo de como passar os dados para a função
+  const profissionalData: ProfissionalData = {
+    nome: name,
+    cpf: cpf,
+    dataNascimento: birthdate,
+    especialidade: specialty || "", // Ajuste para especialidade
+    email: email,
+    fileInput: photo
+  };
+
+  // Exemplo de uso
+  const handleclickSalvar = () => {
     setIsLoading(true);
-    // Assume enviarProfissional is your function to submit the professional data
-    // Replace with actual function call
-    console.log("Saving professional:", { name, email, cpf, birthdate, specialty, fileInput: photo });
-    setIsLoading(false);
-    setIsSuccess(true); // Set success message
-    onUpdate(); // Callback function to update parent component
+    enviarProfissional(
+      profissionalData,
+
+      (data) => {
+        console.log(data.status);
+        if (data.status === 500) {
+          setIsLoading(false);
+          setIsFoto(true);
+          setMensagem(data.mensagem);
+        } else {
+          setIsLoading(false);
+          setIsSucess(true);
+          setMensagem(data.mensagem);
+          onUpdate();
+        }
+      },
+      (error) => {
+        setIsLoading(false);
+        setIsFoto(true);
+
+        setMensagem('Esse cpf já existe');
+      }
+    );
   };
 
-  const handleClear = () => {
-    setIsSuccess(false);
+  const handleLimpar = () => {
+    setIsSucess(false);
     setName("");
     setEmail("");
     setCpf("");
     setBirthdate("");
-    setSpecialty('');
+    setSpecialty("");
     setPhoto(null);
     setPreview("");
+
+    // Limpar o campo de entrada de arquivo
+   const fileInput = document.querySelector('input[type="file"]');
+   if (fileInput) (fileInput as HTMLInputElement).value = "";
   };
 
   return (
-    <Dialog open={show} onClose={handleClose}>
-      <DialogTitle>Adicionar Novo Profissional</DialogTitle>
-      <DialogContent>
-        {isLoading ? <LoadingSpinner /> : (
-          <>
-            <Avatar
-              className="avatar"
-              src={preview || "/path_to_default_avatar.png"}
-              alt="Avatar Preview"
-              sx={{ width: 100, height: 100, cursor: "pointer" }}
-              onClick={handleAvatarClick}
-            />
-            <input
-              type="file"
-              ref={fileInputRef}
-              hidden
-              onChange={handlePhotoChange}
-            />
-            {isFoto && (
-              <Alert severity="error" onClose={() => setIsFoto(false)}>
-                {mensagem}
-              </Alert>
-            )}
-            {isSuccess && (
-              <Alert severity="success" onClose={handleClear}>
-                Adicionado com sucesso
-              </Alert>
-            )}
-            <TextField
-              label="Nome"
-              type="text"
-              fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <TextField
-              label="Email"
-              type="email"
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <TextField
-              label="CPF"
-              type="text"
-              fullWidth
-              value={cpf}
-              onChange={(e) => setCpf(e.target.value)}
-            />
-            <TextField
-              label="Data de Nascimento"
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={birthdate}
-              onChange={(e) => setBirthdate(e.target.value)}
-            />
-            <Autocomplete
-              options={specialties}
-              getOptionLabel={(option) => option.label}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Especialidade"
-                  variant="outlined"
-                  margin="dense"
-                  fullWidth
-                />
+    <>
+      <Dialog open={show} onClose={handleClose}>
+        <DialogTitle>Adicionar Novo Profissional</DialogTitle>
+        <DialogContent>
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <>
+              <Avatar
+                className="avatar"
+                src={preview || defaultAvatar}
+                alt="Preview"
+                sx={{ width: 100, height: 100, cursor: "pointer" }}
+                onClick={handleAvatarClick}
+              />
+              <input
+                type="file"
+                ref={fileInputRef}
+                hidden
+                onChange={handlePhotoChange}
+                required
+              />
+              {isFoto && (
+                <div style={{ padding: "12px 0px 12px 0px" }}>
+                  <Alert
+                    onClose={() => setIsFoto(false)}
+                    onClick={() => setIsFoto(false)}
+                    color="error"
+                  >
+                    {" "}
+                    {mensagem}
+                  </Alert>
+                </div>
               )}
-              onChange={(event, newValue) => {
-                setSpecialty(newValue?.value);
-              }}
-            />
-          </>
-        )}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Fechar</Button>
-        <Button onClick={handleSaveClick}>
-          Salvar <FaCheckCircle />
-        </Button>
-      </DialogActions>
-    </Dialog>
+
+              {isSucess && (
+                <div style={{ padding: "12px 0px 12px 0px" }}>
+                  <Alert
+                    onClose={() => handleLimpar()}
+                    onClick={() => setIsSucess(false)}
+                    color="success"
+                  >
+                    {" "}
+                    Adicionado com sucesso{" "}
+                  </Alert>
+                </div>
+              )}
+
+              <TextField
+                margin="dense"
+                label="Nome"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Email"
+                type="email"
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="CPF"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={cpf}
+                onChange={(e) => setCpf(e.target.value)}
+              />
+              <TextField
+                margin="dense"
+                label="Data de Nascimento"
+                type="date"
+                fullWidth
+                variant="outlined"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                value={birthdate}
+                onChange={(e) => setBirthdate(e.target.value)}
+              />
+              <Autocomplete
+                options={specialties}
+                getOptionLabel={(option) => option.label}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Especialidade"
+                    variant="outlined"
+                    margin="dense"
+                    fullWidth
+                  />
+                )}
+                onChange={(event, newValue) => {
+                  setSpecialty(newValue?.value);
+                }}
+              />
+            </>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button className="btn-fechar" onClick={handleClose}>
+            fechar
+          </Button>
+          <Button className="btn-salvar" onClick={() => handleclickSalvar()}>
+            Salvar <FaCheckCircle />{" "}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
