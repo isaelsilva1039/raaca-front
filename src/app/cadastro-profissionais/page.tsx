@@ -255,7 +255,7 @@ export default function Professional() {
             </Col>
         </Row>
 
-        <div className="container-modal">
+        <div>
           <ProfessionalFormModal
             show={modalShow}
             handleClose={() => setModalShow(false)}
@@ -264,7 +264,7 @@ export default function Professional() {
         </div>
         
 
-        <div className="container-modal">
+        <div >
           <ProfessionalFormModaleditar
             show={modalEditar.abriModal}
             handleClose={() => setModalEditar({abriModal: false, profissional:{}})}
@@ -275,7 +275,7 @@ export default function Professional() {
 
 
 
-       <div className="container-modal">
+       <div>
           <ProfessionalFormModaleExcluir
             show={modalExcluir.abriModal}
             handleClose={() => setModalExcluir({abriModal: false, profissional:{}})}

@@ -41,7 +41,7 @@ const CondicionalDisplay: React.FC<CondicionalDisplayProps> = ({ isAtingido, isP
         {/* Condicional para exibir a mensagem sobre a quantidade de consultas */}
         {isAtingido && isLiberdo && (
           <Typography variant="subtitle1" color={'GrayText'} sx={{ mb: 3 }}>
-            Você já fez todas as consultas 
+            Você já realizou todas as consultas que seu plano atual permite
           </Typography>
         )}
         
