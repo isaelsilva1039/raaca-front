@@ -58,6 +58,9 @@ export default function Professional() {
   };
 
   const fetchProfissionaisAll = () => {
+
+    if(!token) return;
+    
     setLoading(true);
     const onFetchSuccess = (data: any) => {
       setProfissionais(data.original.data);
@@ -86,7 +89,7 @@ export default function Professional() {
 
   useEffect(() => {
     fetchProfissionaisAll();
-  }, [currentPage]);
+  }, [currentPage, token]);
 
   useEffect(() => {
     if (isNovoMembro) {
