@@ -12,6 +12,7 @@ import { Alert, Autocomplete } from "@mui/material";
 import LoadingSpinner from "../componentes/load/load";
 import { specialties } from "@/core/helpes/especialidades";
 import { atualizarProfissional } from "./sevises/putProfissional";
+import moment from "moment";
 
 interface ProfissionalData {
   id: number;
@@ -26,17 +27,17 @@ interface ProfissionalData {
 const ProfessionalFormModaleditar = ({
   show,
   handleClose,
-  profissionail,
+  profissional,
   onUpdate = () => {},
 }: any) => {
-  const [id, setId] = useState(profissionail.id);
-  const [name, setName] = useState(profissionail.nome);
-  const [email, setEmail] = useState(profissionail.email);
-  const [cpf, setCpf] = useState(profissionail.cpf);
-  const [birthdate, setBirthdate] = useState(profissionail.data_nascimento);
-  const [specialty, setSpecialty] = useState<any | null>("");
+  const [id, setId] = useState(profissional.id);
+  const [name, setName] = useState(profissional.nome);
+  const [email, setEmail] = useState(profissional.email);
+  const [cpf, setCpf] = useState(profissional.cpf);
+  const [birthdate, setBirthdate] = useState(moment(profissional.dataNascimento).format("YYYY-MM-DD"));
+  const [specialty, setSpecialty] = useState<any | null>(profissional.especialidade);
   const [photo, setPhoto] = useState<File | null>(null);
-  const [preview, setPreview] = useState(profissionail.avatarUrl || "");
+  const [preview, setPreview] = useState(profissional.avatarUrl || "");
   const [isLoading, setIsLoading] = useState(false);
 
   const [isSucess, setIsSucess] = useState(false);
@@ -58,19 +59,18 @@ const ProfessionalFormModaleditar = ({
   };
 
   useEffect(() => {
-    if (profissionail) {
-      setId(profissionail.id);
-      setName(profissionail.nome);
-      setEmail(profissionail.email);
-      setCpf(profissionail.cpf);
-      setBirthdate(profissionail.data_nascimento);
-      setSpecialty(profissionail.especialidade);
-
-      if (profissionail.avatarUrl) {
-        setPreview(profissionail.avatarUrl);
+    if (profissional) {
+      setId(profissional.id);
+      setName(profissional.nome);
+      setEmail(profissional.email);
+      setCpf(profissional.cpf);
+      setBirthdate(moment(profissional.dataNascimento).format("YYYY-MM-DD"));
+      setSpecialty(profissional.especialidade);
+      if (profissional.avatarUrl) {
+        setPreview(profissional.avatarUrl);
       }
     }
-  }, [profissionail]);
+  }, [profissional]);
 
   const handleclickSalvar = () => {
     setIsLoading(true);
@@ -130,7 +130,7 @@ const ProfessionalFormModaleditar = ({
           <>
             <Avatar
               className="avatar"
-              src={preview || profissionail.avatarUrl || "/path_to_default_avatar.png"}
+              src={preview || profissional.avatarUrl || "/path_to_default_avatar.png"}
               alt="Preview"
               sx={{ width: 100, height: 100, cursor: "pointer" }}
               onClick={handleAvatarClick}
@@ -144,10 +144,7 @@ const ProfessionalFormModaleditar = ({
             />
             {isFoto && (
               <div style={{ padding: "12px 0px 12px 0px" }}>
-                <Alert
-                  onClose={() => setIsFoto(false)}
-                  color="error"
-                >
+                <Alert onClose={() => setIsFoto(false)} color="error">
                   {mensagem}
                 </Alert>
               </div>
@@ -155,10 +152,7 @@ const ProfessionalFormModaleditar = ({
 
             {isSucess && (
               <div style={{ padding: "12px 0px 12px 0px" }}>
-                <Alert
-                  onClose={() => setIsSucess(false)}
-                  color="success"
-                >
+                <Alert onClose={() => setIsSucess(false)} color="success">
                   Editado com sucesso
                 </Alert>
               </div>
@@ -207,6 +201,7 @@ const ProfessionalFormModaleditar = ({
             <Autocomplete
               options={specialties}
               getOptionLabel={(option) => option.label}
+              value={specialties.find((s) => s.value === specialty) || null}
               renderInput={(params) => (
                 <TextField
                   {...params}

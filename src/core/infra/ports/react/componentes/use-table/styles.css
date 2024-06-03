@@ -1,44 +1,229 @@
-/* styles/globals.css */
+* {
+  box-sizing: border-box;
+}
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+td, th {
+  padding: 12px 15px;
+  text-align: left;
+  background-color: white;
+  height: 50px;
+}
+
+th {
+  background-color: #fafafa;
+  color: #686868;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+tbody tr:hover {
+  border-left: 1px solid #a704f8;
+  background: #a704f8;
+}
+
+table tbody tr:hover td {
+  background: #fafafa;
+}
+
+.container-clientes {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Estilos para dispositivos móveis (menos de 768px) */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    overflow: hidden;
   }
-  
-   td {
-    padding: 12px 15px;
-    text-align: left;
-    background-color: white;
-    height: 50px;
-  }
-  
-  th {
-    text-align: left;
-    padding: 2px 10px;
-    background-color: #fafafa;
-    color:  #686868;
-    font-weight: bold;
-    font-family: sans-serif;
-  
-  }
-  
-  
-  tbody tr:hover {
-    border-left: 4px solid #a704f8;
-    background: #a704f8;
-    
-  }
-  
-  table tbody tr:hover td {  
+
+  td {
     background: #fafafa;
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    width: 100%;
   }
-  
-  
-  
-  .container-clientes{
-  
-  
+
+  td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    text-align: left;
+    white-space: nowrap;
   }
+
+  td:nth-child(1) {
+    border-top: 1px solid #ddd;
+  }
+
+  td:nth-child(1):before {
+    border-top: none;
+  }
+}
+
+/* Estilos para dispositivos móveis (menos de 600px) */
+@media (max-width: 599px) {
+  .rowContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .columnFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .columnStart {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .botoes {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .text-header {
+    font-weight: bold;
+  }
+
+  .text-corpo {
+    font-weight: normal;
+  }
+
+  .avatarImage {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Estilos para tablets (600px a 900px) */
+@media (min-width: 600px) and (max-width: 899px) {
+  .rowContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .columnFlex {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .columnStart {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .botoes {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .text-header {
+    font-weight: bold;
+  }
+
+  .text-corpo {
+    font-weight: normal;
+  }
+
+  .avatarImage {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Estilos para desktops (acima de 900px) */
+@media (min-width: 900px) {
+  .rowContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+
+  .columnFlex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
+  .columnStart {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .botoes {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .text-header {
+    font-weight: bold;
+  }
+
+  .text-corpo {
+    font-weight: normal;
+  }
+
+  .avatarImage {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+}

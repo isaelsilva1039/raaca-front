@@ -1,215 +1,132 @@
+* {
+  box-sizing: border-box;
+}
+
 .container {
   padding-bottom: 20px;
-
-  overflow-y: auto; /* Mantém a funcionalidade de rolagem */
-  scrollbar-width: none; /* Para Firefox */
-
-  .sub-container-geral {
-    background: white;
-    /* height: 90vh; */
-    padding: 20px;
-    border-radius: 4px;
-
-    .container-novo {
-      display: flex;
-      padding: 12px;
-      justify-content: space-between;
-      gap: 10px;
-
-      align-items: center;
-
-      .container-busca {
-        /* height: 32px; */
-        display: flex;
-
-        align-items: center;
-        flex-direction: row;
-        .input-busca {
-            padding: 10px;
-          height: 30px !important ;
-          /* border: 1px slategray solid;   */
-          border-radius: 4px;
-        }
-
-        .outline-secondary {
-          background: #a704f8;
-          height: 28px;
-          border: none;
-          color: #fafafa;
-          width: 32px;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-      }
-
-      .novo-profissional {
-        width: fit-content;
-        height: 32px;
-        border: none;
-        background: #a704f8;
-        color: white;
-        border-radius: 3px;
-        display: flex;
-        align-items: center;
-        padding: 12px;
-        gap: 4px;
-      }
-
-      .novo-profissional:hover {
-        background: #7c02b9;
-      }
-    }
-
-    .paginacao {
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-  }
+  overflow-y: auto;
+  scrollbar-width: none;
 }
 
-/* modal expander */
-
-/* styles.css */
-
-.rowContainer {
-  /* padding: 0 70px 0 60px; */
+.sub-container-geral {
+  background: white;
   border-radius: 4px;
-  background: #fafafa;
-  height: fit-content;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  /* width: 100%; */
-  gap: 10px;
 }
 
-.flexRow {
-  padding: 0 5vw 0 5vw;
+.container-novo {
   display: flex;
+  padding: 12px;
   justify-content: space-between;
+  gap: 10px;
   align-items: center;
-  width: 100%;
-  /* gap: 10px; */
-  height: fit-content;
-  min-height: 150px;
 }
 
-.columnFlex {
+.container-busca {
   display: flex;
-  gap: 10px;
   align-items: center;
   flex-direction: row;
+}
+
+.input-busca {
+  padding: 10px;
+  height: 40px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid #ddd;
+  flex: 1;
+}
+
+.outline-secondary {
+  background: #6f42c1;
+  height: 40px;
+  border: 1px solid #6f42c1;
+  color: white;
+  width: 40px;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.columnStart {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: flex-start;
-
+.novo-profissional {
+  width: fit-content;
+  height: 40px;
+  border: none;
+  background: #6f42c1;
+  color: white;
+  border-radius: 4px;
   display: flex;
   align-items: center;
+  padding: 0 15px;
+  gap: 8px;
+  font-size: 16px;
+}
 
-  .text-header {
-    display: flex;
-    gap: 10px;
-    font-weight: 300;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-      sans-serif;
-  }
+.novo-profissional:hover {
+  background: #5a31a0;
+}
 
-  .text-corpo {
-    font-weight: 200;
-  }
-  .botoes {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    cursor: pointer;
-  }
+.paginacao {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.abela {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.card-principal {
+  background: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.card-expandido {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 10px;
+}
+
+.botoes {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
 }
 
 .avatarImage {
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  margin-right: 10px;
 }
 
-@keyframes expand {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-/* Estilos para dispositivos móveis (menos de 600px) */
-@media (max-width: 599px) {
-  .flexRow,
-  .columnFlex,
-  .columnStart {
+@media (max-width: 768px) {
+  .card-content {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
   }
+}
 
-  .rowContainer {
-    padding: 20px;
-    height: auto;
-  }
-
-  .avatarImage {
-    width: 80px;
-    height: 80px;
-    align-self: center;
-  }
-
-  .botoes {
+@media (min-width: 769px) {
+  .card-content {
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-  }
-}
-
-/* Estilos para tablets (600px a 900px) */
-@media (min-width: 600px) and (max-width: 899px) {
-  .flexRow {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .columnFlex,
-  .columnStart {
-    flex: 1 1 50%;
-  }
-
-  .avatarImage {
-    width: 90px;
-    height: 90px;
-  }
-}
-
-/* Estilos para desktops (acima de 900px) */
-@media (min-width: 900px) {
-  .flexRow {
-    justify-content: space-between;
-  }
-
-  .columnFlex,
-  .columnStart {
-    flex: 1 1 20%;
-  }
-
-  .avatarImage {
-    width: 100px;
-    height: 100px;
   }
 }

@@ -4,7 +4,7 @@ interface ProfissionalData {
   id: number;
 }
 
-export const deletatProfissional = async (
+export const deletarProfissional = async (
   profissionalData: ProfissionalData,
   onSuccess: (data: any) => void, // Callback para sucesso
   onError: (error: any) => void  // Callback para erro

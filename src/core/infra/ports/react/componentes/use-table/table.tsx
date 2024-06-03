@@ -31,44 +31,46 @@ const CustomTable: React.FC<ICustomTableProps> = ({
   );
 
   return (
-    <table {...getTableProps()} className="table">
-      <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()} key={`header-group-${headerGroup.id}`}>
-            {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()} key={`column-${column.id}`}>
-                {column.render('Header')}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, rowIndex) => {
-          prepareRow(row);
-          const isExpanded = expandedRows[row.id.toString()];
-          return (
-            <React.Fragment key={`row-fragment-${row.id}`}>
-              <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row.id.toString())}>
-                {row.cells.map((cell, cellIndex) => (
-                  <td {...cell.getCellProps()} key={`cell-${row.id}-${cellIndex}`}>
-                    {cell.render('Cell')}
-                  </td>
-                ))}
-              </tr>
-
-              {isExpanded && (
-                <tr key={`expanded-${row.id}`}>
-                  <td colSpan={columns.length}>
-                    {renderRowSubComponent({ row })}
-                  </td>
+    <div className="container-clientes">
+      <table {...getTableProps()} className="table">
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()} key={`header-group-${headerGroup.id}`}>
+              {headerGroup.headers.map(column => (
+                <th {...column.getHeaderProps()} key={`column-${column.id}`}>
+                  {column.render('Header')}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, rowIndex) => {
+            prepareRow(row);
+            const isExpanded = expandedRows[row.id.toString()];
+            return (
+              <React.Fragment key={`row-fragment-${row.id}`}>
+                <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row.id.toString())}>
+                  {row.cells.map((cell, cellIndex) => (
+                    <td {...cell.getCellProps()} key={`cell-${row.id}-${cellIndex}`} data-label={cell.column.Header}>
+                      {cell.render('Cell')}
+                    </td>
+                  ))}
                 </tr>
-              )}
-            </React.Fragment>
-          );
-        })}
-      </tbody>
-    </table>
+
+                {isExpanded && (
+                  <tr key={`expanded-${row.id}`}>
+                    <td colSpan={columns.length}>
+                      {renderRowSubComponent({ row })}
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
