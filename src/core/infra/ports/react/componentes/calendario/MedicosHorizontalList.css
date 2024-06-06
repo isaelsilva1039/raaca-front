@@ -18,7 +18,7 @@
     gap: 4px;
     overflow: hidden;
     cursor: grab;
-    /* flex: 1; */
+    flex: 1;
 }
 
 .medico-card {
