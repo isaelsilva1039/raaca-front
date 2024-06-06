@@ -42,3 +42,58 @@ table {
   
   
   }
+
+
+
+
+
+
+  /* MobileCard.module.css */
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.card-container .card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+
+  border-left: 4px solid #a704f8;
+
+
+  font-weight: 200;
+}
+
+.card-container .card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-container .card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-container .card-field {
+  margin-bottom: 0.5em;
+}
+
+.card-container .card-field strong {
+  margin-right: 0.5em;
+}
+
+.card-container .card-expanded {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid #ddd;
+}
+
+
+.card:hover{
+  /* border-left: 4px solid #a704f8; */
+  /* background: #a704f8; */
+  
+}

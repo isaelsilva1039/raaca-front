@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTable } from "react-table";
 
 import "./style.css";
+import { useMediaQuery } from 'react-responsive';
 import { IconButton, Tooltip, Typography } from "@mui/material";
 import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
 import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
@@ -26,9 +27,9 @@ import ModalConsulta from "@/core/infra/ports/react/componentes/modal-consultas/
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { FaUserSlash } from "react-icons/fa6";
 
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css'; // Importa o CSS para o estilo padrão
-
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css"; // Importa o CSS para o estilo padrão
+import MobileCard from "@/core/infra/ports/react/componentes/use-table/cardMobile";
 
 interface IData {
   id: number;
@@ -39,7 +40,7 @@ interface IData {
   assas_assinatura: any;
   plano: any;
   qtd_consultas: any;
-  user:any;
+  user: any;
 }
 
 export default function Gerenciador() {
@@ -68,7 +69,7 @@ export default function Gerenciador() {
   const [loading, setLoading] = useState<boolean>(true);
 
   const [update, setUpdate] = useState<boolean>(true);
-  
+
   const [loadingVinculo, setLoadingVinculo] = useState<boolean>(false);
 
   useEffect(() => {
@@ -86,18 +87,18 @@ export default function Gerenciador() {
         setCliente(data.data);
         setCurrentPage(data.meta);
         setLoading(false);
-        setLoadingVinculo(false)
+        setLoadingVinculo(false);
       },
       (error) => {
         setLoading(false);
-        setLoadingVinculo(false)
+        setLoadingVinculo(false);
       }
     );
   };
 
   const handleVincularClienteAserRacca = (idCliene: any) => {
     if (!criarUser.cliente) return;
-    setLoadingVinculo(true)
+    setLoadingVinculo(true);
     postClientesUser(
       idCliene,
       token,
@@ -106,7 +107,7 @@ export default function Gerenciador() {
       },
       (error) => {
         setLoading(false);
-        setLoadingVinculo(false)
+        setLoadingVinculo(false);
       }
     );
   };
@@ -114,7 +115,7 @@ export default function Gerenciador() {
   const columns = useMemo(
     () => [
       {
-        Header: "ID",
+        Header: "Matricula",
         accessor: "id",
       },
       {
@@ -155,19 +156,26 @@ export default function Gerenciador() {
         Cell: ({ row }) => {
           const consultas = row.original?.user?.consultas; // Acessando consultas do usuário vinculado
 
-          const isExpired = new Date( consultas && consultas.length > 0 && consultas[0]?.fim_data) < new Date();
+          const isExpired =
+            new Date(
+              consultas && consultas.length > 0 && consultas[0]?.fim_data
+            ) < new Date();
 
           return (
             <div style={{ display: "flex", alignItems: "center" }}>
               {consultas && consultas.length > 0 ? (
                 <div
                   style={{
-                    backgroundColor: isExpired ? "rgb(207, 115, 115)" : "#d4edda", // Vermelho se expirado, verde claro caso contrári
+                    backgroundColor: isExpired
+                      ? "rgb(207, 115, 115)"
+                      : "#d4edda", // Vermelho se expirado, verde claro caso contrári
                     padding: "5px",
                     borderRadius: "5px",
                   }}
                 >
-                  {`De ${formatDate(consultas[0].inicio_data)} a ${formatDate(consultas[0].fim_data)}`}
+                  {`De ${formatDate(consultas[0].inicio_data)} a ${formatDate(
+                    consultas[0].fim_data
+                  )}`}
                 </div>
               ) : (
                 <div
@@ -182,7 +190,7 @@ export default function Gerenciador() {
               )}
             </div>
           );
-        }
+        },
       },
 
       {
@@ -190,49 +198,60 @@ export default function Gerenciador() {
         accessor: "qtd_consultas",
 
         Cell: ({ row }) => {
+
+          console.log(row)
           const consultas = row.original?.user?.consultas; // Acessando consultas do usuário vinculado
 
-          const isComplete = consultas && consultas.length > 0 && consultas[0].quantidade_realizada === consultas[0].quantidade_consultas;
-      
+          const isComplete =
+            consultas &&
+            consultas.length > 0 &&
+            consultas[0].quantidade_realizada ===
+              consultas[0].quantidade_consultas;
+
           return (
             <div style={{ display: "flex", alignItems: "center" }}>
               {consultas && consultas.length > 0 ? (
                 <>
-                <div >                   
-               <CircularProgressbar
-                    className="circulo"
-                    value={(consultas[0].quantidade_realizada / consultas[0].quantidade_consultas) * 100}
-                    text={`${consultas[0].quantidade_realizada} / ${consultas[0].quantidade_consultas}`}
-                    styles={buildStyles({
-                      pathColor: consultas[0].quantidade_realizada === consultas[0].quantidade_consultas ? '#cf7373' : 'rgb(153 199 164)',
-                      textColor: '#000',
-                      trailColor: '#eee',
-                      backgroundColor: '#3e98c7',
-                    })}
-            />
-                </div>
-
-                
-</>
-                
+                  <div>
+                    <CircularProgressbar
+                      className="circulo"
+                      value={
+                        (consultas[0].quantidade_realizada /
+                          consultas[0].quantidade_consultas) *
+                        100
+                      }
+                      text={`${consultas[0].quantidade_realizada} / ${consultas[0].quantidade_consultas}`}
+                      styles={buildStyles({
+                        pathColor:
+                          consultas[0].quantidade_realizada ===
+                          consultas[0].quantidade_consultas
+                            ? "#cf7373"
+                            : "rgb(153 199 164)",
+                        textColor: "#000",
+                        trailColor: "#eee",
+                        backgroundColor: "#3e98c7",
+                      })}
+                    />
+                  </div>
+                </>
               ) : (
                 <div>
-                 <CircularProgressbar
+                  <CircularProgressbar
                     className="circulo"
                     value={(0 / 1) * 100}
                     text={`0`}
                     styles={buildStyles({
-                      pathColor: '#d4edda',
-                      textColor: '#000',
-                      trailColor: '#eee',
-                      backgroundColor: '#3e98c7',
+                      pathColor: "#d4edda",
+                      textColor: "#000",
+                      trailColor: "#eee",
+                      backgroundColor: "#3e98c7",
                     })}
-            />
+                  />
                 </div>
               )}
             </div>
           );
-        }        
+        },
       },
     ],
     []
@@ -249,96 +268,90 @@ export default function Gerenciador() {
 
   const onUpdate = () => {
     getClientesAll();
-  }
+  };
 
-  const renderRowSubComponent = ({ row }: any) => (
-    <Row className="rowContainer">
-      <Row className="flexRow">
-        <Col className="columnFlex">
-          <img
-            src={
-              row.original?.avatarUrl
-                ? row.original.avatarUrl
-                : "/img/avatar1.png"
-            }
-            alt={`Avatar de ${row.original.nome}`}
-            className="avatarImage"
-          />
-
-          <Col className="columnStart">
-            <text className="text-header">Nome</text>
-            <small className="text-corpo">{row?.original?.name}</small>
+  const renderRowSubComponent = ({ row }: any) => {
+    const rowData = row.original || row;
+  
+    console.log(rowData)
+    return (
+      <Row className="rowContainer">
+        <Row className="flexRow">
+          <Col className="columnFlex">
+            <img
+              src={rowData.avatarUrl ? rowData.avatarUrl : "/img/avatar1.png"}
+              alt={`Avatar de ${rowData.nome}`}
+              className="avatarImage"
+            />
+  
+            <Col className="columnStart">
+              <text className="text-header">Nome</text>
+              <small className="text-corpo">{rowData.name}</small>
+            </Col>
           </Col>
-        </Col>
-
-        <Col className="columnStart">
-          <text className="text-header">CPF</text>
-          <small className="text-corpo">{row?.original?.cpfCnpj}</small>
-        </Col>
-
-        <Col className="columnStart">
-          <text className="text-header">Data de Nascimento</text>
-          <small className="text-corpo">
-            {formatDate(row?.original?.date_of_birth)}
-          </small>
-        </Col>
-
-        <Col className="columnStart">
-          {/* <text className="text-header">Ações</text> */}
-          <Row className="botoes">
-            {/* desativado temporariamente */}
-            {loadingVinculo ? (
-              <div className="loading-dots">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            ):(
-
+  
+          <Col className="columnStart">
+            <text className="text-header">CPF</text>
+            <small className="text-corpo">{rowData.cpfCnpj}</small>
+          </Col>
+  
+          <Col className="columnStart">
+            <text className="text-header">Data de Nascimento</text>
+            <small className="text-corpo">{formatDate(rowData.date_of_birth)}</small>
+          </Col>
+  
+          <Col className="columnStart">
+            <Row className="botoes">
+              {loadingVinculo ? (
+                <div className="loading-dots">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              ) : (
                 <>
-                  {row?.original?.user_id ? (
-              <>
-                <Tooltip title="Liberar consultas">
-                  <IconButton
-                    onClick={() => {
-                      setModalEditar({
-                        abriModal: true,
-                        cliente: row?.original,
-                      });
-                    }}
-                  >
-                    <FaUserDoctor size={18} color="#707EAE" />
-                  </IconButton>
-                </Tooltip>
-
-                <Tooltip title="Cliente já tem um usuario">
-                  <IconButton>
-                    <IoCheckmarkCircleSharp size={18} color="green" />
-                  </IconButton>
-                </Tooltip>
-              </>
-            ) : (
-              <Tooltip title="cliente não tem um usuario no racca">
-                <IconButton
-                  onClick={() => {
-                    handleVincularClienteAserRacca(row?.original.id);
-                  }}
-                >
-                  <FaUserSlash size={18} color="red" />
-                </IconButton>
-              </Tooltip>
-            )}
+                  {rowData.user_id ? (
+                    <>
+                      <Tooltip title="Liberar consultas">
+                        <IconButton
+                          onClick={() => {
+                            setModalEditar({
+                              abriModal: true,
+                              cliente: rowData,
+                            });
+                          }}
+                        >
+                          <FaUserDoctor size={18} color="#707EAE" />
+                        </IconButton>
+                      </Tooltip>
+  
+                      <Tooltip title="Cliente já tem um usuario">
+                        <IconButton>
+                          <IoCheckmarkCircleSharp size={18} color="green" />
+                        </IconButton>
+                      </Tooltip>
+                    </>
+                  ) : (
+                    <Tooltip title="cliente não tem um usuario no racca">
+                      <IconButton
+                        onClick={() => {
+                          handleVincularClienteAserRacca(rowData.id);
+                        }}
+                      >
+                        <FaUserSlash size={18} color="red" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
                 </>
-
-            )}
-            
-
-           
-          </Row>
-        </Col>
+              )}
+            </Row>
+          </Col>
+        </Row>
       </Row>
-    </Row>
-  );
+    );
+  };
+  
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <div className="container-clientes">
@@ -359,6 +372,8 @@ export default function Gerenciador() {
           <MuiTableSkeleton />
         ) : (
           <>
+
+          {!isMobile ? (
             <CustomTable
               columns={columns}
               data={clientes}
@@ -366,6 +381,18 @@ export default function Gerenciador() {
               toggleRowExpanded={toggleRowExpanded}
               renderRowSubComponent={renderRowSubComponent}
             />
+
+          ):(
+
+            <MobileCard
+              columns={columns}
+              data={clientes}
+              expandedRows={expandedRows}
+              toggleRowExpanded={toggleRowExpanded}
+              renderRowSubComponent={renderRowSubComponent}
+            />
+          )}
+            
 
             <div className="paginacao">
               <CustomPagination
