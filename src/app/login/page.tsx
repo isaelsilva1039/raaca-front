@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       <Head>
         <title>Login - Racca Saude</title>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/img/ico.png" />
+        <link rel="apple-touch-icon" href="/img/ico512.png" />
         <meta name="theme-color" content="#000000" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
