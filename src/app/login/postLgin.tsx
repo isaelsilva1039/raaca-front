@@ -6,7 +6,6 @@ export const postLogin = async (
   onSuccess: (data: any) => void,
   onError: (error: any) => void
 ) => {
-  // Construindo a URL com parâmetros de consulta
   const url = `${API}/api/auth/login?email=${encodeURIComponent(email)}&password=${encodeURIComponent(senha)}`;
 
   const options = {

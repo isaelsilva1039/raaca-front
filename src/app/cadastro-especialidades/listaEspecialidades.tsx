@@ -127,7 +127,7 @@ const SpecialtyList = ({ specialties, onDelete, onEdit } : any) => {
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           style={iconButtonStyles}
           disabled={currentPage === totalPages}
-        >
+          >
           {/* <FontAwesomeIcon icon={faChevronRight} size="lg" /> */}
         </button>
       </div>
