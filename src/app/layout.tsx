@@ -53,6 +53,20 @@ const menuItems = [
 
   },
   {
+    title: "Planos",
+    icone: "./assets/rout-gerenciadores.svg",
+    route: "./cadastro-planos",
+    allowedTypes: [1]  // Todos os tipos de usuários
+
+  },
+  {
+    title: "Especialidades",
+    icone: "./assets/rout-gerenciadores.svg",
+    route: "./cadastro-especialidades",
+    allowedTypes: [1]  // Todos os tipos de usuários
+
+  },
+  {
     title: "Relatório",
     icone: "./assets/rout-relatorios.svg",
     route: "/relatorio",
