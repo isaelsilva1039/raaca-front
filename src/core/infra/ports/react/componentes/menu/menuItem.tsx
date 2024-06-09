@@ -3,7 +3,7 @@ import Link from "next/link"
 
 export const MenuItem = (props: {
     title: string,
-    icone: string,
+    icon: JSX.Element,
     route: string,
     allowedTypes: number[],
 
@@ -24,7 +24,7 @@ export const MenuItem = (props: {
             {props.isActive ? (
                 <div className="menu-item">
                     <div className="menu-item-details">
-                        <img className="img" src={props.icone} />
+                    <div className="menu-icone-ativo">{props.icon}</div>
                         <div className="menu-item-title">{props.title}</div>
                     </div>
                     <div className="dashboard-wrapper">
@@ -36,7 +36,7 @@ export const MenuItem = (props: {
             ) : (
                 <div className="menu-item">
                     <div className="menu-item-details">
-                        <img className="img" src={props.icone} />
+                        {props.icon}
                         <div className="menu-item-title-nao-selecionado">{props.title}</div>
                     </div>
                     <div className="div-3" />

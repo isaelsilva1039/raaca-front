@@ -13,72 +13,138 @@ import { UserProvider } from "@/core/helpes/UserContext";
 import { LiaUserClockSolid } from "react-icons/lia";
 import Perfil from "./perfil/page";
 import Head from "next/head";
+import { FaTachometerAlt, FaUser, FaCalendarAlt, FaCog, FaUsers, FaClipboardList, FaFileAlt, FaTools } from 'react-icons/fa';
 
 const inter = Inter({ subsets: ["latin"] });
+
 
 const menuItems = [
   {
     title: "Dashboard",
-    icone: "./assets/rout-dashboard.svg",
+    icon: <FaTachometerAlt color="#a3aed0" size={20} />,
     route: "/dashboard",
     allowedTypes: [1, 2, 3, 4]
   },
   {
     title: "Clientes",
-    icone: "./assets/rout-operadores.svg",
+    icon: <FaUser color="#a3aed0" size={20} />,
     route: "/clientes",
     allowedTypes: [1]
   },
   {
     title: "Agendamentos",
-    icone: "./assets/rout-smart-pos.svg",
+    icon: <FaCalendarAlt color="#a3aed0" size={20} />,
     route: "/agendamentos",
     allowedTypes: [1, 2, 3, 4]
   },
   {
     title: "Configurar agenda",
-    icone: "./assets/rout-grupos-acesso.svg",
+    icon: <FaCog color="#a3aed0" size={20} />,
     route: "/meus-horario",
     allowedTypes: [2]
   },
   {
     title: "Profissionais",
-    icone: "./assets/rout-gerenciadores.svg",
+    icon: <FaUsers color="#a3aed0" size={20} />,
     route: "/cadastro-profissionais",
     allowedTypes: [1]
   },
   {
     title: "Planos",
-    icone: "./assets/rout-gerenciadores.svg",
-    route: "./cadastro-planos",
+    icon: <FaClipboardList color="#a3aed0" size={20} />,
+    route: "/planos",
     allowedTypes: [1]
   },
   {
     title: "Especialidades",
-    icone: "./assets/rout-gerenciadores.svg",
-    route: "./cadastro-especialidades",
+    icon: <FaClipboardList color="#a3aed0" size={20} />,
+    route: "/cadastro-especialidades",
     allowedTypes: [1]
   },
   {
     title: "Relatório",
-    icone: "./assets/rout-relatorios.svg",
+    icon: <FaFileAlt  color="#a3aed0" size={20} />,
     route: "/relatorio",
     color: "#4318FF",
     allowedTypes: [1]
   },
   {
     title: "Operadores",
-    icone: "./assets/rout-operadores.svg",
+    icon: <FaUser color="#a3aed0" size={20} />,
     route: "/operadores",
     allowedTypes: [1]
   },
   {
     title: "Grupo de acesso",
-    icone: "./assets/rout-grupos-acesso.svg",
+    icon: <FaTools  color="#a3aed0" size={20} />,
     route: "/grupo-de-acesso",
     allowedTypes: [1]
   },
 ];
+
+// const menuItems = [
+//   {
+//     title: "Dashboard",
+//     icone: "./assets/rout-dashboard.svg",
+//     route: "/dashboard",
+//     allowedTypes: [1, 2, 3, 4]
+//   },
+//   {
+//     title: "Clientes",
+//     icone: "./assets/rout-operadores.svg",
+//     route: "/clientes",
+//     allowedTypes: [1]
+//   },
+//   {
+//     title: "Agendamentos",
+//     icone: "./assets/rout-smart-pos.svg",
+//     route: "/agendamentos",
+//     allowedTypes: [1, 2, 3, 4]
+//   },
+//   {
+//     title: "Configurar agenda",
+//     icone: "./assets/rout-grupos-acesso.svg",
+//     route: "/meus-horario",
+//     allowedTypes: [2]
+//   },
+//   {
+//     title: "Profissionais",
+//     icone: "./assets/profissionais.svg",
+//     route: "/cadastro-profissionais",
+//     allowedTypes: [1]
+//   },
+//   {
+//     title: "Planos",
+//     icone: "./assets/rout-gerenciadores.svg",
+//     route: "./cadastro-planos",
+//     allowedTypes: [1]
+//   },
+//   {
+//     title: "Especialidades",
+//     icone: "./assets/rout-gerenciadores.svg",
+//     route: "./cadastro-especialidades",
+//     allowedTypes: [1]
+//   },
+//   {
+//     title: "Relatório",
+//     icone: "./assets/rout-relatorios.svg",
+//     route: "/relatorio",
+//     color: "#4318FF",
+//     allowedTypes: [1]
+//   },
+//   {
+//     title: "Operadores",
+//     icone: "./assets/rout-operadores.svg",
+//     route: "/operadores",
+//     allowedTypes: [1]
+//   },
+//   {
+//     title: "Grupo de acesso",
+//     icone: "./assets/rout-grupos-acesso.svg",
+//     route: "/grupo-de-acesso",
+//     allowedTypes: [1]
+//   },
+// ];
 
 var open = false;
 
@@ -108,7 +174,7 @@ export default function RootLayout({
     const props = {
       chave: index,
       title: item.title,
-      icone: item.icone,
+      icon: item.icon,
       route: item.route,
       allowedTypes: item.allowedTypes,
       isActive: route === item.route,

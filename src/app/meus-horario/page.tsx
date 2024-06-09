@@ -15,6 +15,9 @@ import ScheduleSkeleton from "@/core/infra/ports/react/componentes/skeleton/Sche
 import { useCliente } from "@/core/helpes/UserContext";
 import { fetchMes, fetchSchedule, saveSchedule } from "../api/horarios/horarios-api";
 import MonthsList from "@/core/infra/ports/react/componentes/mes/MonthSwitch";
+import './styles.css'
+import ConfiguracaoTempoConsultas from "@/core/infra/ports/react/componentes/ConfiguracaoTempoConsultas/ConfiguracaoTempoConsultas";
+import { useMediaQuery } from "react-responsive";
 
 const defaultSchedule: WeeklySchedule = {
   segunda: [],
@@ -144,6 +147,7 @@ const SchedulePage: React.FC = () => {
     );
   };
 
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
   return (
     <Box className="container-a" sx={{ p: 3 }}>
@@ -151,19 +155,21 @@ const SchedulePage: React.FC = () => {
         <ScheduleSkeleton />
       ) : (
         <>
-          <Tabs style={{padding: '0 0 20px 0'}} value={tabIndex}
+          <Tabs style={{ padding: isMobile ? '52px 0 20px 0' : '0px 0 20px 0' }} value={tabIndex}
               onChange={handleTabChange} 
               centered 
               variant="fullWidth"            
               indicatorColor="secondary"
               textColor="secondary">
 
-            <Tab label=" Configurar horários" 
+            <Tab className="custom-tab" label=" Configurar horários" 
               onClick={() => setIsTable(true)}
             />
-            <Tab label="Liberar agenda" onClick={() => setIsTable(true)} />
+            <Tab className="custom-tab" label="Liberar agenda" onClick={() => setIsTable(true)} />
 
-            <Tab label="Bloquear dias" onClick={() => setIsTable(true)}/>
+            <Tab className="custom-tab" label="Tempo de consultas" onClick={() => setIsTable(true)}/>
+
+            <Tab className="custom-tab" label="Bloquear dias" onClick={() => setIsTable(true)}/>
           </Tabs>
 
           {tabIndex === 0 && (
@@ -241,6 +247,12 @@ const SchedulePage: React.FC = () => {
            
              <MonthsList  token={token} apiMonths={monthe} loadingMes={loadingMes}/>
 
+            </Box>
+          )}
+
+        {tabIndex === 2 && (
+            <Box>
+               <ConfiguracaoTempoConsultas />
             </Box>
           )}
         </>

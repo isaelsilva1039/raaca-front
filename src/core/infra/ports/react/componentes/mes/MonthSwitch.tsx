@@ -43,10 +43,10 @@ const MonthSwitch: React.FC<MonthSwitchProps> = ({
   toggleMonth,
 }) => {
   return (
-    <Card variant="outlined" sx={{ mb: 2 }}>
-      <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Card variant="outlined" sx={{ mb: 2 }} >
+      <CardContent  sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h6">{name}</Typography>
-        <Switch checked={isActive} onChange={() => toggleMonth(value, name)} />
+        <Switch checked={isActive} onChange={() => toggleMonth(value, name)} color="secondary"/>
       </CardContent>
     </Card>
   );
@@ -118,7 +118,7 @@ const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths, loadingMes })
     ):(
       
     
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 2 }}>
       <Typography
         className="list-top"
         sx={{
@@ -134,7 +134,7 @@ const MonthsList: React.FC<MonthsListProps> = ({ token, apiMonths, loadingMes })
 
       <Grid container spacing={2}>
         {months.map((month) => (
-          <Grid item xs={12} sm={6} md={4} key={month.value}>
+          <Grid item xs={12} sm={6} md={4} key={month.value}  >
             <MonthSwitch
               name={month.name}
               value={month.value}

@@ -93,3 +93,12 @@ a:-webkit-any-link:active {
     position: relative;
     width: 5px;
 }
+
+
+
+.menu-icone-ativo{
+    svg{
+        color: #2b3674 !important;
+    }
+
+}
