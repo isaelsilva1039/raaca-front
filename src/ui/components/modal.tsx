@@ -41,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, handleLogout, profilePhoto, user
     <div className="modal-backdrop" onClick={handleBackdropClick}>
       <div className="modal-content">
         <button className="modal-close-btn" onClick={onClose}><AiOutlineClose /></button> 
-        <text className="emailModal" style={{color:'black'}}> {user.email} </text>
+        <text className="emailModal" style={{color:'black'}}> {user?.email} </text>
         <img src={avatar ?  avatar : profilePhoto } alt="Profile" className="modal-profile-image" />
         <h2 className="modal-title">
           <text style={{color:'black'}}> Olá, {user?.name} </text>

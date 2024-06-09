@@ -61,7 +61,7 @@ const Perfil: React.FC = () => {
   const [cpf, setCpf] = useState<any>(usuarioCliente?.cpf);
   const [tipo, settipo] = useState<any>();
   const [senha, setSenha] = useState<any | null>();
-  const [novaSenha, setNovaSenha] = useState<string | null>();
+  const [novaSenha, setNovaSenha] = useState<string | null>(null);
   const [senhasIguais, setSenhasIguais] = useState<boolean>(true);
 
   const [preview, setPreview] = useState<any>();
@@ -99,6 +99,10 @@ const Perfil: React.FC = () => {
 
     if(!preview){
       setPreview(null)
+    }
+
+    if(senha == 'undefined'){
+      setSenha(null)
     }
 
     putMeService(
