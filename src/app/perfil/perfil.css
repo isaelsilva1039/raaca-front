@@ -1,49 +1,128 @@
 .perfil-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  color: rgb(129, 135, 139);
+  color: rgb(255, 255, 255);
   font-weight: 200;
   font-size: small;
-  gap: 2px; 
+  gap: 8px; 
   position: relative; 
-  z-index: 10000;
-  
-  }
-  
-  .profile-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    box-shadow: 0 0 0 2px #7315ca, 0 0 0 2px #fadb51; 
-  }
-  
-  .container-p{
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
+  z-index: 10;
+  flex-wrap: wrap; /* Permite que os itens flex quebrem para uma nova linha */
+  word-break: break-word; /* Garante que palavras longas sejam quebradas */
+}
 
 
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.container-p {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  /* justify-content: flex-end;
+  align-items: flex-end; */
+  gap: 2px;
+
+  width: 100%;
+  padding: 10px;
+}
+
+.modal-container {
+  position: fixed;
+  top: 150px;
+  left: 277px;
+  /* background-color: rgba(245, 245, 245, 0); */
+  display: flex;
+  /* justify-content: flex-end; */
+  /* align-items: center; */
+  /* padding: 20px; */
+  z-index: 9999;
+  /* border: 1px solid rgb(231, 235, 222); */
+  border-radius: 6px;
+
+
+  .modal-backdrop{
+    width: 100%;
+    /* background: red; */
+    padding: 10px;
+
+    .modal-content{
+      padding: 10px;
+      width: 100%;
+    }
+
+
+
+
+  .modal-content::after {
+    content: "";
+    position: absolute;
+    bottom: 340px; /* Ajuste a posição conforme necessário */
+    left: -10px; /* Ajuste a posição conforme necessário */
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent rgb(158, 21, 170) transparent transparent;
   }
-  
-  
+
+  .modal-content::before {
+    content: "";
+    position: absolute;
+    bottom: 11px; /* Ajuste a posição conforme necessário */
+    left: -11px; /* Ajuste a posição conforme necessário */
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent rgba(245, 245, 245, 1) transparent transparent;
+  }
+  }
+}
+
+
+
+
+/* Media query para dispositivos móveis */
+@media (max-width: 767px) {
   .modal-container {
     position: fixed;
-    top: 60px;
-    right: 20px;
-    background-color: rgba(245, 245, 245, 0);
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 20px;
+    top: 20%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(245, 245, 245, 1);
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     z-index: 9999;
+    border: 1px solid rgb(231, 235, 222);
+    border-radius: 6px;
   }
-  @media only screen and (max-width: 768px) {
-    .textoPerfil {
-    color: rgb(255, 255, 255);
-    }
+
+  .container-p {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 2px;
+    width: 100%;
   }
-  
+
+  /* .modal-container::after {
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0 10px;
+    border-color: rgb(231, 235, 222) transparent transparent transparent;
+  }
+
+  .modal-container::before {
+    bottom: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0 10px;
+    border-color: rgba(245, 245, 245, 1) transparent transparent transparent;
+  } */
+}

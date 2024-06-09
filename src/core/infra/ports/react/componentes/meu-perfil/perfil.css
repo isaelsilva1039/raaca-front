@@ -1,0 +1,145 @@
+.profile-container {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    flex-direction: column;
+    padding-top: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height:fit-content;
+
+    padding-bottom:20px;
+    border-left: #8900b3 4px solid;
+
+    min-height: 400px;
+  }
+ 
+  
+  
+  .profile-header {
+    display: flex;
+    /* align-items: center; */
+    gap: 12px;
+    padding: 22px;
+
+    /* width: 20%; */
+
+
+    .text-center{
+
+        .avatar{
+            min-width: 210px;
+            min-height: 210px;
+            width: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid #8900b3;
+        }
+    }
+  }
+
+  
+  .profile-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .profile-info {
+    /* margin-bottom: 20px; */
+    /* padding: 22px; */
+  }
+  
+  .profile-info div {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    /* margin-bottom: 10px; */
+    padding: 10px;
+
+  }
+  
+  .profile-info label {
+    font-size: 16px;
+    color: #666;
+    min-width: 120px;
+  }
+  
+  .profile-info span {
+    font-size: 16px;
+    color: #333;
+    flex-grow: 1;
+    /* margin-left: 10px; */
+    min-width: 300px;
+    /* border-bottom: 1px #8900b3 solid; */
+
+  }
+  
+  .edit-icon {
+    cursor: pointer;
+    color: #007bff;
+    display: flex;
+    padding: 8px;
+  }
+  
+  .edit-icon:hover {
+    color: #0056b3;
+  }
+  
+
+
+  .view-container{
+    display: flex;
+    gap: 22px
+  }
+
+  .form-perfil{
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+
+        .edit-container{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+  }
+
+  .botoes{
+
+    padding-top: 22px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    /* width: 62%; */
+
+    .btn-salvar{
+        background: #8900b3;
+        color: #fff;
+        height: 32px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .btn-salvar.disabled,
+    .btn-salvar:disabled {
+      background-color: #cca4d8; /* Tom de cinza */
+    }
+  }
+
+
+
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input{
+    min-width: 330px
+  }

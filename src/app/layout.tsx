@@ -170,11 +170,11 @@ export const layout = (props: {
                   if (props.isOpen) props.onClick();
                 }}
               >
-                {!props.isLogin && (
+                {/* {!props.isLogin && (
                   <div className="barra-menu">
                     <a><Perfil /></a>
                   </div>
-                )}
+                )} */}
                 
                 {props.children}
               </div>

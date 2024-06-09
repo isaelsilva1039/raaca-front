@@ -1,10 +1,11 @@
 .menu-container {
     align-items: flex-start;
-    display: inline-flex;
+    /* display: inline-flex; */
     flex-direction: column;
     height: 100%;
     position: relative;
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    padding: 2px;
 
     .sair{
         /* margin-top: 45vh; */
