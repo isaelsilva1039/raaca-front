@@ -49,9 +49,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, handleLogout, profilePhoto, user
         <button className="modal-manage-btn" onClick={ handlePerfilClick}>
           <AiOutlineSetting style={{ marginRight: '5px' }} /> Gerenciar sua Conta RACCA
         </button>
-        <p style={{color:'black', fontWeight:300}}>
-          Aqui ainda vamos definir o que vamos colocar
-        </p>
+        
         <div className="modal-buttons">
           <a className="modal-logout-btn" onClick={handleLogoutClick}>Sair</a>
         </div>
