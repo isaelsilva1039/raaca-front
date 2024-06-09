@@ -60,7 +60,7 @@ const Perfil: React.FC = () => {
   const [email, setEmail] = useState<any>(usuarioCliente?.email);
   const [cpf, setCpf] = useState<any>(usuarioCliente?.cpf);
   const [tipo, settipo] = useState<any>();
-  const [senha, setSenha] = useState<any | null>();
+  const [senha, setSenha] = useState<any | null>(null);
   const [novaSenha, setNovaSenha] = useState<string | null>(null);
   const [senhasIguais, setSenhasIguais] = useState<boolean>(true);
 
