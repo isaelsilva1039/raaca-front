@@ -58,7 +58,7 @@ const ConfiguracaoTempoConsultas: React.FC = () => {
           <Select
             labelId="minutos-label"
             value={duracaoConsulta}
-            onChange={handleChangeDuracao}
+            onChange={() => handleChangeDuracao}
             label="Minutos"
           >
             <MenuItem value="0">0 minutos</MenuItem>
