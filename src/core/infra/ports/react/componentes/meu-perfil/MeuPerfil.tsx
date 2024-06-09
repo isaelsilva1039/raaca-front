@@ -25,7 +25,7 @@ interface Profile {
   name: string | undefined;
   email: string | undefined;
   cpf: string | undefined;
-  tipo: string | undefined;
+  tipo: any;
   senha: string | null | undefined;
   novaSenha: string | null | undefined;
 }
@@ -186,6 +186,23 @@ const Perfil: React.FC = () => {
   }, [senha, novaSenha]);
 
 
+  let tipoUser = null;
+  if(profile.tipo == 1 ){
+    tipoUser = 'Administrador'
+  }
+
+
+  if(profile.tipo == 2 ){
+    tipoUser = 'Profissional'
+  }
+
+  if(profile.tipo == 3 ){
+    tipoUser = 'Cliente'
+  }
+
+
+  
+
   return (
     <div className="profile-container">
       {loading ? (
@@ -304,7 +321,7 @@ const Perfil: React.FC = () => {
                   variant="outlined"
                   type="text"
                   fullWidth
-                  defaultValue={profile?.tipo}
+                  defaultValue={tipoUser}
                   // onChange={(e) => settipo(e.target.value)}
                   disabled={true}
                 />
