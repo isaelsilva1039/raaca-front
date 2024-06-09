@@ -14,7 +14,6 @@ import { LiaUserClockSolid } from "react-icons/lia";
 import Perfil from "./perfil/page";
 import Head from "next/head";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
 const menuItems = [
@@ -28,51 +27,56 @@ const menuItems = [
     title: "Clientes",
     icone: "./assets/rout-operadores.svg",
     route: "/clientes",
-    allowedTypes: [1] 
-
+    allowedTypes: [1]
   },
   {
     title: "Agendamentos",
     icone: "./assets/rout-smart-pos.svg",
     route: "/agendamentos",
     allowedTypes: [1, 2, 3, 4]
-
   },
   {
     title: "Configurar agenda",
     icone: "./assets/rout-grupos-acesso.svg",
     route: "/meus-horario",
     allowedTypes: [2]
-
   },
   {
     title: "Profissionais",
     icone: "./assets/rout-gerenciadores.svg",
     route: "/cadastro-profissionais",
-    allowedTypes: [1]  // Todos os tipos de usuários
-
+    allowedTypes: [1]
+  },
+  {
+    title: "Planos",
+    icone: "./assets/rout-gerenciadores.svg",
+    route: "./cadastro-planos",
+    allowedTypes: [1]
+  },
+  {
+    title: "Especialidades",
+    icone: "./assets/rout-gerenciadores.svg",
+    route: "./cadastro-especialidades",
+    allowedTypes: [1]
   },
   {
     title: "Relatório",
     icone: "./assets/rout-relatorios.svg",
     route: "/relatorio",
     color: "#4318FF",
-    allowedTypes: [1]  // Todos os tipos de usuários
-
+    allowedTypes: [1]
   },
   {
     title: "Operadores",
     icone: "./assets/rout-operadores.svg",
     route: "/operadores",
-    allowedTypes: [1]  // Todos os tipos de usuários
-
+    allowedTypes: [1]
   },
   {
     title: "Grupo de acesso",
     icone: "./assets/rout-grupos-acesso.svg",
     route: "/grupo-de-acesso",
-    allowedTypes: [1]  // Todos os tipos de usuários
-
+    allowedTypes: [1]
   },
 ];
 
@@ -85,7 +89,6 @@ export default function RootLayout({
   title: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-
 
   const toggleMenu = () => {
     setIsOpen((prevIsOpen) => {
@@ -101,7 +104,6 @@ export default function RootLayout({
     if (route === "/") window.location.href = "/login";
   }, [route]);
 
-
   const items = menuItems.map((item, index) => {
     const props = {
       chave: index,
@@ -112,12 +114,10 @@ export default function RootLayout({
       isActive: route === item.route,
     };
 
-    // Mover a chave para o componente mais externo dentro do map
     return <UserProvider key={index}>
               <MenuItem {...props} />
            </UserProvider>;
   });
-
 
   const title = route.replace("/", "");
 
@@ -139,50 +139,54 @@ export const layout = (props: {
   children: React.ReactNode;
   isLogin: any;
 }) => {
-
   const classLogin = props.isLogin ? "content-login" : "content";
 
   return (
     <UserProvider>
-    <>
-      <html className="h-screen w-screen">
-        <head>
+      <>
+        <Head>
           <link rel="icon" href="https://raccasaude.com.br/wp-content/uploads/2023/11/sem-fundo-simbolo-01-100x100.png" />
+          <link rel="manifest" href="/raaca-front/public/manifest.json" />
+          <link rel="apple-touch-icon" href="/raaca-front/public/img/ico.png" />
+          <meta name="theme-color" content="#000000" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
           <title>Racca Saude</title>
-        </head>
-        <body className={inter.className} style={{ background: "#EFF1F3" }}>
-          <main>
-            <div className="container">
-              {!props.isLogin && (
-                <AuthGuard load={false}>
-                  <Sidebar
-                    onClick={props.onClick}
-                    title={props.title}
-                    items={props.items}
-                    isOpen={props.isOpen}
-                  />
-                </AuthGuard>
-              )}
-
-              <div
-                className={classLogin}
-                onClick={() => {
-                  if (props.isOpen) props.onClick();
-                }}
-              >
-                {/* {!props.isLogin && (
-                  <div className="barra-menu">
-                    <a><Perfil /></a>
-                  </div>
-                )} */}
-                
-                {props.children}
+        </Head>
+        <html lang="en" className="h-screen w-screen">
+          <body className={`${inter.className} h-screen w-screen`} style={{ background: "#EFF1F3" }}>
+            <main>
+              <div className="container">
+                {!props.isLogin && (
+                  <AuthGuard load={false}>
+                    <Sidebar
+                      onClick={props.onClick}
+                      title={props.title}
+                      items={props.items}
+                      isOpen={props.isOpen}
+                    />
+                  </AuthGuard>
+                )}
+                <div
+                  className={classLogin}
+                  onClick={() => {
+                    if (props.isOpen) props.onClick();
+                  }}
+                >
+                  {/* {!props.isLogin && (
+                    <div className="barra-menu">
+                      <a><Perfil /></a>
+                    </div>
+                  )} */}
+                  {props.children}
+                </div>
               </div>
-            </div>
-          </main>
-        </body>
-      </html>
-    </>
+            </main>
+          </body>
+        </html>
+      </>
     </UserProvider>
   );
 };

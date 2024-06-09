@@ -1,8 +1,11 @@
-// next.config.js
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export', // Adicionado para permitir a exportação estática
   images: {
     remotePatterns: [
       {
@@ -17,6 +20,6 @@ const nextConfig = {
       },
     ],
   },
-}
+};
 
-module.exports = nextConfig;
+module.exports = withPWA(nextConfig);

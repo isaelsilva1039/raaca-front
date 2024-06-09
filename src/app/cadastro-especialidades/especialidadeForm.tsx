@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
-// Definição correta de estilos com tipagem apropriada para TypeScript
 const formStyles: React.CSSProperties = {
   display: 'flex',
-  flexDirection: 'column',  // Corretamente tipado
+  flexDirection: 'column',  
   alignItems: 'center',
   borderRadius: '8px',
   backgroundColor: '#f9f9f9',
@@ -121,7 +120,6 @@ const SpecialtyForm = ({ onSubmit, initialData, onCancel }: any) => {
               value={duration}
               onChange={(e) => setDuration(formatDuration(e.target.value))}
               placeholder="hh:mm"
-              // maxLength="5"
               required
               style={inputStyles}
             />

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
@@ -16,7 +14,7 @@ const tableStyles: React.CSSProperties = {
 const tableHeaderStyles: React.CSSProperties = {
   color: '#a500f7',
   padding: '10px',
-  textAlign: 'center',  // Corretamente tipado agora
+  textAlign: 'center',  
 };
 
 const tableRowStyles: React.CSSProperties = {
@@ -129,7 +127,7 @@ const SpecialtyList = ({ specialties, onDelete, onEdit } : any) => {
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           style={iconButtonStyles}
           disabled={currentPage === totalPages}
-        >
+          >
           {/* <FontAwesomeIcon icon={faChevronRight} size="lg" /> */}
         </button>
       </div>
