@@ -271,7 +271,7 @@ const Perfil: React.FC = () => {
 
             <Col style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <div >
-                <label>Usa. C . P . F</label>
+                <label> C . P . F</label>
 
                 <TextField
                   className="input-perfil"
@@ -291,7 +291,7 @@ const Perfil: React.FC = () => {
               </div>
 
               <div >
-                <label> tipo do usuario</label>
+                <label> Tipo de Usuário</label>
 
                 <TextField
                   className="input-perfil"
