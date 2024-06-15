@@ -25,8 +25,9 @@ import ConfiguracaoTempoConsultas from "@/core/infra/ports/react/componentes/Con
 import { useMediaQuery } from "react-responsive";
 import { getVerificarAgendasLiberadas } from "../api/horarios/getVerificarAgendasLiberadas";
 
-import Notify from 'simple-notify'
-import 'simple-notify/dist/simple-notify.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const defaultSchedule: WeeklySchedule = {
   segunda: [],
@@ -37,6 +38,8 @@ const defaultSchedule: WeeklySchedule = {
   sabado: [],
   domingo: [],
 };
+
+
 
 const SchedulePage: React.FC = () => {
   const [schedule, setSchedule] = useState<WeeklySchedule>(defaultSchedule);
@@ -49,6 +52,7 @@ const SchedulePage: React.FC = () => {
   const [usuario, setUsuario] = useState<any>();
   const [salvede, setSalvede] = useState<any>();
   const [loadusuario, setLoadusuario] = useState<boolean>(false);
+
 
   const loadSchedule = async () => {
     setLoading(true);
@@ -103,7 +107,6 @@ const SchedulePage: React.FC = () => {
     getVerificarAgendasLiberadas(token, onFetchSuccess, onFetchError);
     setLoadusuario(false);
   };
-
 
   useEffect(() => {
     loadSchedule();
@@ -160,48 +163,44 @@ const SchedulePage: React.FC = () => {
       schedule,
       token,
       (data) => {
-        pushNotify('success', 'Success', 'Configuração salva!');
+        pushNotify("success", "Success", "Configuração salva!");
       },
       (error) => {
-    
-        pushNotify('error', 'Error', 'Aconteceu um erro!');
+        pushNotify("error", "Error", "Aconteceu um erro!");
       }
     );
   };
 
-  function pushNotify(status: 'success' | 'error' | 'info' , title: string, text: string) {
-    new Notify({
-      status: status,
-      title: title,
-      text: text,
-      effect: 'slide',
-      speed: 300,
-      showIcon: true,
-      showCloseButton: true,
-      autoclose: true,
-      autotimeout: 3000,
-      type: 'outline',
-      position: 'right top',
-      notificationsPadding: 10,
-      notificationsGap: 10,
-      
-      
+  const pushNotify = (
+    status: "success" | "error" | "info",
+    title: string,
+    text: string
+  ) => {
+    toast[status](text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      type: status,
+      className: "notify-custom-margin", // Adiciona a classe CSS personalizada
     });
-  }
-  
-  const handleConfigSubmit = (hora : any, minuto : any) => {
+  };
+
+  const handleConfigSubmit = (hora: any, minuto: any) => {
     if (!token) return;
-    pushNotify('info', 'Info', 'Estamos salvando suas configuração');
+    pushNotify("info", "Info", "Estamos salvando suas configuração");
     postTempoConsultas(
       hora,
       minuto,
       token,
       (data) => {
-        pushNotify('success', 'Success', 'Configuração salva!');
-
+        pushNotify("success", "Success", "Configuração salva!");
       },
       (error) => {
-        pushNotify('error', 'Error', 'Aconteceu um erro!');
+        pushNotify("error", "Error", "Aconteceu um erro!");
       }
     );
   };
@@ -210,6 +209,7 @@ const SchedulePage: React.FC = () => {
 
   return (
     <Box className="container-a" sx={{ p: 3 }}>
+      <ToastContainer />
       {loading ? (
         <ScheduleSkeleton />
       ) : (

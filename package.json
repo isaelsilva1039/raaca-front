@@ -48,7 +48,8 @@
     "simple-notify": "^1.0.4",
     "simplebar-react": "^3.2.4",
     "styled-components": "^6.1.8",
-    "tippy.js": "^6.3.7"
+    "tippy.js": "^6.3.7",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.7",

@@ -13,16 +13,18 @@ const Login: React.FC = () => {
   const [mensagem, setMensagem] = useState('');
   
   const handleSubmit = () => {
+    pushNotify("info", "Info", "Estamos verificando o seu acesso");
     postLogin(
       email,
       senha,
       (data) => {
         if (!data.token) {
           setMensagem('Senha errada');
-          toast.error('Senha incorreta ou erro de login!');
+          pushNotify("error", "Error", "E-mail ou senha errada");
           return;
         }
 
+        pushNotify("success", "Success", "Bem-vindo ao Racca " + data?.user?.name);
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('avatar_user', JSON.stringify(data.avatar));
@@ -30,11 +32,33 @@ const Login: React.FC = () => {
       },
       (erro) => {
         console.log(erro);
+        pushNotify("error", "Error", "E-mail ou senha errada");
       }
     );
   }
 
+
+  const pushNotify = (
+    status: "success" | "error" | "info",
+    title: string,
+    text: string
+  ) => {
+    toast[status](text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      type: status,
+    });
+  };
+
+
   return (
+    <>
+      <ToastContainer />
     <div className="content-login">
       <Head>
         <title>Login - Racca Saude</title>
@@ -72,7 +96,7 @@ const Login: React.FC = () => {
         </div>
         <button onClick={handleSubmit}>Entrar</button>
         
-        <ToastContainer />
+  
 
         <p>Não possui uma conta? </p>
         <p>
@@ -83,6 +107,7 @@ const Login: React.FC = () => {
         </p>
       </div>
     </div>
+    </>
   );
 }
 
