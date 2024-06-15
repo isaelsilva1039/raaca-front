@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center; /* Centraliza o texto horizontalmente */
+  padding: 15px;
   background-color: #fff; /* Fundo branco, neutro e limpo */
   border-bottom: 2px solid #ddd; /* Linha sutil para separação visual */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra leve para efeito de profundidade */
