@@ -25,6 +25,9 @@ import ConfiguracaoTempoConsultas from "@/core/infra/ports/react/componentes/Con
 import { useMediaQuery } from "react-responsive";
 import { getVerificarAgendasLiberadas } from "../api/horarios/getVerificarAgendasLiberadas";
 
+import Notify from 'simple-notify'
+import 'simple-notify/dist/simple-notify.css'
+
 const defaultSchedule: WeeklySchedule = {
   segunda: [],
   terca: [],
@@ -44,7 +47,7 @@ const SchedulePage: React.FC = () => {
   const [issTable, setIsTable] = useState(false);
   const [loadingMes, setLoadingMes] = useState(false);
   const [usuario, setUsuario] = useState<any>();
-
+  const [salvede, setSalvede] = useState<any>();
   const [loadusuario, setLoadusuario] = useState<boolean>(false);
 
   const loadSchedule = async () => {
@@ -156,21 +159,50 @@ const SchedulePage: React.FC = () => {
     await saveSchedule(
       schedule,
       token,
-      (data) => console.log("Saved Successfully:", data),
-      (error) => console.error("Failed to Save:", error)
+      (data) => {
+        pushNotify('success', 'Success', 'Configuração salva!');
+      },
+      (error) => {
+    
+        pushNotify('error', 'Error', 'Aconteceu um erro!');
+      }
     );
   };
 
-
+  function pushNotify(status: 'success' | 'error' | 'info' , title: string, text: string) {
+    new Notify({
+      status: status,
+      title: title,
+      text: text,
+      effect: 'slide',
+      speed: 300,
+      showIcon: true,
+      showCloseButton: true,
+      autoclose: true,
+      autotimeout: 3000,
+      type: 'outline',
+      position: 'right top',
+      notificationsPadding: 10,
+      notificationsGap: 10,
+      
+      
+    });
+  }
+  
   const handleConfigSubmit = (hora : any, minuto : any) => {
     if (!token) return;
-
+    pushNotify('info', 'Info', 'Estamos salvando suas configuração');
     postTempoConsultas(
       hora,
       minuto,
       token,
-      (data) => console.log("Saved Successfully:", data),
-      (error) => console.error("Failed to Save:", error)
+      (data) => {
+        pushNotify('success', 'Success', 'Configuração salva!');
+
+      },
+      (error) => {
+        pushNotify('error', 'Error', 'Aconteceu um erro!');
+      }
     );
   };
 
