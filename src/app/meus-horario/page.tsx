@@ -13,11 +13,17 @@ import {
 } from "@mui/material";
 import ScheduleSkeleton from "@/core/infra/ports/react/componentes/skeleton/ScheduleSkeleton";
 import { useCliente } from "@/core/helpes/UserContext";
-import { fetchMes, fetchSchedule, saveSchedule } from "../api/horarios/horarios-api";
+import {
+  fetchMes,
+  fetchSchedule,
+  postTempoConsultas,
+  saveSchedule,
+} from "../api/horarios/horarios-api";
 import MonthsList from "@/core/infra/ports/react/componentes/mes/MonthSwitch";
-import './styles.css'
+import "./styles.css";
 import ConfiguracaoTempoConsultas from "@/core/infra/ports/react/componentes/ConfiguracaoTempoConsultas/ConfiguracaoTempoConsultas";
 import { useMediaQuery } from "react-responsive";
+import { getVerificarAgendasLiberadas } from "../api/horarios/getVerificarAgendasLiberadas";
 
 const defaultSchedule: WeeklySchedule = {
   segunda: [],
@@ -37,6 +43,9 @@ const SchedulePage: React.FC = () => {
   const [monthe, setMonthe] = useState([]);
   const [issTable, setIsTable] = useState(false);
   const [loadingMes, setLoadingMes] = useState(false);
+  const [usuario, setUsuario] = useState<any>();
+
+  const [loadusuario, setLoadusuario] = useState<boolean>(false);
 
   const loadSchedule = async () => {
     setLoading(true);
@@ -57,52 +66,57 @@ const SchedulePage: React.FC = () => {
     }
   };
 
-
-
   const getMesAgenda = async () => {
-    const ativo = false
+    const ativo = false;
     if (!token) return;
-    setLoadingMes(true)
+    setLoadingMes(true);
     try {
       await fetchMes(
         token,
         user.id,
         (data) => {
-          // console.log(data.data)
           setMonthe(data.original.data);
-          setLoadingMes(false)
+          setLoadingMes(false);
         },
         (error) => {
-          setLoadingMes(false)
+          setLoadingMes(false);
         },
         ativo
       );
-    } catch (error) {
-   
-    }
+    } catch (error) {}
+  };
+
+  const getMe = () => {
+    if (!token) return;
+    setLoadusuario(true);
+    const onFetchSuccess = (data: any) => {
+      setUsuario(data?.user);
+      setLoadusuario(false);
+    };
+
+    const onFetchError = (error: any) => {
+      setLoadusuario(false);
+    };
+    getVerificarAgendasLiberadas(token, onFetchSuccess, onFetchError);
+    setLoadusuario(false);
   };
 
 
-  
-
   useEffect(() => {
     loadSchedule();
-    getMesAgenda()
-  }, [token ]);
-
-
+    getMesAgenda();
+  }, [token]);
 
   useEffect(() => {
+    getMe();
+  }, [token]);
 
-    if(issTable){
-
-      getMesAgenda()
+  useEffect(() => {
+    if (issTable) {
+      getMesAgenda();
       setIsTable(false);
     }
   }, [issTable]);
-
-  
-
 
   const handleTabChange = (event: React.SyntheticEvent, newIndex: number) => {
     setTabIndex(newIndex);
@@ -147,7 +161,20 @@ const SchedulePage: React.FC = () => {
     );
   };
 
-  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+  const handleConfigSubmit = (hora : any, minuto : any) => {
+    if (!token) return;
+
+    postTempoConsultas(
+      hora,
+      minuto,
+      token,
+      (data) => console.log("Saved Successfully:", data),
+      (error) => console.error("Failed to Save:", error)
+    );
+  };
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
     <Box className="container-a" sx={{ p: 3 }}>
@@ -155,21 +182,37 @@ const SchedulePage: React.FC = () => {
         <ScheduleSkeleton />
       ) : (
         <>
-          <Tabs style={{ padding: isMobile ? '52px 0 20px 0' : '0px 0 20px 0' }} value={tabIndex}
-              onChange={handleTabChange} 
-              centered 
-              variant="fullWidth"            
-              indicatorColor="secondary"
-              textColor="secondary">
-
-            <Tab className="custom-tab" label=" Configurar horários" 
+          <Tabs
+            style={{ padding: isMobile ? "52px 0 20px 0" : "0px 0 20px 0" }}
+            value={tabIndex}
+            onChange={handleTabChange}
+            centered
+            variant="fullWidth"
+            indicatorColor="secondary"
+            textColor="secondary"
+          >
+            <Tab
+              className="custom-tab"
+              label=" Configurar horários"
               onClick={() => setIsTable(true)}
             />
-            <Tab className="custom-tab" label="Liberar agenda" onClick={() => setIsTable(true)} />
+            <Tab
+              className="custom-tab"
+              label="Liberar agenda"
+              onClick={() => setIsTable(true)}
+            />
 
-            <Tab className="custom-tab" label="Tempo de consultas" onClick={() => setIsTable(true)}/>
+            <Tab
+              className="custom-tab"
+              label="Tempo de consultas"
+              onClick={() => setIsTable(true)}
+            />
 
-            <Tab className="custom-tab" label="Bloquear dias" onClick={() => setIsTable(true)}/>
+            <Tab
+              className="custom-tab"
+              label="Bloquear dias"
+              onClick={() => setIsTable(true)}
+            />
           </Tabs>
 
           {tabIndex === 0 && (
@@ -208,7 +251,12 @@ const SchedulePage: React.FC = () => {
                           type="time"
                           value={slot.start}
                           onChange={(e) =>
-                            handleTimeChange(day, index, "start", e.target.value)
+                            handleTimeChange(
+                              day,
+                              index,
+                              "start",
+                              e.target.value
+                            )
                           }
                           sx={{ width: "130px" }}
                         />
@@ -244,15 +292,21 @@ const SchedulePage: React.FC = () => {
           )}
           {tabIndex === 1 && (
             <Box>
-           
-             <MonthsList  token={token} apiMonths={monthe} loadingMes={loadingMes}/>
-
+              <MonthsList
+                token={token}
+                apiMonths={monthe}
+                loadingMes={loadingMes}
+              />
             </Box>
           )}
 
-        {tabIndex === 2 && (
+          {tabIndex === 2 && (
             <Box>
-               <ConfiguracaoTempoConsultas />
+              <ConfiguracaoTempoConsultas
+                usuario={usuario}
+                loadusuario={loadusuario}
+                onSubmit={handleConfigSubmit}
+              />
             </Box>
           )}
         </>

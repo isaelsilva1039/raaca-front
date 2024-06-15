@@ -89,3 +89,34 @@ export const fetchMes = async (
 
 };
 
+
+
+
+export const postTempoConsultas = async (
+  hora : any,
+  minuto : any,
+  token: any ,
+  onSuccess: (data: any) => void,
+  onError: (error: any) => void
+) => {
+  const url = API + '/api/racca/horarios/create/tempo/consultas';
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ hora: hora,minuto: minuto  }),
+
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    onSuccess(data); // Chamar callback de sucesso
+  } catch (error) {
+    onError(error); // Chamar callback de erro
+  }
+};
