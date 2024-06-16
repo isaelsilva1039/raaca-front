@@ -50,7 +50,7 @@ const SpecialtyForm = ({ onSubmit, initialData, onCancel }: any) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
-                className="me-2 flex-grow-1"
+                className="me-2 flex-grow-1 input-form"
                 placeholder="Digite o nome da especialidade"
               />
               <Button type="submit" variant="primary" className="me-2 btn-salvar">
