@@ -4,3 +4,174 @@
     background-color: white;
     max-width: 100%;
 }
+
+.btn-salvar{
+    height: 34px;
+    background: rgb(167, 4, 248);
+    color: white;
+    border: 0px;
+    border-radius: 4px;
+    padding: 12px;
+    align-items: center;
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.btn-salvar:hover{
+    background: rgb(112, 9, 163);
+
+}
+
+.cancelar:hover{
+    background: white;
+    color: rgb(216, 18, 18);
+    border: rgb(216, 18, 18) 1px solid ;
+}
+
+.cancelar{
+    background: white;
+    color: red;
+    border: 1px solid red;
+}
+
+input{
+    width: 30% !important;
+    height: 32px;
+    padding: 0px !important;
+    margin: 0px !important;
+    border: 1px solid rgba(128, 128, 128, 0.719);
+}
+
+input:focus{
+    outline: none;
+    box-shadow: none;
+    border-color: rgba(128, 128, 128, 0.719);
+}
+
+.formulario{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+
+
+
+/* styles/globals.css */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    
+  }
+  
+   td {
+    padding: 12px 15px;
+    text-align: left;
+    background-color: white;
+    height: 50px;
+  }
+  
+  th {
+    text-align: left;
+    padding: 2px 10px;
+    background-color: #fafafa;
+    color:  #686868;
+    font-weight: bold;
+    font-family: sans-serif;
+  
+  }
+  
+  
+  tbody tr:hover {
+    border-left: 4px solid #a704f8;
+    background: #a704f8;
+    
+  }
+  
+  table tbody tr:hover td {  
+    background: #fafafa;
+  }
+  
+  
+  
+  .container-clientes{
+  
+  
+  }
+
+
+
+
+
+
+  /* MobileCard.module.css */
+.card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.card-container .card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+
+  border-left: 4px solid #a704f8;
+
+
+  font-weight: 200;
+}
+
+.card-container .card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-container .card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-container .card-field {
+  margin-bottom: 0.5em;
+}
+
+.card-container .card-field strong {
+  margin-right: 0.5em;
+}
+
+.card-container .card-expanded {
+  margin-top: 1em;
+  padding-top: 1em;
+  border-top: 1px solid #ddd;
+}
+
+
+.card:hover{
+  /* border-left: 4px solid #a704f8; */
+  /* background: #a704f8; */
+  
+}
+
+
+.conatiner{
+    background: #ffffff;
+    padding: 20px;
+    gap: 32px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+}
+
+.paginacao {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }

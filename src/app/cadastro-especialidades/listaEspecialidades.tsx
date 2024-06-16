@@ -1,137 +1,125 @@
-import React, { useState } from 'react';
-import { IconButton, Tooltip } from '@mui/material';
-import { FaTrash, FaUserEdit } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { IconButton, Tooltip } from "@mui/material";
+import { FaTrash, FaUserEdit } from "react-icons/fa";
+import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
+import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
+import { getEspecialidades } from "../api/especialidade/especialidades";
+import { useCliente } from "@/core/helpes/UserContext";
+import MuiTableSkeleton from "@/core/infra/ports/react/componentes/skeleton/MuiTableSkeleton";
 
-const tableStyles: React.CSSProperties = {
-  maxWidth: '100%',
-  margin: '20px auto',
-  border: '1px solid #ccc',
-  borderRadius: '8px',
-  backgroundColor: '#f9f9f9',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-};
+const SpecialtyList = ({ specialties, onDelete, onEdit, onUpdateNew }: any) => {
+  const [expandedRows, setExpandedRows] = useState<any>([]);
 
-const tableHeaderStyles: React.CSSProperties = {
-  color: '#a500f7',
-  padding: '10px',
-  textAlign: 'center',  
-};
+  const { token, user } = useCliente();
+  const [page, setStatePage] = useState<number>(1);
+  const [per_page, setStateper_page] = useState<number>(8);
+  const [currentPage, setCurrentPage] = useState<any>();
+  const [especialidades, setEspecialidade] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-const tableRowStyles: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  borderBottom: '1px solid #ddd',
-  padding: '10px',
-  transition: 'transform 0.3s ease-in-out',
-  cursor: 'pointer', // Cursor apontando ao passar o mouse sobre a linha
-};
+  const toggleRowExpanded = () => {};
 
-const tableCellStyles: React.CSSProperties = {
-  flex: 1,
-  padding: '10px',
-  fontSize: '16px',
-  textAlign: 'center',  // Corretamente tipado agora
-};
-
-const buttonStyles: React.CSSProperties = {
-  padding: '6px 12px',
-  border: 'none',
-  borderRadius: '4px',
-  backgroundColor: '#a500f7',
-  color: '#fff',
-  fontSize: '14px',
-  cursor: 'pointer',
-};
-
-const paginationStyles: React.CSSProperties = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  marginTop: '20px',
-};
-
-const iconButtonStyles: React.CSSProperties = {
-  ...buttonStyles,
-  backgroundColor: 'transparent',
-  color: '#a500f7',
-  margin: '0 10px',
-  padding: '5px',
-};
-
-const SpecialtyList = ({ specialties, onDelete, onEdit } : any) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const specialtiesPerPage = 5;
-
-  const handleDelete = (id : any) => {
-    if (window.confirm('Tem certeza que deseja excluir esta especialidade?')) {
-      onDelete(id);
-      alert('Especialidade excluída com sucesso!');
-    }
+  const handleDelete = (id: any) => {
+    onDelete(id);
   };
 
-  const handleEdit = (specialty : any) => {
+  const handleEdit = (specialty: any) => {
     onEdit(specialty);
+
+    console.log(specialty);
   };
 
-  const indexOfLastSpecialty = currentPage * specialtiesPerPage;
-  const indexOfFirstSpecialty = indexOfLastSpecialty - specialtiesPerPage;
-  const currentSpecialties = specialties.slice(indexOfFirstSpecialty, indexOfLastSpecialty);
+  const renderRowSubComponent = (row: any) => {
+    const specialty = row.original;
+    return (
+      <div>
+        {/* Conteúdo adicional pode ser renderizado aqui se necessário */}
+      </div>
+    );
+  };
 
-  const totalPages = Math.max(Math.ceil(specialties.length / specialtiesPerPage), 1);
+  const columns = [
+    {
+      Header: "Id",
+      accessor: "id",
+      Cell: ({ value }: any) => <div>{value}</div>,
+    },
+    {
+      Header: "Descrição",
+      accessor: "nome",
+      Cell: ({ value }: any) => <div>{value}</div>,
+    },
+    {
+      Header: "Ações",
+      Cell: ({ row }: any) => (
+        <div>
+          <Tooltip title="Editar">
+            <IconButton onClick={() => handleEdit(row.original)}>
+              <FaUserEdit size={18} color="#707EAE" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Deletar">
+            <IconButton onClick={() => handleDelete(row.original.id)}>
+              <FaTrash color="red" size={14} />
+            </IconButton>
+          </Tooltip>
+        </div>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    if (onUpdateNew) {
+      getEspecialidadesAction();
+    }
+  }, [onUpdateNew]);
+
+  useEffect(() => {
+    getEspecialidadesAction();
+  }, [per_page, page, token]);
+
+  const getEspecialidadesAction = () => {
+    if (!token) return;
+    setLoading(true);
+    getEspecialidades(
+      per_page,
+      page,
+      token,
+      (data) => {
+        console.log();
+        setEspecialidade(data.data);
+        setCurrentPage(data.meta);
+        setLoading(false);
+      },
+      (error) => {
+        setLoading(false);
+      }
+    );
+  };
 
   return (
-    <div style={tableStyles}>
-      <table style={{ width: '100%', }}>
-        <thead>
-          <tr style={{ ...tableRowStyles, background: '#fafafa', textTransform: 'uppercase', fontSize: '14px', color: '#686868', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
-            <th style={{ ...tableCellStyles, width: '10%' }}>ID</th>
-            <th style={{ ...tableCellStyles, width: '40%' }}>Descrição</th>
-            <th style={{ ...tableCellStyles, width: '30%' }}>Tempo</th>
-            <th style={{ ...tableCellStyles, width: '20%' }}>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentSpecialties.map((specialty : any) => (
-            <tr key={specialty.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px', }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
-              <td style={{ ...tableCellStyles, width: '10%' }}>{specialty.id}</td>
-              <td style={{ ...tableCellStyles, width: '40%', textAlign: 'center', paddingLeft: '10px' }}>{specialty.description}</td>
-              <td style={{ ...tableCellStyles, width: '30%', fontSize: '14px', color: '#666' }}>{specialty.duration}</td>
-              <td style={{ ...tableCellStyles, width: '20%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Tooltip title="Editar">
-                  <IconButton onClick={() => handleEdit(specialty)}>
-                    <FaUserEdit size={18} color="#707EAE" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Deletar">
-                  <IconButton onClick={() => handleDelete(specialty.id)}>
-                    <FaTrash color="red" size={14} />
-                  </IconButton>
-                </Tooltip>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <div style={paginationStyles}>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          style={iconButtonStyles}
-          disabled={currentPage === 1}
-        >
-          {/* <FontAwesomeIcon icon={faChevronLeft} size="lg" /> */}
-        </button>
-        <span style={{ margin: '0 10px', fontSize: '16px', lineHeight: '32px' }}>
-          Página {currentPage} de {totalPages}
-        </span>
-        <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-          style={iconButtonStyles}
-          disabled={currentPage === totalPages}
-          >
-          {/* <FontAwesomeIcon icon={faChevronRight} size="lg" /> */}
-        </button>
+    <>
+      {loading ? (
+        <MuiTableSkeleton />
+      ) : (
+        <div>
+          <CustomTable
+            columns={columns}
+            data={especialidades}
+            expandedRows={expandedRows}
+            toggleRowExpanded={toggleRowExpanded}
+            renderRowSubComponent={renderRowSubComponent}
+          />
+        </div>
+      )}
+      <div className="paginacao">
+        <CustomPagination
+          currentPage={page}
+          totalPages={currentPage?.lastPage}
+          onPageChange={setStatePage}
+        />
       </div>
-    </div>
+    </>
   );
 };
 
