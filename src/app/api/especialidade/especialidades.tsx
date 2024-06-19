@@ -133,3 +133,33 @@ export const getEspecialidades = async (
     }
   };
   
+
+
+  export const obetemTodasEspecialidades = async (
+    token: any,
+    onSuccess: (data: any) => void,
+    onError: (error: any) => void,
+  ) => {
+    const url =  API + `/api/especialidades/index?per_page=${100}&page=${1}`;
+  
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Erro HTTP! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      // Chama a função onSuccess passando os dados como argumento
+      onSuccess(data);
+    } catch (error) {
+      // Chama a função onError passando o erro como argumento
+      onError(error);
+    }
+  };
