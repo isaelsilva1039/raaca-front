@@ -303,6 +303,7 @@ const EventModal = ({
                   <text>{selectedEvent?.extendedProps.details}</text>
                 </div>
 
+
                 <div className="container-icones">
                   <text className="text">
                     <FcVideoCall size={22} /> Link da sala
