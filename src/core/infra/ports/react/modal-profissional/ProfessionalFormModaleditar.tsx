@@ -13,36 +13,52 @@ import LoadingSpinner from "../componentes/load/load";
 import { specialties } from "@/core/helpes/especialidades";
 import { atualizarProfissional } from "./sevises/putProfissional";
 
+interface Especialidade {
+  id: number;
+  nome: string;
+}
+
 interface ProfissionalData {
   id: number;
   nome: string;
   cpf: string;
-  dataNascimento: string;
+  data_nascimento: string;
   especialidade: string;
   email: string;
   fileInput: File | null;
+  fk_especialidade: number | null;
+  link_sala: string;
+  avatarUrl:any;
 }
 
-const ProfessionalFormModaleditar = ({
+interface ProfessionalFormModalProps {
+  show: boolean;
+  handleClose: () => void;
+  onUpdate?: () => void;
+  especialidades: Especialidade[];
+  profissionail: ProfissionalData;
+}
+
+const ProfessionalFormModaleditar: React.FC<ProfessionalFormModalProps> = ({
   show,
   handleClose,
   profissionail,
   onUpdate = () => {},
-}: any) => {
+  especialidades
+}) => {
   const [id, setId] = useState(profissionail.id);
   const [name, setName] = useState(profissionail.nome);
   const [email, setEmail] = useState(profissionail.email);
   const [cpf, setCpf] = useState(profissionail.cpf);
   const [birthdate, setBirthdate] = useState(profissionail.data_nascimento);
-  const [specialty, setSpecialty] = useState<any | null>("");
+  const [specialty, setSpecialty] = useState<any>(null);
   const [photo, setPhoto] = useState<File | null>(null);
-  const [preview, setPreview] = useState(profissionail.avatarUrl || "");
+  const [preview, setPreview] = useState(profissionail?.avatarUrl || "");
   const [isLoading, setIsLoading] = useState(false);
-
   const [isSucess, setIsSucess] = useState(false);
   const [isFoto, setIsFoto] = useState(false);
   const [mensagem, setMensagem] = useState("");
-
+  const [link_sala, setLink_sala] = useState(profissionail.link_sala);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,33 +73,40 @@ const ProfessionalFormModaleditar = ({
     fileInputRef.current?.click();
   };
 
+  console.log(profissionail)
+
   useEffect(() => {
     if (profissionail) {
       setId(profissionail.id);
       setName(profissionail.nome);
       setEmail(profissionail.email);
       setCpf(profissionail.cpf);
-      setBirthdate(profissionail.data_nascimento);
-      setSpecialty(profissionail.especialidade);
+      setBirthdate(profissionail?.data_nascimento);
+      setSpecialty(especialidades && especialidades.find(e => e.id === profissionail.fk_especialidade) || null);
+      setLink_sala(profissionail.link_sala);
 
       if (profissionail.avatarUrl) {
         setPreview(profissionail.avatarUrl);
       }
     }
-  }, [profissionail]);
+  }, [profissionail, especialidades]);
 
   const handleclickSalvar = () => {
     setIsLoading(true);
 
     const dadosDoProfissional: ProfissionalData = {
-      id,
+      id: id,
       nome: name,
-      cpf,
-      dataNascimento: birthdate,
-      especialidade: specialty,
-      email,
+      cpf: cpf,
+      data_nascimento: birthdate,
+      especialidade: specialty?.nome || "",
+      email: email,
       fileInput: fileInputRef.current?.files?.[0] ?? null,
+      fk_especialidade: specialty?.id || null,
+      link_sala: link_sala,
+      avatarUrl: fileInputRef.current?.files?.[0] ?? null,
     };
+
 
     atualizarProfissional(
       dadosDoProfissional,
@@ -112,7 +135,7 @@ const ProfessionalFormModaleditar = ({
     setEmail("");
     setCpf("");
     setBirthdate("");
-    setSpecialty("");
+    setSpecialty(null);
     setPhoto(null);
     setPreview("");
     if (fileInputRef.current) {
@@ -120,6 +143,8 @@ const ProfessionalFormModaleditar = ({
     }
   };
 
+
+  console.log(birthdate)
   return (
     <Dialog open={show} onClose={handleClose}>
       <DialogTitle>Editar Profissional</DialogTitle>
@@ -172,6 +197,7 @@ const ProfessionalFormModaleditar = ({
               variant="outlined"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
             <TextField
               margin="dense"
@@ -181,6 +207,7 @@ const ProfessionalFormModaleditar = ({
               variant="outlined"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <TextField
               margin="dense"
@@ -190,6 +217,7 @@ const ProfessionalFormModaleditar = ({
               variant="outlined"
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
+              required
             />
             <TextField
               margin="dense"
@@ -197,16 +225,27 @@ const ProfessionalFormModaleditar = ({
               type="date"
               fullWidth
               variant="outlined"
+              required
               InputLabelProps={{
                 shrink: true,
               }}
               value={birthdate}
+              defaultValue={birthdate}
               onChange={(e) => setBirthdate(e.target.value)}
             />
-
+            <TextField
+              required
+              margin="dense"
+              label="Link da sala de reunião"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={link_sala}
+              onChange={(e) => setLink_sala(e.target.value)}
+            />
             <Autocomplete
-              options={specialties}
-              getOptionLabel={(option) => option.label}
+              options={especialidades}
+              getOptionLabel={(especialidade) => especialidade.nome}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -216,8 +255,9 @@ const ProfessionalFormModaleditar = ({
                   fullWidth
                 />
               )}
+              value={specialty}
               onChange={(event, newValue) => {
-                setSpecialty(newValue?.value);
+                setSpecialty(newValue);
               }}
             />
           </>
@@ -225,9 +265,12 @@ const ProfessionalFormModaleditar = ({
       </DialogContent>
       <DialogActions>
         <Button className="btn-fechar" onClick={handleClose}>
-          fechar
+          Fechar
         </Button>
-        <Button className="btn-salvar" onClick={handleclickSalvar}>
+        <Button 
+          className={`btn-salvar ${!name || !birthdate || !specialty || !cpf || !email ? 'disabled' : ''}`} 
+
+          onClick={handleclickSalvar} disabled={!name || !birthdate || !specialty || !cpf || !email}>
           Salvar <FaCheckCircle />
         </Button>
       </DialogActions>

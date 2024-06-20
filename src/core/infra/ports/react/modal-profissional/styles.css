@@ -1,7 +1,15 @@
 .btn-salvar{
     background: #A500F7;
     color: white;
+    
 }
+
+.btn-salvar.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    color: white;
+  }
+  
 
 
 

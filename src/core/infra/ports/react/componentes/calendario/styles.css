@@ -5,7 +5,19 @@
 .text{
     font-weight: bold;
     font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
+
+
+.container-icones{
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    
+}
+
 
 .agenda-informacao{
     /* font-weight: bold; */

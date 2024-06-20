@@ -49,6 +49,9 @@ interface Event {
     name: string;
     email: string;
     avatar: any;
+    professional:{
+      link_sala: any;
+    }
   };
   cliente: {
     name: string;
@@ -62,6 +65,7 @@ interface Event {
   medico_id: number;
   created_at: any;
   id: number;
+
 }
 
 interface TransformedEvent {
@@ -81,6 +85,7 @@ interface TransformedEvent {
     cliente_avatar: any;
     created_at: any;
     id_evento: number;
+    link_sala: any;
   };
 }
 
@@ -90,6 +95,7 @@ interface IData {
   especialidade: string;
   avatarUrl: string;
   user_id: number;
+
 }
 
 
@@ -110,6 +116,8 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
   };
+
+  console.log(eventos)
 
   // Função para determinar a cor com base no status
   const getColorBasedOnStatus = (status: string): string => {
@@ -148,6 +156,7 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
             medico_avatar: event.medico.avatar,
             cliente_avatar: event.cliente.avatar,
             created_at: event.created_at,
+            link_sala: event.medico?.professional?.link_sala
           },
         }))
       : [];
@@ -196,6 +205,8 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
 
 
   const handleEventClick = ({ event }: any) => {
+
+    console.log('event' , event)
     setSelectedEvent(event);
     setModalOpen(true); // Abre a modal
   };

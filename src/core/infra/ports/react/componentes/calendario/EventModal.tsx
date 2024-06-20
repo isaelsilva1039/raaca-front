@@ -37,6 +37,10 @@ import {
 import { fetchMes } from "@/app/api/horarios/horarios-api";
 import { buscarHorariosDisponiveisMedico } from "@/app/api/horarios/getDisponilibilida";
 import LoadingSpinner from "../load/load";
+import { FcVideoCall } from "react-icons/fc";
+import { BsCalendarDateFill } from "react-icons/bs";
+
+import { FcAlarmClock } from "react-icons/fc";
 
 interface Medico {
   id: number;
@@ -44,6 +48,7 @@ interface Medico {
   especialidade: string;
   avatarUrl: string;
   user_id: number;
+  link_sala: any;
 }
 
 interface Horario {
@@ -137,8 +142,6 @@ const EventModal = ({
     setMedicoSelecionado("");
   };
 
-  console.log(status);
-
   const salvarAgendamento = () => {
     setLoading(true);
     let startTime, endTime;
@@ -181,8 +184,6 @@ const EventModal = ({
     }
   };
 
-  console.log(selectedEvent);
-
   const handleMesChange = (mes: number) => {
     setMesSelecionado(mes);
     const inicioMes = startOfMonth(new Date(new Date().getFullYear(), mes, 1));
@@ -216,18 +217,7 @@ const EventModal = ({
     setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
-  // Função para rolar as datas horizontalmente
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 200, behavior: "smooth" });
-    }
-  };
+  console.log(selectedEvent);
 
   return (
     <>
@@ -235,7 +225,7 @@ const EventModal = ({
         open={open}
         onClose={handleClose}
         fullWidth
-        maxWidth={remarcado ? "xl" : "md"}
+        maxWidth={remarcado ? "md" : "lg"}
       >
         <DialogTitle className="agenda-titele">
           <IconButton
@@ -282,14 +272,21 @@ const EventModal = ({
                   />
                   <text>{selectedEvent?.extendedProps.clientName}</text>
                 </div>
-                <div>
-                  <text className="text">De </text>
+              <div style={{background:'#ebe7ed', borderRadius:'4px', padding:'10px', display:'flex', flexDirection: 'column', gap:10}}>
+              <div className="container-icones">
+                  <text className="text">
+                    {" "}
+                    <BsCalendarDateFill size={18} color="#707EAE" /> De{" "}
+                  </text>
+
                   {selectedEvent &&
                     format(
                       new Date(selectedEvent.start),
                       "dd/MM/yyyy HH:mm:ss"
                     )}
+
                   <text className="text"> até </text>
+
                   {selectedEvent &&
                     selectedEvent.end &&
                     format(
@@ -297,12 +294,30 @@ const EventModal = ({
                       "dd/MM/yyyy HH:mm:ss"
                     )}
                 </div>
-                <div>
-                  <text className="text">status :</text>
+
+                <div className="container-icones">
+                  <text className="text">
+                    {" "}
+                    <FcAlarmClock size={22} /> status :
+                  </text>
                   <text>{selectedEvent?.extendedProps.details}</text>
                 </div>
+
+
+                <div className="container-icones">
+                  <text className="text">
+                    <FcVideoCall size={22} /> Link da sala
+                  </text>
+                  <a href={selectedEvent?.extendedProps?.link_sala}>
+                    {" "}
+                    : {"clique para entrar na sala"}
+                  </a>
+                </div>
+              </div>
+            
               </DialogContentText>
             )}
+
             <DialogContentText>
               {canShowOptionsForTypeThree ? (
                 <FormControl component="fieldset">

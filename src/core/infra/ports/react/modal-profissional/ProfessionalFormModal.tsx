@@ -1,6 +1,4 @@
-// export default ProfessionalFormModal;
-// components/ProfessionalFormModal.js
-import React, { useState, useRef, MutableRefObject } from "react";
+import React, { useState, useRef } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -10,42 +8,58 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
-import { Dropdown } from "react-bootstrap";
-import { Alert, Autocomplete, MenuItem, Tooltip } from "@mui/material";
+import { Alert, Autocomplete } from "@mui/material";
 import { enviarProfissional } from "./sevises/postProfissional";
 import LoadingSpinner from "../componentes/load/load";
 import { specialties } from "@/core/helpes/especialidades";
+
+interface Especialidade {
+  id: number;
+  nome: string;
+}
 
 interface ProfissionalData {
   nome: string;
   cpf: string;
   dataNascimento: string;
-  especialidade: string;
+  especialidade: any;
   email: string;
   fileInput: File | null;
+  fk_especialidade: any;
+  link_sala: any;
 }
 
-const ProfessionalFormModal = ({
+interface ProfessionalFormModalProps {
+  show: boolean;
+  handleClose: () => void;
+  onUpdate?: () => void;
+  especialidades: Especialidade[];
+}
+
+const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
   show,
   handleClose,
   onUpdate = () => {},
-}: any) => {
+  especialidades,
+  
+}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [cpf, setCpf] = useState("");
   const [birthdate, setBirthdate] = useState("");
-  const [specialty, setSpecialty] = useState<any| null>("");
+  const [specialty, setSpecialty] = useState<Especialidade | null>(null);
   const [photo, setPhoto] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSucess, setIsSucess] = useState(false);
   const [isFoto, setIsFoto] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const [link_sala , setLink_sala] =useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const fileInputRef = useRef<any>(null);
 
-  const handlePhotoChange = (event: any) => {
-    const file = event.target.files[0];
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       setPhoto(file);
       setPreview(URL.createObjectURL(file));
@@ -53,31 +67,26 @@ const ProfessionalFormModal = ({
   };
 
   const handleAvatarClick = () => {
-    fileInputRef?.current.click();
+    fileInputRef?.current?.click();
   };
 
   const defaultAvatar = "/path_to_default_avatar.png"; // Caminho para sua imagem padrão
 
-
-  const especialidadeIterator = specialties.values();
-  const firstSpecialty = especialidadeIterator.next().value; // Obter o primeiro valor do iterador
-
-  // Exemplo de como passar os dados para a função
   const profissionalData: ProfissionalData = {
     nome: name,
     cpf: cpf,
     dataNascimento: birthdate,
-    especialidade: specialty || "", // Ajuste para especialidade
+    especialidade: specialty?.nome,
     email: email,
-    fileInput: photo
+    fileInput: photo,
+    fk_especialidade: specialty?.id,
+    link_sala: link_sala
   };
 
-  // Exemplo de uso
   const handleclickSalvar = () => {
     setIsLoading(true);
     enviarProfissional(
       profissionalData,
-
       (data) => {
         console.log(data.status);
         if (data.status === 500) {
@@ -94,8 +103,7 @@ const ProfessionalFormModal = ({
       (error) => {
         setIsLoading(false);
         setIsFoto(true);
-
-        setMensagem('Esse cpf já existe');
+        setMensagem("Esse cpf já existe");
       }
     );
   };
@@ -106,13 +114,14 @@ const ProfessionalFormModal = ({
     setEmail("");
     setCpf("");
     setBirthdate("");
-    setSpecialty("");
+    setSpecialty(null);
     setPhoto(null);
     setPreview("");
+    setLink_sala("")
 
-    // Limpar o campo de entrada de arquivo
-   const fileInput = document.querySelector('input[type="file"]');
-   if (fileInput) (fileInput as HTMLInputElement).value = "";
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   return (
@@ -145,7 +154,6 @@ const ProfessionalFormModal = ({
                     onClick={() => setIsFoto(false)}
                     color="error"
                   >
-                    {" "}
                     {mensagem}
                   </Alert>
                 </div>
@@ -158,8 +166,7 @@ const ProfessionalFormModal = ({
                     onClick={() => setIsSucess(false)}
                     color="success"
                   >
-                    {" "}
-                    Adicionado com sucesso{" "}
+                    Adicionado com sucesso
                   </Alert>
                 </div>
               )}
@@ -203,9 +210,21 @@ const ProfessionalFormModal = ({
                 value={birthdate}
                 onChange={(e) => setBirthdate(e.target.value)}
               />
+
+              <TextField
+                margin="dense"
+                label="Link da sala de reunião"
+                type="text"
+                // placeholder="Link da sala de reunião"
+                fullWidth
+                variant="outlined"
+                value={link_sala}
+                onChange={(e) => setLink_sala(e.target.value)}
+              />
+
               <Autocomplete
-                options={specialties}
-                getOptionLabel={(option) => option.label}
+                options={especialidades}
+                getOptionLabel={(especialidade) => especialidade.nome}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -216,7 +235,7 @@ const ProfessionalFormModal = ({
                   />
                 )}
                 onChange={(event, newValue) => {
-                  setSpecialty(newValue?.value);
+                  setSpecialty(newValue);
                 }}
               />
             </>
@@ -224,10 +243,10 @@ const ProfessionalFormModal = ({
         </DialogContent>
         <DialogActions>
           <Button className="btn-fechar" onClick={handleClose}>
-            fechar
+            Fechar
           </Button>
-          <Button className="btn-salvar" onClick={() => handleclickSalvar()}>
-            Salvar <FaCheckCircle />{" "}
+          <Button className="btn-salvar" onClick={handleclickSalvar}>
+            Salvar <FaCheckCircle />
           </Button>
         </DialogActions>
       </Dialog>

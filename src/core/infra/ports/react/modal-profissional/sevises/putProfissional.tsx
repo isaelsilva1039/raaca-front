@@ -4,10 +4,12 @@ interface ProfissionalData {
   id: number;
   nome: string;
   cpf: string;
-  dataNascimento: string;
+  data_nascimento: string;
   especialidade: string;
   email: string;
   fileInput: File | null;
+  link_sala: any;
+  fk_especialidade: any;
 }
 
 export const atualizarProfissional = async (
@@ -16,15 +18,17 @@ export const atualizarProfissional = async (
   onError: (error: any) => void  // Callback para erro
 ) => {
   const url = `${API}/api/racca/profissional/atualizar/${profissionalData.id}`;
-  const { nome, cpf, dataNascimento, especialidade, email, fileInput } = profissionalData;
+  const { nome, cpf, data_nascimento, especialidade, email, fileInput,link_sala,fk_especialidade } = profissionalData;
 
 
   const formData = new FormData();
   formData.append('nome', nome);
   formData.append('cpf', cpf);
-  formData.append('data_nascimento', dataNascimento);
+  formData.append('data_nascimento', data_nascimento);
   formData.append('especialidade', especialidade);
   formData.append('email', email);
+  formData.append('link_sala', link_sala);
+  formData.append('fk_especialidade', fk_especialidade);
 
   if (fileInput) {
     formData.append('file', fileInput);

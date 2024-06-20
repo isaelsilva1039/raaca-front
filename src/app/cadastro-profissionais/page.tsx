@@ -20,6 +20,7 @@ import ProfessionalFormModaleExcluir from "@/core/infra/ports/react/modal-profis
 import moment from 'moment';
 import { TfiSearch } from "react-icons/tfi";
 import { useCliente } from "@/core/helpes/UserContext";
+import { getEspecialidades, obetemTodasEspecialidades } from "../api/especialidade/especialidades";
 
 interface IData {
   id: number;
@@ -28,6 +29,22 @@ interface IData {
   avatarUrl: string;
 }
 
+
+interface ProfissionalData {
+  id: number;
+  nome: string;
+  cpf: string;
+  data_nascimento: string;
+  especialidade: string;
+  email: string;
+  fileInput: File | null;
+  fk_especialidade: number | null;
+  link_sala: string;
+  avatarUrl:any;
+}
+
+
+
 export default function Professional() {
   const [modalShow, setModalShow] = useState(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -35,12 +52,12 @@ export default function Professional() {
   const [totalItems, setTotalItems] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [error, setError] = useState(null);
-
+  const [especialidades , setEspecialidades] = useState<any>();
   const [expandedRows, setExpandedRows] = useState<any>({});
   const [searchTerm, setSearchTerm] = useState<any>('');
   const [loading, setLoading] = useState(true);
   const [isNovoMembro, setIsNovoMembro] = useState(false);
-  const [modalEditar, setModalEditar] = useState({
+  const [modalEditar, setModalEditar] = useState <any>({
     abriModal: false,
     profissional : {}
   });
@@ -82,6 +99,23 @@ export default function Professional() {
   };
 
 
+  const getEspecialidadesAll = () => {
+
+    if(!token) return;
+
+    const onFetchSuccess = (data: any) => {
+        console.log(data?.data)
+        setEspecialidades(data.data)
+    };
+
+    const onFetchError = (error: any) => {
+    
+    };
+
+    
+    obetemTodasEspecialidades(token, onFetchSuccess, onFetchError);
+  };
+
  
   const handleClicBuscar = () => {
     fetchProfissionaisAll();
@@ -89,6 +123,7 @@ export default function Professional() {
 
   useEffect(() => {
     fetchProfissionaisAll();
+    getEspecialidadesAll()
   }, [currentPage, token]);
 
   useEffect(() => {
@@ -263,6 +298,7 @@ export default function Professional() {
             show={modalShow}
             handleClose={() => setModalShow(false)}
             onUpdate={onUpdate}
+            especialidades={especialidades}
           />
         </div>
         
@@ -272,7 +308,8 @@ export default function Professional() {
             show={modalEditar.abriModal}
             handleClose={() => setModalEditar({abriModal: false, profissional:{}})}
             onUpdate={onUpdate}
-            profissionail={modalEditar.profissional}
+            profissionail={modalEditar?.profissional}
+            especialidades={especialidades}
           />
        </div>
 
