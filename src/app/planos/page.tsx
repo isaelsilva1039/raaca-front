@@ -2,11 +2,22 @@
 import React, { useState } from 'react';
 import PlanForm from './planForm';
 import PlanList from './listaPlanos';
+import Typography from '@mui/material/Typography';
+
+interface Specialty {
+  specialty: string;
+  consultationCount: string;
+}
 
 interface Plan {
   id: number | null;
-  description?: string;  // Exemplo de propriedade, ajuste conforme as propriedades reais do seu plano
-  // Adicione outras propriedades relevantes para o plano aqui
+  nome: string;
+  description: string;
+  textoplano: string;
+  fidelity: boolean;
+  fidelityPeriod?: string;
+  specialties: Specialty[];
+  valor: string;
 }
 
 const mainContainerStyles: React.CSSProperties = {
@@ -33,11 +44,12 @@ const MainPage: React.FC = () => {
 
   const handleAddPlan = (plan: Plan) => {
     if (plan.id === null) {
-      plan.id = plans.length + 1;  // Garante que o novo plano tenha um ID único
+      plan.id = plans.length + 1;  
       setPlans([...plans, plan]);
     } else {
       setPlans(plans.map(p => (p.id === plan.id ? plan : p)));
     }
+    setEditingPlan(null);
   };
 
   const handleDeletePlan = (id: number) => {
@@ -53,22 +65,47 @@ const MainPage: React.FC = () => {
   };
 
   return (
-    <div style={mainContainerStyles}>
-      <button style={addButtonStyles} onClick={() => setEditingPlan({ id: null })}>
-        Adicionar Plano
-      </button>
-      {editingPlan && (
-        <PlanForm
-          onSubmit={handleAddPlan}
-          initialData={editingPlan}
-          onCancel={handleCancelEdit}
-        />
-      )}
-      <PlanList
-        plans={plans}
-        onDelete={handleDeletePlan}
-        onEdit={handleEditPlan}
-      />
+    <div>
+      <div className="container">
+        <Typography
+          className="list-top"
+          sx={{
+            color: "#707EAE",
+            fontWeight: "500",
+            lineHeight: "24px",
+            fontSize: "15px",
+          }}
+        >
+          Menu / Planos
+        </Typography>
+      </div>
+      <div style={mainContainerStyles}>
+        <button style={addButtonStyles} onClick={() => setEditingPlan({
+          id: null,
+          nome: '',
+          description: '',
+          textoplano: '',
+          fidelity: false,
+          fidelityPeriod: '',
+          specialties: [],
+          valor: ''
+        })}>
+          Adicionar Plano
+        </button>
+        {editingPlan ? (
+          <PlanForm
+            onSubmit={handleAddPlan}
+            initialData={editingPlan}
+            onCancel={handleCancelEdit}
+          />
+        ) : (
+          <PlanList
+            plans={plans}
+            onDelete={handleDeletePlan}
+            onEdit={handleEditPlan}
+          />
+        )}
+      </div>
     </div>
   );
 };

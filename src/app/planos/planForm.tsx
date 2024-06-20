@@ -1,7 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
-// Lista de especialidades médicas
+interface Specialty {
+  specialty: string;
+  consultationCount: string;
+}
+
+interface Plan {
+  id: number | null;
+  nome: string;
+  description: string;
+  textoplano: string;
+  fidelity: boolean;
+  fidelityPeriod?: string;
+  specialties: Specialty[];
+  valor: string;
+}
+
+interface PlanFormProps {
+  onSubmit: (data: Plan) => void;
+  initialData: Plan;
+  onCancel: () => void;
+}
+
 const specialtiesOptions = [
   { value: 'Cardiologia', label: 'Cardiologia' },
   { value: 'Dermatologia', label: 'Dermatologia' },
@@ -15,30 +36,20 @@ const specialtiesOptions = [
   { value: 'Urologia', label: 'Urologia' },
 ];
 
-interface PlanData {
-  id?: number;
-  nome: string;
-  description: string;
-  textoplano: string;
-  fidelity: boolean;
-  fidelityPeriod?: string;
-  specialties: { specialty: string, consultationCount: string }[];
-  valor: string;
-}
-
-interface PlanFormProps {
-  onSubmit: (data: PlanData) => void;
-  initialData: PlanData;
-  onCancel: () => void;
-}
+const fidelityOptions = [
+  { value: 'sem-fidelidade', label: 'Sem Fidelidade' },
+  { value: '6-meses', label: '6 meses' },
+  { value: '12-meses', label: '12 meses' }
+];
 
 const formContainerStyles: React.CSSProperties = {
   maxWidth: '800px',
   margin: '0 auto',
   padding: '20px',
   borderRadius: '8px',
-  backgroundColor: '#f9f9f9',
+  backgroundColor: '#ffffff',
   boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+  fontFamily: 'Arial, sans-serif',
 };
 
 const formRowStyles: React.CSSProperties = {
@@ -50,28 +61,32 @@ const formRowStyles: React.CSSProperties = {
 const labelStyles: React.CSSProperties = {
   marginBottom: '5px',
   fontWeight: 'bold',
+  color: '#333',
 };
 
 const inputStyles: React.CSSProperties = {
   padding: '10px',
-  border: '1px solid #ccc',
+  border: '1px solid #ddd',
   borderRadius: '4px',
   width: '100%',
+  boxSizing: 'border-box',
 };
 
 const textareaStyles: React.CSSProperties = {
   padding: '10px',
-  border: '1px solid #ccc',
+  border: '1px solid #ddd',
   borderRadius: '4px',
   width: '100%',
   height: '100px',
+  boxSizing: 'border-box',
 };
 
 const selectStyles: React.CSSProperties = {
   padding: '10px',
-  border: '1px solid #ccc',
+  border: '1px solid #ddd',
   borderRadius: '4px',
   width: '100%',
+  boxSizing: 'border-box',
 };
 
 const buttonContainerStyles: React.CSSProperties = {
@@ -90,45 +105,37 @@ const buttonStyles: React.CSSProperties = {
 
 const saveButtonStyles: React.CSSProperties = {
   ...buttonStyles,
-  backgroundColor: '#a500f7',
+  backgroundColor: '#6200ea',
   color: '#fff',
   marginRight: '10px',
 };
 
 const cancelButtonStyles: React.CSSProperties = {
   ...buttonStyles,
-  backgroundColor: '#dc3545',
+  backgroundColor: '#b00020',
   color: '#fff',
 };
 
 const addButtonStyles: React.CSSProperties = {
   ...buttonStyles,
-  backgroundColor: '#28a745',
+  backgroundColor: '#03dac6',
   color: '#fff',
   alignSelf: 'flex-start',
-};
-
-const fidelityRowStyles: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '10px',
 };
 
 const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel }) => {
   const [nome, setNome] = useState<string>(initialData.nome);
   const [description, setDescription] = useState<string>(initialData.description);
   const [textoplano, setTextoplano] = useState<string>(initialData.textoplano);
-  const [fidelity, setFidelity] = useState<boolean>(initialData.fidelity);
-  const [fidelityPeriod, setFidelityPeriod] = useState<string | undefined>(initialData.fidelityPeriod);
-  const [specialties, setSpecialties] = useState<{ specialty: string, consultationCount: string }[]>(initialData.specialties || []);
+  const [fidelityPeriod, setFidelityPeriod] = useState<string>(initialData.fidelityPeriod || 'sem-fidelidade');
+  const [specialties, setSpecialties] = useState<Specialty[]>(initialData.specialties || []);
   const [valor, setValor] = useState<string>(initialData.valor);
 
   useEffect(() => {
     setNome(initialData.nome);
     setDescription(initialData.description);
     setTextoplano(initialData.textoplano);
-    setFidelity(initialData.fidelity);
-    setFidelityPeriod(initialData.fidelityPeriod);
+    setFidelityPeriod(initialData.fidelityPeriod || 'sem-fidelidade');
     setSpecialties(initialData.specialties || []);
     setValor(initialData.valor);
   }, [initialData]);
@@ -150,12 +157,11 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel }) 
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit({ id: initialData.id, nome, description, textoplano, fidelity, fidelityPeriod, specialties, valor });
+    onSubmit({ id: initialData.id, nome, description, textoplano, fidelity: fidelityPeriod !== 'sem-fidelidade', fidelityPeriod, specialties, valor });
     setNome('');
     setDescription('');
     setTextoplano('');
-    setFidelity(false);
-    setFidelityPeriod(undefined);
+    setFidelityPeriod('sem-fidelidade');
     setSpecialties([]);
     setValor('');
   };
@@ -172,16 +178,7 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel }) 
         />
       </div>
       <div style={formRowStyles}>
-        <label style={labelStyles}>Descrição:</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          style={inputStyles}
-        />
-      </div>
-      <div style={formRowStyles}>
-        <label style={labelStyles}>Texto do Plano:</label>
+        <label style={labelStyles}>Descrição do Plano:</label>
         <textarea
           value={textoplano}
           onChange={(e) => setTextoplano(e.target.value)}
@@ -190,24 +187,15 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel }) 
       </div>
       <div style={formRowStyles}>
         <label style={labelStyles}>Fidelidade:</label>
-        <div style={fidelityRowStyles}>
-          <input
-            type="checkbox"
-            checked={fidelity}
-            onChange={(e) => setFidelity(e.target.checked)}
-          />
-          {fidelity && (
-            <select
-              value={fidelityPeriod}
-              onChange={(e) => setFidelityPeriod(e.target.value)}
-              style={selectStyles}
-            >
-              <option value="">Selecione o período</option>
-              <option value="6 meses">6 meses</option>
-              <option value="12 meses">12 meses</option>
-            </select>
-          )}
-        </div>
+        <select
+          value={fidelityPeriod}
+          onChange={(e) => setFidelityPeriod(e.target.value)}
+          style={selectStyles}
+        >
+          {fidelityOptions.map(option => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+        </select>
       </div>
       <div style={formRowStyles}>
         <label style={labelStyles}>Especialidades:</label>
@@ -228,7 +216,7 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel }) 
             onChange={(e) => handleSpecialtyChange(index, 'consultationCount', e.target.value)}
             style={{ ...inputStyles, flex: 1, marginRight: '10px' }}
           />
-          <button type="button" onClick={() => handleSpecialtyRemove(index)} style={{ ...buttonStyles, backgroundColor: '#dc3545', color: '#fff' }}>Remover</button>
+          <button type="button" onClick={() => handleSpecialtyRemove(index)} style={{ ...buttonStyles, backgroundColor: '#b00020', color: '#fff' }}>Remover</button>
         </div>
       ))}
       <div style={formRowStyles}>

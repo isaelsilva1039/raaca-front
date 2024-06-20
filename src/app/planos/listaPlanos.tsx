@@ -1,22 +1,29 @@
 'use client'
 
 import React, { useState } from 'react';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { IconButton, Tooltip } from '@mui/material';
 import { FaTrash, FaUserEdit } from 'react-icons/fa';
 
-// interface Plan {
-//   id: number;
-//   description: string;
-//   consultationCount: number;
-//   textoplano: string;
-// }
+interface Specialty {
+  specialty: string;
+  consultationCount: string;
+}
+
+interface Plan {
+  id: number | null;
+  nome: string;
+  description: string;
+  textoplano: string;
+  fidelity: boolean;
+  fidelityPeriod?: string;
+  specialties: Specialty[];
+  valor: string;
+}
 
 interface PlanListProps {
-  plans: any;
+  plans: Plan[];
   onDelete: (id: number) => void;
-  onEdit: (plan: any) => void;
+  onEdit: (plan: Plan) => void;
 }
 
 const tableStyles: React.CSSProperties = {
@@ -68,14 +75,14 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const plansPerPage = 5;
 
-  const handleDelete = (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir este plano?')) {
+  const handleDelete = (id: number | null) => {
+    if (id !== null && window.confirm('Tem certeza que deseja excluir este plano?')) {
       onDelete(id);
       alert('Plano excluído com sucesso!');
     }
   };
 
-  const handleEdit = (plan: any) => {
+  const handleEdit = (plan: Plan) => {
     onEdit(plan);
   };
 
@@ -92,20 +99,22 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
         <thead>
           <tr style={{ ...tableRowStyles, background: '#f0f0f0', textTransform: 'uppercase', fontSize: '14px', color: '#686868', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
             <th style={{ ...tableCellStyles, width: '10%' }}>ID</th>
-            <th style={{ ...tableCellStyles, width: '20%' }}>Descrição</th>
-            <th style={{ ...tableCellStyles, width: '15%' }}>Consultas/Mês</th>
-            <th style={{ ...tableCellStyles, width: '35%' }}>Texto do Plano</th>
-            <th style={{ ...tableCellStyles, width: '20%' }}>Ações</th>
+            <th style={{ ...tableCellStyles, width: '20%' }}>Nome do Plano</th>
+            <th style={{ ...tableCellStyles, width: '20%' }}>Fidelidade</th>
+            <th style={{ ...tableCellStyles, width: '30%' }}>Descrição</th>
+            <th style={{ ...tableCellStyles, width: '10%' }}>Valor</th>
+            <th style={{ ...tableCellStyles, width: '10%' }}>Ações</th>
           </tr>
         </thead>
         <tbody>
-          {currentPlans.map((plan : any) => (
+          {currentPlans.map((plan) => (
             <tr key={plan.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.id}</td>
-              <td style={{ ...tableCellStyles, width: '20%' }}>{plan.description}</td>
-              <td style={{ ...tableCellStyles, width: '15%' }}>{plan.consultationCount}</td>
-              <td style={{ ...tableCellStyles, width: '35%' }}>{plan.textoplano}</td>
-              <td style={{ ...tableCellStyles, width: '20%', display: 'flex', justifyContent: 'center' }}>
+              <td style={{ ...tableCellStyles, width: '20%' }}>{plan.nome}</td>
+              <td style={{ ...tableCellStyles, width: '20%' }}>{plan.fidelityPeriod}</td>
+              <td style={{ ...tableCellStyles, width: '30%' }}>{plan.description}</td>
+              <td style={{ ...tableCellStyles, width: '10%' }}>{plan.valor}</td>
+              <td style={{ ...tableCellStyles, width: '10%', display: 'flex', justifyContent: 'center' }}>
                 <Tooltip title="Editar">
                   <IconButton onClick={() => handleEdit(plan)}>
                     <FaUserEdit size={18} color="#707EAE" />
@@ -123,11 +132,11 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
       </table>
       <div style={paginationStyles}>
         <button onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} disabled={currentPage === 1} style={iconButtonStyles}>
-          {/* <FontAwesomeIcon icon={faChevronLeft} /> */}
+          &lt;
         </button>
         <span>{currentPage} de {totalPages}</span>
         <button onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages} style={iconButtonStyles}>
-          {/* <FontAwesomeIcon icon={faChevronRight} /> */}
+          &gt;
         </button>
       </div>
     </div>
