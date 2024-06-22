@@ -1,5 +1,7 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+
+
+import React, { useState, useEffect } from 'react';
 import PlanForm from './planForm';
 import PlanList from './listaPlanos';
 import Typography from '@mui/material/Typography';
@@ -13,7 +15,6 @@ interface Plan {
   id: number | null;
   nome: string;
   description: string;
-  textoplano: string;
   fidelity: boolean;
   fidelityPeriod?: string;
   specialties: Specialty[];
@@ -42,9 +43,15 @@ const MainPage: React.FC = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [editingPlan, setEditingPlan] = useState<Plan | null>(null);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Coloque aqui qualquer código que precise de `document`
+    }
+  }, []);
+
   const handleAddPlan = (plan: Plan) => {
     if (plan.id === null) {
-      plan.id = plans.length + 1;  
+      plan.id = plans.length + 1;
       setPlans([...plans, plan]);
     } else {
       setPlans(plans.map(p => (p.id === plan.id ? plan : p)));
@@ -84,7 +91,6 @@ const MainPage: React.FC = () => {
           id: null,
           nome: '',
           description: '',
-          textoplano: '',
           fidelity: false,
           fidelityPeriod: '',
           specialties: [],

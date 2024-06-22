@@ -1,8 +1,7 @@
-'use client'
-
+'use client';
 import React, { useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { FaTrash, FaUserEdit } from 'react-icons/fa';
+import { FaTrash, FaUserEdit, FaEye } from 'react-icons/fa';
 
 interface Specialty {
   specialty: string;
@@ -13,7 +12,6 @@ interface Plan {
   id: number | null;
   nome: string;
   description: string;
-  textoplano: string;
   fidelity: boolean;
   fidelityPeriod?: string;
   specialties: Specialty[];
@@ -33,6 +31,7 @@ const tableStyles: React.CSSProperties = {
   borderRadius: '8px',
   backgroundColor: '#f9f9f9',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  overflow: 'hidden',
 };
 
 const tableHeaderStyles: React.CSSProperties = {
@@ -55,6 +54,9 @@ const tableCellStyles: React.CSSProperties = {
   padding: '10px',
   fontSize: '16px',
   textAlign: 'center',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 };
 
 const paginationStyles: React.CSSProperties = {
@@ -108,11 +110,22 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
         </thead>
         <tbody>
           {currentPlans.map((plan) => (
-            <tr key={plan.id} style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }} onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}>
+            <tr
+              key={plan.id}
+              style={{ ...tableRowStyles, borderBottom: '1px solid #ddd', padding: '12px 15px', textAlign: 'left', backgroundColor: 'white', height: '10px' }}
+              onMouseOver={(e) => { e.currentTarget.style.transform = 'scale(1.02)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
+            >
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.id}</td>
               <td style={{ ...tableCellStyles, width: '20%' }}>{plan.nome}</td>
               <td style={{ ...tableCellStyles, width: '20%' }}>{plan.fidelityPeriod}</td>
-              <td style={{ ...tableCellStyles, width: '30%' }}>{plan.description}</td>
+              <td style={{ ...tableCellStyles, width: '30%' }}>
+                <Tooltip title={<div dangerouslySetInnerHTML={{ __html: plan.description }} />} arrow>
+                  <IconButton>
+                    <FaEye size={18} color="#707EAE" />
+                  </IconButton>
+                </Tooltip>
+              </td>
               <td style={{ ...tableCellStyles, width: '10%' }}>{plan.valor}</td>
               <td style={{ ...tableCellStyles, width: '10%', display: 'flex', justifyContent: 'center' }}>
                 <Tooltip title="Editar">
