@@ -1,6 +1,5 @@
 'use client';
 
-
 import React, { useState, useEffect } from 'react';
 import PlanForm from './planForm';
 import PlanList from './listaPlanos';
@@ -45,7 +44,7 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Coloque aqui qualquer código que precise de `document`
+      // Código que precise de `document` ou `window` aqui
     }
   }, []);
 

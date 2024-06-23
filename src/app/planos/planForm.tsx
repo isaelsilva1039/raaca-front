@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic'; // Importação dinâmica para componentes que dependem do `document`
 import Select from 'react-select';
 import { FaTrash } from 'react-icons/fa';
 import { Tooltip, IconButton } from '@mui/material';
-import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+
+// Importação dinâmica do ReactQuill
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 interface Specialty {
   specialty: string;
