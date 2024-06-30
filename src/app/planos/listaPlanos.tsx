@@ -26,11 +26,13 @@ interface PlanListProps {
   plans: Plan[];
   onDelete: (id: number) => void;
   onEdit: (plan: Plan) => void;
+  setCurrentPage: any;
+  currentPage: any;
+  totalItems:any;
 }
 
-const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const plansPerPage = 5;
+const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit, currentPage , setCurrentPage,totalItems }) => {
+
   const [expandedRows, setExpandedRows] = useState<any>({});
 
   const handleDelete = (id: number | null) => {
@@ -71,11 +73,11 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
     onEdit(plan);
   };
 
-  const indexOfLastPlan = currentPage * plansPerPage;
-  const indexOfFirstPlan = indexOfLastPlan - plansPerPage;
-  const currentPlans = plans.slice(indexOfFirstPlan, indexOfLastPlan);
+  // const indexOfLastPlan = currentPage * plansPerPage;
+  // const indexOfFirstPlan = indexOfLastPlan - plansPerPage;
+  // const currentPlans = plans.slice(indexOfFirstPlan, indexOfLastPlan);
 
-  const totalPages = Math.ceil(plans.length / plansPerPage);
+  // const totalPages = Math.ceil(plans.length / plansPerPage);
 
   const columns = useMemo(
     () => [
@@ -136,7 +138,7 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
       <div>
         <CustomTable
           columns={columns}
-          data={currentPlans}
+          data={plans}
           expandedRows={expandedRows}
           toggleRowExpanded={toggleRowExpanded}
           renderRowSubComponent={renderRowSubComponent}
@@ -145,7 +147,7 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit }) => {
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
           <CustomPagination
             currentPage={currentPage}
-            totalPages={totalPages}
+            totalPages={totalItems}
             onPageChange={setCurrentPage}
           />
         </div>

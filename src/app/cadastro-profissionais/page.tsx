@@ -104,7 +104,6 @@ export default function Professional() {
     if(!token) return;
 
     const onFetchSuccess = (data: any) => {
-        console.log(data?.data)
         setEspecialidades(data.data)
     };
 

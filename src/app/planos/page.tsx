@@ -60,25 +60,33 @@ const MainPage: React.FC = () => {
   const [especialidades, setEspecialidades] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
   const { token } = useCliente();
 
   useEffect(() => {
     setLoading(true);
     getEspecialidadesAll();
     fetchPlans();
-  }, [token]);
+  }, [token, currentPage]);
 
   const fetchPlans = async () => {
     try {
-      const data = await listarPlanos(10, 1);
-      setPlans(data);
+      const data = await listarPlanos(itemsPerPage, currentPage);
+      console.log(data)
+      setTotalItems(data.total);
+      // setCurrentPage(data.current_page);
+
+      setPlans(data.data);
     } catch (error: any) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handleAddPlan = async (plan: Plan) => {
     try {
@@ -204,6 +212,9 @@ const MainPage: React.FC = () => {
               plans={plans}
               onDelete={handleDeletePlan}
               onEdit={handleEditPlan}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+              totalItems={totalPages}
             />
           )}
         </div>

@@ -56,5 +56,5 @@ export const listarPlanos = async (perPage: number, page: number) => {
     headers: authHeader()
   });
   const data = await response.json();
-  return data.data;
+  return data;
 };
