@@ -20,6 +20,7 @@ interface Plan {
   fidelityPeriod?: string;
   specialties: Specialty[];
   valor: string;
+  id_woocomerce: any;
 }
 
 interface PlanListProps {
@@ -97,6 +98,13 @@ const PlanList: React.FC<PlanListProps> = ({ plans, onDelete, onEdit, currentPag
         Header: "Valor",
         accessor: "valor",
       },
+
+      {
+        Header: "Numer plano no woocomerce",
+        accessor: "id_woocomerce",
+      },
+
+      
       {
         Header: "Ações",
         accessor: "actions",

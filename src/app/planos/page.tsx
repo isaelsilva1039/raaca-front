@@ -30,6 +30,7 @@ interface Plan {
   fidelityPeriod?: string;
   specialties: Specialty[];
   valor: string;
+  id_woocomerce: any;
 }
 
 const mainContainerStyles: React.CSSProperties = {
@@ -117,7 +118,7 @@ const MainPage: React.FC = () => {
     }
   };
 
-  const handleEditPlan = (plan: Plan) => {
+  const handleEditPlan = (plan: any) => {
     setEditingPlan(plan);
   };
 
@@ -193,6 +194,7 @@ const MainPage: React.FC = () => {
                   fidelityPeriod: "",
                   specialties: [],
                   valor: "",
+                  id_woocomerce: null,
                 })
               }
             >

@@ -27,6 +27,7 @@ interface Plan {
   fidelityPeriod?: string;
   specialties: Specialty[];
   valor: string;
+  id_woocomerce: any;
 }
 
 interface Especialidade {
@@ -132,6 +133,7 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel, es
   const [fidelityPeriod, setFidelityPeriod] = useState<string>(initialData.periodo_fidelidade || 'sem-fidelidade');
   const [specialties, setSpecialties] = useState<Specialty[]>(initialData.especialidades || []);
   const [valor, setValor] = useState<string>(initialData.valor);
+  const [id_woocomerce, setIdWoocomerce] = useState<any>(initialData.id_woocomerce);
 
 
   console.log
@@ -142,6 +144,7 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel, es
     setFidelityPeriod(initialData.periodo_fidelidade || 'sem-fidelidade');
     setSpecialties(initialData.especialidades || []);
     setValor(initialData.valor);
+    setIdWoocomerce(initialData.id_woocomerce)
   }, [initialData]);
 
   const handleSpecialtyAdd = () => {
@@ -161,7 +164,7 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel, es
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit({ id: initialData.id, nome, description, fidelity: fidelityPeriod !== 'sem-fidelidade', fidelityPeriod, specialties, valor });
+    onSubmit({ id: initialData.id, nome, description, fidelity: fidelityPeriod !== 'sem-fidelidade', fidelityPeriod, specialties, valor,id_woocomerce });
   };
 
   const specialtiesOptions = especialidades && especialidades.map((especialidade: Especialidade) => ({
@@ -265,6 +268,18 @@ const PlanForm: React.FC<PlanFormProps> = ({ onSubmit, initialData, onCancel, es
           required
         />
       </div>
+
+      <div style={formRowStyles}>
+        <label style={labelStyles}>id plano woocomerce:</label>
+        <input
+          type="number"
+          value={id_woocomerce}
+          onChange={(e) => setIdWoocomerce(e.target.value)}
+          style={inputStyles}
+          required
+        />
+      </div>
+
       <div style={buttonContainerStyles}>
         <button type="button" style={cancelButtonStyles} onClick={onCancel}>Cancelar</button>
         <button type="submit" style={saveButtonStyles}>Salvar Plano <IoCheckmarkCircleSharp /> </button>
