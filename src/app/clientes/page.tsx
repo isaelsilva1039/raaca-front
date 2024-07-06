@@ -11,7 +11,6 @@ import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/pag
 import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
 import { Col, Row } from "react-bootstrap";
 import { formatDate } from "date-fns";
-import { FaTrash, FaUserEdit } from "react-icons/fa";
 import "../clientes/style.css";
 import "../cadastro-profissionais/styles.css";
 import {
@@ -30,6 +29,10 @@ import { FaUserSlash } from "react-icons/fa6";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css"; // Importa o CSS para o estilo padrão
 import MobileCard from "@/core/infra/ports/react/componentes/use-table/cardMobile";
+import ModalEditarCliente from "@/core/infra/ports/react/componentes/modal-consultas/ModalEditarCliente";
+import { FaUserEdit } from "react-icons/fa";
+import { listarPlanos } from "../api/planos/planosService";
+
 
 interface IData {
   id: number;
@@ -44,39 +47,67 @@ interface IData {
 }
 
 export default function Gerenciador() {
+  
   const { token, user } = useCliente();
   const [expandedRows, setExpandedRows] = useState<any>({});
   const [modalEditar, setModalEditar] = useState({
     abriModal: false,
     cliente: {},
   });
-
+  const [modalEditarCliente, setModalEditarCliente] = useState({
+    abriModal: false,
+    cliente: {},
+  });
   const [criarUser, setcriarUser] = useState({
     abriModal: false,
     cliente: {},
   });
-
   const [modalExcluir, setModalExcluir] = useState({
     abriModal: false,
     profissional: {},
   });
-
   const [page, setStatePage] = useState<number>(1);
   const [per_page, setStateper_page] = useState<number>(8);
   const [clientes, setCliente] = useState<IData[]>([]);
   const [currentPage, setCurrentPage] = useState<any>();
-
+  const [plans, setPlans] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
   const [update, setUpdate] = useState<boolean>(true);
-
   const [loadingVinculo, setLoadingVinculo] = useState<boolean>(false);
+  const [error, setError] = useState<any>(null);
+  const [loadingEdit, setLoadingEdit] = useState<boolean>(true);
 
   useEffect(() => {
     if (!token) return;
     setLoading(true);
     getClientesAll();
+    fetchPlans()
   }, [per_page, page, token]);
+
+
+
+
+  const fetchPlans = async () => {
+    try {
+      setLoadingEdit(true);
+      
+      const data = await listarPlanos(10000, 1);
+
+      setPlans(data?.data);
+      setLoadingEdit(false);
+    } catch (error: any) {
+   
+      setError(error.message);
+      setLoadingEdit(false);
+   
+    } finally {
+   
+      setLoadingEdit(false);
+   
+    }
+  };
+
+
 
   const getClientesAll = () => {
     getClientes(
@@ -198,8 +229,7 @@ export default function Gerenciador() {
         accessor: "qtd_consultas",
 
         Cell: ({ row }) => {
-
-          console.log(row)
+    
           const consultas = row.original?.user?.consultas; // Acessando consultas do usuário vinculado
 
           const isComplete =
@@ -273,7 +303,6 @@ export default function Gerenciador() {
   const renderRowSubComponent = ({ row }: any) => {
     const rowData = row.original || row;
   
-    console.log(rowData)
     return (
       <Row className="rowContainer">
         <Row className="flexRow">
@@ -310,6 +339,19 @@ export default function Gerenciador() {
                 </div>
               ) : (
                 <>
+                    <Tooltip title="Mudar Plano">
+                        <IconButton
+                          onClick={() => {
+                            setModalEditarCliente({
+                              abriModal: true,
+                              cliente: rowData,
+                            });
+                          }}
+                        >
+                          <FaUserEdit size={20} color="#cf7373" />
+                        </IconButton>
+                      </Tooltip>
+
                   {rowData.user_id ? (
                     <>
                       <Tooltip title="Liberar consultas">
@@ -411,6 +453,17 @@ export default function Gerenciador() {
         onUpdate={onUpdate}
         onClose={{}}
         token={token}
+      />
+
+      <ModalEditarCliente
+        show={modalEditarCliente.abriModal}
+        handleClose={() => setModalEditarCliente({ abriModal: false, cliente: {} })}
+        cliente={modalEditarCliente.cliente}
+        onUpdate={onUpdate}
+        onClose={{}}
+        token={token}
+        planos={plans}
+        loadingEdit={loadingEdit}
       />
     </div>
   );

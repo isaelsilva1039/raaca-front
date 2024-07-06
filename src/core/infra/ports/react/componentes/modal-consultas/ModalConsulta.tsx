@@ -14,6 +14,7 @@ import {
   Autocomplete,
   CircularProgress,
   MenuItem,
+  Select,
   Tooltip,
 } from "@mui/material";
 import { liberarConsultas } from "@/app/api/clientes/getClientes";
@@ -132,6 +133,9 @@ const ModalConsulta = ({
                   value={fimData}
                   onChange={(e) => setFimData(e.target.value)}
                 />
+
+       
+
               </div>
             </div>
           </DialogContent>

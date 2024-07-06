@@ -75,7 +75,7 @@ const MainPage: React.FC = () => {
   const fetchPlans = async () => {
     try {
       const data = await listarPlanos(itemsPerPage, currentPage);
-      console.log(data)
+      console.log("planos",  data)
       setTotalItems(data.total);
       // setCurrentPage(data.current_page);
 

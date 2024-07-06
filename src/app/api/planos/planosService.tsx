@@ -58,3 +58,20 @@ export const listarPlanos = async (perPage: number, page: number) => {
   const data = await response.json();
   return data;
 };
+
+
+
+export const putPlanoCliente = async (data: any) => {
+  const response = await fetch(`${API_BASE_URL}/cliente/plano/editar`, {
+    method: 'PUT',
+    headers: authHeader(),
+    body: JSON.stringify(data)
+  });
+  return response.json();
+
+};
+
+
+
+
+
