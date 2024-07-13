@@ -27,13 +27,6 @@ import { useCliente } from "@/core/helpes/UserContext";
 import { CircularProgressbar } from "react-circular-progressbar";
 import CondicionalDisplay from "../CondicionalDisplay/CondicionalDisplay";
 
-interface Medico {
-  user_id: number;
-  nome: string;
-  especialidade: string;
-  avatarUrl: string;
-  fk_especialidade: any;
-}
 
 
 interface Horario {
@@ -44,7 +37,7 @@ interface Horario {
 interface Props {
   open: boolean;
   handleClose: () => void;
-  medicos: Medico[];
+  medicos: any;
   onUpdate: () => void;
   loading: boolean;
   podeAgendarConsultas: boolean;
