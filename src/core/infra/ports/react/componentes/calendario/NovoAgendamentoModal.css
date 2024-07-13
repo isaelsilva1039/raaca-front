@@ -1,0 +1,195 @@
+.agenda-title {
+    font-weight: bold;
+  }
+  
+  .text {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .container-icones {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .agenda-informacao {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+  
+    .text {
+      font-weight: bold;
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 4px;
+    }
+  
+    .detalhes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+  
+      .container-cliente {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+  
+        img {
+          border: #8502c7 1px solid;
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
+  }
+  
+  .btn-salvar {
+    background: #a500f7;
+    color: white;
+  }
+  
+  .btn-salvar:hover {
+    background: #8502c7;
+    color: white;
+  }
+  
+  .btn-fechar {
+    color: #a500f7;
+  }
+  
+  .fc-dayGridMonth-view,
+  .fc-timeGridWeek-view,
+  .fc-timeGridDay-view,
+  .fc-listMonth-view {
+    height: 80vh;
+  }
+  
+  .container-modal {
+    display: flex;
+    gap: 10px;
+    padding: 22px;
+    flex-direction: column;
+  }
+  
+  .menu-profissionais-lista {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  
+  .menu-profissionais-lista-item {
+    display: flex;
+    align-items: center;
+  
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+  
+  .fc-event {
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .fc-header-toolbar {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .fc-toolbar-chunk {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  
+      .fc-newAppointmentButton-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        width: max-content;
+      }
+  
+      .calendario {
+        height: 100vh;
+      }
+    }
+  
+    .fc-button {
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+  
+    .container-modal {
+        height: 100%;
+        overflow: auto;
+        align-items: center;
+        align-content: center;
+      }
+    }
+  .fc-newAppointmentButton-button {
+    background: #8502c7 !important;
+    color: white !important;
+    border: none !important;
+    padding: 8px 16px !important;
+    border-radius: 4px !important;
+    cursor: pointer !important;
+  }
+  
+  .fc-newAppointmentButton-button:hover {
+    background: #8b0dca !important;
+  }
+  
+  .message-container {
+    padding: 8px;
+    width: fit-content;
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 5px;
+    font-family: Arial;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  h2{
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    padding: 0;
+  }
+  .container-a {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    .MuiDialog-paperWidthXl {
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+    }
+  
+    .MuiDialogContent-root {
+      padding: 15px !important;
+      height: calc(100% - 64px) !important;
+      overflow-y: auto !important;
+      align-items:center;
+      justify-items: center;
+    }
+   
+  
+    .MuiDialogActions-root {
+      padding: 8px 16px !important;
+    }
+  }
+  

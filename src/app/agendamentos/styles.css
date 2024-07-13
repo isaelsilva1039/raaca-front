@@ -37,9 +37,7 @@
 
             display: flex;
 
-            .text-item{
-
-            }
+           
         }
     }
 
@@ -62,7 +60,8 @@
 /* Ajustes para telas pequenas */
 @media (max-width: 767px) {
     .container-page {
-        flex-direction: column; /* Altera para layout vertical em telas pequenas */
+        margin-top: 20px;
+        flex-direction: column;
     }
 
     .menu-profissionais {

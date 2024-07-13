@@ -13,7 +13,7 @@ import {
   Grid,
 } from "@mui/material";
 import { FaCheckCircle } from "react-icons/fa";
-import "./styles.css";
+import "./NovoAgendamentoModal.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval } from "date-fns";
 import MedicosHorizontalList from "./MedicosHorizontalList";
@@ -55,12 +55,8 @@ interface Props {
   onUpdate: () => void;
   loading: boolean;
   podeAgendarConsultas: boolean;
-  planosProfissionalEspecialidade : any;
+  planosProfissionalEspecialidade: any;
 }
-
-
-
-
 
 export interface Especialidade {
   id: number;
@@ -102,8 +98,6 @@ export interface ClienteData {
   meta: Meta[];
 }
 
-
-
 const NovoAgendamentoModal: React.FC<Props> = ({
   open,
   handleClose,
@@ -111,16 +105,17 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   onUpdate,
   loading,
   podeAgendarConsultas,
-  planosProfissionalEspecialidade
+  planosProfissionalEspecialidade,
 }) => {
   const { token, user } = useCliente();
   const [medicoSelecionado, setMedicoSelecionado] = useState<number | string>(
     ""
   );
 
-  const [especialidadeProfissional, setEspecialidadeProfissional] = useState<any>(null);
+  const [especialidadeProfissional, setEspecialidadeProfissional] = useState<any>(
+    null
+  );
 
-  
   const [mesSelecionado, setMesSelecionado] = useState<number>(
     new Date().getMonth()
   );
@@ -177,7 +172,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   };
 
   const limparCampos = () => {
-    setDiaSelecionado(null), setDiasMes([]);
+    setDiaSelecionado(null);
+    setDiasMes([]);
     setHorarioSelecionado(null);
     setHorariosDisponiveis([]);
     setHorarioSelecionadoState({});
@@ -257,18 +253,15 @@ const NovoAgendamentoModal: React.FC<Props> = ({
     setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
-
-  const filtrarProfissionaisComConsultasDisponiveis = (data : ClienteData) => {
-
+  const filtrarProfissionaisComConsultasDisponiveis = (data: ClienteData) => {
     if (!data?.meta) {
       return [];
     }
-  
-    return data?.meta
-      .filter(item => item?.consultas_restantes > 0)
-      .map(item => item?.profissional);
-  };
 
+    return data?.meta
+      .filter((item) => item?.consultas_restantes > 0)
+      .map((item) => item?.profissional);
+  };
 
   const renderPageLimite = () => {
     return (
@@ -281,11 +274,13 @@ const NovoAgendamentoModal: React.FC<Props> = ({
     );
   };
 
-  const profissionaisListaPermitas = filtrarProfissionaisComConsultasDisponiveis(planosProfissionalEspecialidade[0])
+  const profissionaisListaPermitas = filtrarProfissionaisComConsultasDisponiveis(
+    planosProfissionalEspecialidade[0]
+  );
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth={"xl"}>
-      <DialogTitle className="agenda-titele">
+      <DialogTitle className="agenda-title">
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -293,8 +288,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         >
           <CloseIcon />
         </IconButton>
-        <div style={{ padding: "0px 0px 20px 0" }}>Novo agendamento</div>
-      </DialogTitle>
+        <div style={{ padding: 0 }}>Novo agendamento</div>
+        </DialogTitle>
 
       {loading ? (
         <Grid
@@ -305,98 +300,92 @@ const NovoAgendamentoModal: React.FC<Props> = ({
           <CircularProgress color="secondary" />
         </Grid>
       ) : (
-            <>
-              <DialogContent className="container-modal">
-                <FormControl fullWidth>
-                  <h2>Selecione um Profissional</h2>
-                  <MedicosHorizontalList
-                    medicos={medicos}
-                    medicoSelecionado={medicoSelecionado}
-                    setMedicoSelecionado={setMedicoSelecionado}
-                    profissional={profissionaisListaPermitas}
-                    setEspecialidadeProfissional={setEspecialidadeProfissional}
-                  />
-                </FormControl>
+        <>
+          <DialogContent className="container-modal">
+            <FormControl fullWidth>
+              <h2 className="title">Selecione um Profissional</h2>
+              <MedicosHorizontalList
+                medicos={medicos}
+                medicoSelecionado={medicoSelecionado}
+                setMedicoSelecionado={setMedicoSelecionado}
+                profissional={profissionaisListaPermitas}
+                setEspecialidadeProfissional={setEspecialidadeProfissional}
+              />
+            </FormControl>
 
-                {medicoSelecionado && (
-                  <FormControl
-                    fullWidth
-                    style={{ display: "flex", gap: "10px" }}
-                  >
-                    <Box mt={2} mb={2}>
-                      {loadMes ? (
+            {medicoSelecionado && (
+              <FormControl fullWidth style={{ display: "flex", gap: "10px" }}>
+                <Box mt={2} mb={2}>
+                  {loadMes ? (
+                    <Grid
+                      item
+                      xs={12}
+                      style={{ display: "flex", justifyContent: "center" }}
+                    >
+                      <CircularProgress color="secondary" />
+                    </Grid>
+                  ) : (
+                    <>
+                      {monthe.length > 0 ? (
+                        <>
+                          <MesTabs
+                            monthe={monthe}
+                            mesSelecionado={mesSelecionado}
+                            handleMesChange={handleMesChange}
+                          />
+                          <ScrollableDates
+                            diasMes={diasMes}
+                            diaSelecionado={diaSelecionado}
+                            handleDiaClick={handleDiaClick}
+                          />
+                          <HorarioList
+                            horariosDisponiveis={horariosDisponiveis}
+                            horarioSelecionado={horarioSelecionado}
+                            handleHorarioClick={handleHorarioClick}
+                            load={load}
+                          />
+                        </>
+                      ) : (
                         <Grid
                           item
                           xs={12}
                           style={{ display: "flex", justifyContent: "center" }}
                         >
-                          <CircularProgress color="secondary" />
+                          Agendas não liberadas
                         </Grid>
-                      ) : (
-                        <>
-                          {monthe.length > 0 ? (
-                            <>
-                              <MesTabs
-                                monthe={monthe}
-                                mesSelecionado={mesSelecionado}
-                                handleMesChange={handleMesChange}
-                              />
-                              <ScrollableDates
-                                diasMes={diasMes}
-                                diaSelecionado={diaSelecionado}
-                                handleDiaClick={handleDiaClick}
-                              />
-                              <HorarioList
-                                horariosDisponiveis={horariosDisponiveis}
-                                horarioSelecionado={horarioSelecionado}
-                                handleHorarioClick={handleHorarioClick}
-                                load={load}
-                              />
-                            </>
-                          ) : (
-                            <Grid
-                              item
-                              xs={12}
-                              style={{
-                                display: "flex",
-                                justifyContent: "center",
-                              }}
-                            >
-                              Agendas não liberadas
-                            </Grid>
-                          )}
-                        </>
                       )}
-                    </Box>
-                  </FormControl>
-                )}
+                    </>
+                  )}
+                </Box>
+              </FormControl>
+            )}
 
-                {isErro && (
-                  <div style={{ padding: "12px 0px 12px 0px" }}>
-                    <Alert
-                      onClose={() => setIsErro(false)}
-                      onClick={() => setIsErro(false)}
-                      color="error"
-                    >
-                      Tente novamente
-                    </Alert>
-                  </div>
-                )}
-              </DialogContent>
-
-              <DialogActions>
-                <Button color="secondary" onClick={handleClose}>
-                  Cancelar
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={salvarAgendamento}
-                  disabled={!horarioSelecionado}
+            {isErro && (
+              <div style={{ padding: "12px 0px 12px 0px" }}>
+                <Alert
+                  onClose={() => setIsErro(false)}
+                  onClick={() => setIsErro(false)}
+                  color="error"
                 >
-                  Salvar <FaCheckCircle />
-                </Button>
-              </DialogActions>         
+                  Tente novamente
+                </Alert>
+              </div>
+            )}
+          </DialogContent>
+
+          <DialogActions>
+            <Button color="secondary" onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={salvarAgendamento}
+              disabled={!horarioSelecionado}
+            >
+              Salvar <FaCheckCircle />
+            </Button>
+          </DialogActions>
         </>
       )}
     </Dialog>

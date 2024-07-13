@@ -1,28 +1,18 @@
-.container-horizontal-list {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.button-scroll {
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    background: #e0f7fa;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
 .scroll-container {
     display: flex;
     gap: 4px;
-    overflow: hidden;
+    overflow-x: auto;
     cursor: grab;
-    flex: 1;
-}
-
-.medico-card {
-    /* gap: 12px; */
+    padding: 10px 0;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scroll-container::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari, Opera */
+  }
+  
+  .medico-card {
     padding: 10px;
     border-radius: 10%;
     background: #fff;
@@ -32,45 +22,64 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* width: 150px; */
     width: fit-content;
     height: fit-content;
     min-height: 150px;
     min-width: 120px;
-}
-
-.medico-card--selected {
+  }
+  
+  .medico-card--selected {
     background: #e0f7fa;
-}
-
-.avatar-container {
+  }
+  
+  .avatar-container {
     height: 80px;
     width: 80px;
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 0 0 1px #7315ca, 0 0 0 1px #fadb51;
-}
-
-.avatar-image {
+  }
+  
+  .avatar-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
     box-shadow: 0 0 0 2px #7315ca, 0 0 0 2px #fadb51;
-}
-
-.medico-info {
+  }
+  
+  .medico-info {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: fit-content;
-}
-
-.medico-name {
+  }
+  
+  .medico-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: fit-content;
-    max-width: 120px; /* Defina a largura máxima que desejar */
-
-}
+    max-width: 120px;
+  }
+  
+  .scroll-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .indicator {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: gray;
+    border-radius: 50%;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  
+  .indicator.active {
+    background-color: blue;
+    opacity: 1;
+  }
+  
