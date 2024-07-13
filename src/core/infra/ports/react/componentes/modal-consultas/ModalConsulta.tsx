@@ -95,15 +95,7 @@ const ModalConsulta = ({
           </div>
         ) : (
           <DialogContent>
-            <TextField
-              margin="dense"
-              label="Quantidade de consultas"
-              type="number"
-              fullWidth
-              variant="outlined"
-              value={quantidadeConsultas}
-              onChange={(e) => setQuantidadeConsultas(e.target.value)}
-            />
+      
             <div
               style={{ display: "flex", gap: "12px", flexDirection: "column" }}
             >
