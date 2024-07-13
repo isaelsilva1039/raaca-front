@@ -295,7 +295,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         <>
           <DialogContent className="container-modal">
             <FormControl fullWidth>
-              <h2>Selecione um Profissional</h2>
+              <h2 className="title">Selecione um Profissional</h2>
               <MedicosHorizontalList
                 medicos={medicos}
                 medicoSelecionado={medicoSelecionado}

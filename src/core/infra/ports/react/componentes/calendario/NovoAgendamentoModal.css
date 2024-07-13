@@ -126,11 +126,12 @@
     }
   
     .container-modal {
-      height: 100%;
-      overflow: auto;
+        height: 100%;
+        overflow: auto;
+        align-items: center;
+        align-content: center;
+      }
     }
-  }
-  
   .fc-newAppointmentButton-button {
     background: #8502c7 !important;
     color: white !important;
@@ -156,6 +157,14 @@
     justify-content: center;
   }
   
+  h2{
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    padding: 0;
+  }
   .container-a {
     padding: 20px;
     display: flex;
@@ -171,10 +180,13 @@
     }
   
     .MuiDialogContent-root {
-      padding: 16px !important;
+      padding: 15px !important;
       height: calc(100% - 64px) !important;
       overflow-y: auto !important;
+      align-items:center;
+      justify-items: center;
     }
+   
   
     .MuiDialogActions-root {
       padding: 8px 16px !important;
