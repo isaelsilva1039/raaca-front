@@ -6,6 +6,7 @@ interface Medico {
   nome: string;
   especialidade: string;
   avatarUrl: string;
+  fk_especialidade: any;
 }
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
   medicoSelecionado: number | string;
   setMedicoSelecionado: (value: number | string) => void;
   profissional: any;
-  setEspecialidadeProfissional: any
+  setEspecialidadeProfissional: (value: number | string) => void;
 }
 
 export interface Especialidade {
@@ -48,13 +49,12 @@ const MedicosHorizontalList: React.FC<Props> = ({
   medicoSelecionado,
   setMedicoSelecionado,
   profissional,
-  setEspecialidadeProfissional
+  setEspecialidadeProfissional,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState<number | null>(null);
   const [scrollLeft, setScrollLeft] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
@@ -80,7 +80,6 @@ const MedicosHorizontalList: React.FC<Props> = ({
 
   const handleMouseUpOrLeave = () => {
     setIsDragging(false);
-    
   };
 
   const scrollLeftFunc = () => {
@@ -95,12 +94,11 @@ const MedicosHorizontalList: React.FC<Props> = ({
     }
   };
 
-
-  const handleProfissionalSelecionado = (profissional : any) => {
-    console.log('profissional' , profissional )
-    setMedicoSelecionado(profissional?.user_id)
-    setEspecialidadeProfissional(profissional?.especialidade?.id)
-  }
+  const handleProfissionalSelecionado = (profissional: any) => {
+    console.log("profissional", profissional);
+    setMedicoSelecionado(profissional?.user_id);
+    setEspecialidadeProfissional(profissional?.especialidade?.id ?? profissional?.fk_especialidade);
+  };
 
   return (
     <div className="container-horizontal-list">
@@ -120,7 +118,7 @@ const MedicosHorizontalList: React.FC<Props> = ({
             {medicos.map((medico) => (
               <div
                 key={medico.user_id}
-                onClick={() => setMedicoSelecionado(medico.user_id)}
+                onClick={() => handleProfissionalSelecionado(medico)}
                 className={`medico-card ${
                   medicoSelecionado === medico.user_id
                     ? "medico-card--selected"
@@ -143,37 +141,33 @@ const MedicosHorizontalList: React.FC<Props> = ({
           </>
         )}
 
-
         {profissional && (
-            <>
-            
-            {profissional.map((profissional : Profissional) => (
-            <div
-            key={profissional.user_id}
-            onClick={() => handleProfissionalSelecionado(profissional)}
-            className={`medico-card ${
-                medicoSelecionado === profissional.user_id
-                ? "medico-card--selected"
-                : ""
-            }`}
-            >
-            <div className="avatar-container">
-                <img
-                src={profissional.avatar}
-                alt={`Avatar de ${profissional.nome}`}
-                className="avatar-image"
-                />
-            </div>
-            <div className="medico-info">
-                <strong className="medico-name">{profissional.nome}</strong>
-                <small>{profissional.especialidade.nome}</small>
-            </div>
-            </div>
-        ))}
-            </>
-            
-        )} 
-
+          <>
+            {profissional.map((profissional: Profissional) => (
+              <div
+                key={profissional.user_id}
+                onClick={() => handleProfissionalSelecionado(profissional)}
+                className={`medico-card ${
+                  medicoSelecionado === profissional.user_id
+                    ? "medico-card--selected"
+                    : ""
+                }`}
+              >
+                <div className="avatar-container">
+                  <img
+                    src={profissional.avatar}
+                    alt={`Avatar de ${profissional.nome}`}
+                    className="avatar-image"
+                  />
+                </div>
+                <div className="medico-info">
+                  <strong className="medico-name">{profissional.nome}</strong>
+                  <small>{profissional.especialidade.nome}</small>
+                </div>
+              </div>
+            ))}
+          </>
+        )}
       </div>
       <button className="button-scroll" onClick={scrollRightFunc}>
         &rarr;

@@ -28,11 +28,19 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import CondicionalDisplay from "../CondicionalDisplay/CondicionalDisplay";
 
 interface Medico {
-  id: number;
   nome: string;
-  especialidade: string;
-  avatarUrl: string;
+  email: string;
+  cpf: string;
+  data_nascimento: string;
+  especialidade: Especialidade;
+  avatar: string;
+  fk_anexo: number;
   user_id: number;
+  updated_at: string;
+  fk_especialidade: number;
+  link_sala: string;
+  created_at: string;
+  deleted_at: string | null;
 }
 
 interface Horario {
