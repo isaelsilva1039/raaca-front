@@ -13,7 +13,7 @@ interface Props {
   medicoSelecionado: number | string;
   setMedicoSelecionado: (value: number | string) => void;
   profissional: any;
-  setEspecialidadeProfissional: any
+  setEspecialidadeProfissional: any;
 }
 
 export interface Especialidade {
@@ -48,13 +48,12 @@ const MedicosHorizontalList: React.FC<Props> = ({
   medicoSelecionado,
   setMedicoSelecionado,
   profissional,
-  setEspecialidadeProfissional
+  setEspecialidadeProfissional,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState<number | null>(null);
   const [scrollLeft, setScrollLeft] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
@@ -80,104 +79,65 @@ const MedicosHorizontalList: React.FC<Props> = ({
 
   const handleMouseUpOrLeave = () => {
     setIsDragging(false);
-    
   };
 
-  const scrollLeftFunc = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -120, behavior: "smooth" }); // Ajuste a distância de rolagem
-    }
+  const handleProfissionalSelecionado = (profissional: any) => {
+    setMedicoSelecionado(profissional.user_id);
+    setEspecialidadeProfissional(profissional.especialidade.id);
   };
-
-  const scrollRightFunc = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 120, behavior: "smooth" }); // Ajuste a distância de rolagem
-    }
-  };
-
-
-  const handleProfissionalSelecionado = (profissional : any) => {
-    console.log('profissional' , profissional )
-    setMedicoSelecionado(profissional?.user_id)
-    setEspecialidadeProfissional(profissional?.especialidade?.id)
-  }
 
   return (
-    <div className="container-horizontal-list">
-      <button className="button-scroll" onClick={scrollLeftFunc}>
-        &larr;
-      </button>
-      <div
-        ref={scrollContainerRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUpOrLeave}
-        onMouseLeave={handleMouseUpOrLeave}
-        className="scroll-container"
-      >
-        {profissional < 1 && (
-          <>
-            {medicos.map((medico) => (
-              <div
-                key={medico.user_id}
-                onClick={() => setMedicoSelecionado(medico.user_id)}
-                className={`medico-card ${
-                  medicoSelecionado === medico.user_id
-                    ? "medico-card--selected"
-                    : ""
-                }`}
-              >
-                <div className="avatar-container">
-                  <img
-                    src={medico.avatarUrl}
-                    alt={`Avatar de ${medico.nome}`}
-                    className="avatar-image"
-                  />
-                </div>
-                <div className="medico-info">
-                  <strong className="medico-name">{medico.nome}</strong>
-                  <small>{medico.especialidade}</small>
-                </div>
-              </div>
-            ))}
-          </>
-        )}
-
-
-        {profissional && (
-            <>
-            
-            {profissional.map((profissional : Profissional) => (
+    <div
+      ref={scrollContainerRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUpOrLeave}
+      onMouseLeave={handleMouseUpOrLeave}
+      className="scroll-container"
+    >
+      {profissional && profissional.length > 0
+        ? profissional.map((prof: Profissional) => (
             <div
-            key={profissional.user_id}
-            onClick={() => handleProfissionalSelecionado(profissional)}
-            className={`medico-card ${
-                medicoSelecionado === profissional.user_id
-                ? "medico-card--selected"
-                : ""
-            }`}
+              key={prof.user_id}
+              onClick={() => handleProfissionalSelecionado(prof)}
+              className={`medico-card ${
+                medicoSelecionado === prof.user_id ? "medico-card--selected" : ""
+              }`}
             >
-            <div className="avatar-container">
+              <div className="avatar-container">
                 <img
-                src={profissional.avatar}
-                alt={`Avatar de ${profissional.nome}`}
-                className="avatar-image"
+                  src={prof.avatar}
+                  alt={`Avatar de ${prof.nome}`}
+                  className="avatar-image"
                 />
+              </div>
+              <div className="medico-info">
+                <strong className="medico-name">{prof.nome}</strong>
+                <small>{prof.especialidade.nome}</small>
+              </div>
             </div>
-            <div className="medico-info">
-                <strong className="medico-name">{profissional.nome}</strong>
-                <small>{profissional.especialidade.nome}</small>
+          ))
+        : medicos.map((medico) => (
+            <div
+              key={medico.user_id}
+              onClick={() => setMedicoSelecionado(medico.user_id)}
+              className={`medico-card ${
+                medicoSelecionado === medico.user_id ? "medico-card--selected" : ""
+              }`}
+            >
+              <div className="avatar-container">
+                <img
+                  src={medico.avatarUrl}
+                  alt={`Avatar de ${medico.nome}`}
+                  className="avatar-image"
+                />
+              </div>
+              <div className="medico-info">
+                <strong className="medico-name">{medico.nome}</strong>
+                <small>{medico.especialidade}</small>
+              </div>
             </div>
-            </div>
-        ))}
-            </>
-            
-        )} 
-
-      </div>
-      <button className="button-scroll" onClick={scrollRightFunc}>
-        &rarr;
-      </button>
+          ))}
     </div>
   );
 };
