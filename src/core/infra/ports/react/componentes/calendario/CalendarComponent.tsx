@@ -30,7 +30,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import NovoAgendamentoModal from "./NovoAgendamentoModal";
+import NovoAgendamentoModal, { ClienteData } from "./NovoAgendamentoModal";
 import { getProfissnionais } from "@/app/cadastro-profissionais/getProfissionais";
 import { useCliente } from "@/core/helpes/UserContext";
 import EventModal from "./EventModal";
@@ -49,9 +49,9 @@ interface Event {
     name: string;
     email: string;
     avatar: any;
-    professional:{
+    professional: {
       link_sala: any;
-    }
+    };
   };
   cliente: {
     name: string;
@@ -65,7 +65,6 @@ interface Event {
   medico_id: number;
   created_at: any;
   id: number;
-
 }
 
 interface TransformedEvent {
@@ -95,11 +94,17 @@ interface IData {
   especialidade: string;
   avatarUrl: string;
   user_id: number;
-
 }
 
-
-const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quantidadeConsultasPendente, quantideDeConsultasQuePodeRealizar }: any) => {
+const CalendarComponent = ({
+  events,
+  onUpdate,
+  isAtingido,
+  isPrazoPassado,
+  quantidadeConsultasPendente,
+  quantideDeConsultasQuePodeRealizar,
+  planosProfissionalEspecialidade
+}: any) => {
   const [modalOpen, setModalOpen] = useState(false); // Controla se a modal está aberta
   const [selectedEvent, setSelectedEvent] = useState<eventInterface | any>(
     null
@@ -117,7 +122,7 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
     setStatus(event.target.value);
   };
 
-  console.log(eventos)
+  console.log(eventos);
 
   // Função para determinar a cor com base no status
   const getColorBasedOnStatus = (status: string): string => {
@@ -136,11 +141,13 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
   };
 
   useEffect(() => {
-    
     const transformedEvents: TransformedEvent[] = Array.isArray(events)
       ? events.map((event: Event) => ({
-
-          title: `Consulta com ${user.tipo == 1 || user.tipo == 3 ? event.medico.name : event.cliente.name}`,
+          title: `Consulta com ${
+            user.tipo == 1 || user.tipo == 3
+              ? event.medico.name
+              : event.cliente.name
+          }`,
           start: new Date(event.start_time),
           color: getColorBasedOnStatus(event.status),
           end: new Date(event.end_time),
@@ -156,15 +163,13 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
             medico_avatar: event.medico.avatar,
             cliente_avatar: event.cliente.avatar,
             created_at: event.created_at,
-            link_sala: event.medico?.professional?.link_sala
+            link_sala: event.medico?.professional?.link_sala,
           },
         }))
       : [];
 
     setEvents(transformedEvents);
   }, [events]);
-
-
 
   const getProfissnionaisAll = () => {
     setLoading(true);
@@ -198,19 +203,16 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
       alert(
         `Status '${status}' salvo com sucesso para '${selectedEvent.title}'`
       );
-      handleClose(); 
+      handleClose();
       setStatus("realizado");
     }
   };
 
-
   const handleEventClick = ({ event }: any) => {
-
-    console.log('event' , event)
+    console.log("event", event);
     setSelectedEvent(event);
     setModalOpen(true); // Abre a modal
   };
-
 
   const handleClose = () => {
     setStatus("realizado");
@@ -227,7 +229,6 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
     });
   };
 
-
   const handleNewAppointmentClick = () => {
     setModalOpenNovo(true);
   };
@@ -241,9 +242,11 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
   const canShowAllOptions = !isUserTypeThree;
 
   let podeAgendarConsultas = true;
-  if(user.tipo == 3) {
-     podeAgendarConsultas = quantidadeConsultasPendente < quantideDeConsultasQuePodeRealizar
+  if (user.tipo == 3) {
+    podeAgendarConsultas =
+      quantidadeConsultasPendente < quantideDeConsultasQuePodeRealizar;
   }
+
 
   return (
     <>
@@ -299,6 +302,7 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
         handleSave={handleSave}
         medicos={profissionais}
         onUpdate={onUpdate}
+        planosProfissionalEspecialidade={planosProfissionalEspecialidade}
       />
 
       <NovoAgendamentoModal
@@ -308,6 +312,7 @@ const CalendarComponent = ({ events, onUpdate, isAtingido,isPrazoPassado, quanti
         onUpdate={onUpdate}
         loading={loading}
         podeAgendarConsultas={podeAgendarConsultas}
+        planosProfissionalEspecialidade={planosProfissionalEspecialidade}
       />
     </>
   );

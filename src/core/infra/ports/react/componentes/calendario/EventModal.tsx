@@ -41,6 +41,7 @@ import { FcVideoCall } from "react-icons/fc";
 import { BsCalendarDateFill } from "react-icons/bs";
 
 import { FcAlarmClock } from "react-icons/fc";
+import { ClienteData } from "./NovoAgendamentoModal";
 
 interface Medico {
   id: number;
@@ -65,6 +66,7 @@ const EventModal = ({
   handleSave,
   medicos,
   onUpdate,
+  planosProfissionalEspecialidade
 }: any) => {
   const [remarcado, setRemarcado] = useState(false);
 
@@ -95,6 +97,9 @@ const EventModal = ({
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
   };
+
+
+  
 
   const buscarHorariosDisponiveis = (medicoId: number, dia: string) => {
     setLoad(true);
@@ -194,6 +199,22 @@ const EventModal = ({
     setHorariosDisponiveis([]);
   };
 
+  const [especialidadeProfissional, setEspecialidadeProfissional] = useState<any>(null);
+
+
+  const filtrarProfissionaisComConsultasDisponiveis = (data : ClienteData) => {
+
+    if (!data?.meta) {
+      return [];
+    }
+  
+    return data?.meta
+      .filter(item => item?.consultas_restantes > 0)
+      .map(item => item?.profissional);
+  };
+
+  const profissionaisListaPermitas = filtrarProfissionaisComConsultasDisponiveis(planosProfissionalEspecialidade[0])
+
   useEffect(() => {
     if (medicoSelecionado) {
       const mesAtual = new Date().getMonth();
@@ -217,7 +238,6 @@ const EventModal = ({
     setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
-  console.log(selectedEvent);
 
   return (
     <>
@@ -387,6 +407,8 @@ const EventModal = ({
                   medicos={medicos}
                   medicoSelecionado={medicoSelecionado}
                   setMedicoSelecionado={setMedicoSelecionado}
+                  setEspecialidadeProfissional={setEspecialidadeProfissional}
+                  profissional={profissionaisListaPermitas}
                 />
 
                 {medicoSelecionado && (

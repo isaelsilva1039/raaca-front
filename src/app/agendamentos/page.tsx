@@ -14,7 +14,7 @@ import { FaFilterCircleXmark } from "react-icons/fa6";
 
 import { FiFilter as Filter } from "react-icons/fi";
 import { getProfissnionais } from "../cadastro-profissionais/getProfissionais";
-import { getVerificarAgendasLiberadas } from "../api/horarios/getVerificarAgendasLiberadas";
+import { getEspecialidadeConsultas, getVerificarAgendasLiberadas } from "../api/horarios/getVerificarAgendasLiberadas";
 import CondicionalDisplay from "@/core/infra/ports/react/componentes/CondicionalDisplay/CondicionalDisplay";
 
 interface IData {
@@ -107,6 +107,9 @@ export default function Agendamentos() {
   const [isPrazoPassado, setIsPrazoPassado] = useState(false);
   const [isLiberdo, serIsNotLiberado] = useState(true);
 
+  const [planosProfissionalEspecialidade, setPlanosProfissionalEspecialidade] = useState({});
+
+
   const fetchProfissionaisAll = () => {
     if (!token) return;
     setLoading(true);
@@ -153,10 +156,12 @@ export default function Agendamentos() {
     if (!token) return;
     if (user?.tipo == 3) {
       getMe();
+      getPlanoEspecialidade()
     }
 
     fetchProfissionaisAll();
     fetchMyEventos();
+
   }, [token, novoEventoState]);
 
 
@@ -193,6 +198,32 @@ export default function Agendamentos() {
 
     fetchEventosMedico(onFetchSuccess, onFetchError, token, idSelect);
   };
+
+
+  const getPlanoEspecialidade = () => {
+    if (!token) return;
+
+    // setLoadingEventosMedico(true);
+
+    const onFetchSuccess = (data: any) => {
+
+      setPlanosProfissionalEspecialidade(data)
+
+      // setEventos(data.data);
+      // setLoading(false);
+      // setLoadingEventosMedico(false);
+    };
+
+    const onFetchError = (error: any) => {
+      console.error("Erro ao buscar profissionais:", error);
+      setError(error);
+      setLoading(false);
+      setLoadingEventosMedico(false);
+    };
+
+    getEspecialidadeConsultas(token, onFetchSuccess, onFetchError);
+  };
+  
 
   useEffect(() => {
     if (!token) return;
@@ -352,6 +383,7 @@ export default function Agendamentos() {
                       isPrazoPassado={isPrazoPassado}
                       quantidadeConsultasPendente={quantidadeConsultasPendente}
                       quantideDeConsultasQuePodeRealizar={quantideDeConsultasQuePodeRealizar}
+                      planosProfissionalEspecialidade={planosProfissionalEspecialidade}
                     />
                   )}
                 </div>

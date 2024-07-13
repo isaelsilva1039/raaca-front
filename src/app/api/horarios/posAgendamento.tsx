@@ -4,6 +4,7 @@ export const postNovoAgendamento = async (
     medicoId: any,
     startTime: any,
     endTime: any,
+    especialidade_id: any,
     token: any ,
     onSuccess : any,
     onError : any
@@ -15,6 +16,8 @@ export const postNovoAgendamento = async (
     formData.append('medico_id', medicoId.toString());
     formData.append('start_time', startTime);
     formData.append('end_time', endTime);
+    formData.append('especialidade_id', especialidade_id);
+
 
     try {
         const response = await fetch(url, {

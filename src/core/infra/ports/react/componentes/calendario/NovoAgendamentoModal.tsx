@@ -47,7 +47,54 @@ interface Props {
   onUpdate: () => void;
   loading: boolean;
   podeAgendarConsultas: boolean;
+  planosProfissionalEspecialidade : any;
 }
+
+
+
+
+
+export interface Especialidade {
+  id: number;
+  nome: string;
+}
+
+export interface Periodo {
+  inicio_data: string;
+  fim_data: string;
+  consultas_no_periodo: number;
+}
+
+export interface Profissional {
+  nome: string;
+  email: string;
+  cpf: string;
+  data_nascimento: string;
+  especialidade: Especialidade;
+  avatar: string;
+  fk_anexo: number;
+  user_id: number;
+  updated_at: string;
+  fk_especialidade: number;
+  link_sala: string;
+  created_at: string;
+  deleted_at: string | null;
+}
+
+export interface Meta {
+  consultas_permitidas: string;
+  consultas_realizadas: number;
+  consultas_restantes: number;
+  profissional: Profissional;
+  periodos: Periodo[];
+}
+
+export interface ClienteData {
+  cliente: string;
+  meta: Meta[];
+}
+
+
 
 const NovoAgendamentoModal: React.FC<Props> = ({
   open,
@@ -56,11 +103,16 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   onUpdate,
   loading,
   podeAgendarConsultas,
+  planosProfissionalEspecialidade
 }) => {
   const { token, user } = useCliente();
   const [medicoSelecionado, setMedicoSelecionado] = useState<number | string>(
     ""
   );
+
+  const [especialidadeProfissional, setEspecialidadeProfissional] = useState<any>(null);
+
+  
   const [mesSelecionado, setMesSelecionado] = useState<number>(
     new Date().getMonth()
   );
@@ -137,6 +189,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
         medicoSelecionado,
         startTime,
         endTime,
+        especialidadeProfissional,
         token,
         (data: any) => {
           setLoad(false);
@@ -196,6 +249,19 @@ const NovoAgendamentoModal: React.FC<Props> = ({
     setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
+
+  const filtrarProfissionaisComConsultasDisponiveis = (data : ClienteData) => {
+
+    if (!data?.meta) {
+      return [];
+    }
+  
+    return data?.meta
+      .filter(item => item?.consultas_restantes > 0)
+      .map(item => item?.profissional);
+  };
+
+
   const renderPageLimite = () => {
     return (
       <CondicionalDisplay
@@ -206,6 +272,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
       />
     );
   };
+
+  const profissionaisListaPermitas = filtrarProfissionaisComConsultasDisponiveis(planosProfissionalEspecialidade[0])
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth={"xl"}>
@@ -229,8 +297,6 @@ const NovoAgendamentoModal: React.FC<Props> = ({
           <CircularProgress color="secondary" />
         </Grid>
       ) : (
-        <>
-          {podeAgendarConsultas ? (
             <>
               <DialogContent className="container-modal">
                 <FormControl fullWidth>
@@ -239,6 +305,8 @@ const NovoAgendamentoModal: React.FC<Props> = ({
                     medicos={medicos}
                     medicoSelecionado={medicoSelecionado}
                     setMedicoSelecionado={setMedicoSelecionado}
+                    profissional={profissionaisListaPermitas}
+                    setEspecialidadeProfissional={setEspecialidadeProfissional}
                   />
                 </FormControl>
 
@@ -320,11 +388,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
                 >
                   Salvar <FaCheckCircle />
                 </Button>
-              </DialogActions>
-            </>
-          ) : (
-            renderPageLimite()
-          )}
+              </DialogActions>         
         </>
       )}
     </Dialog>
