@@ -404,7 +404,6 @@ const EventModal = ({
               <FormControl fullWidth>
                 <h2>Selecione um Profissional</h2>
                 <MedicosHorizontalList
-                  medicos={medicos}
                   medicoSelecionado={medicoSelecionado}
                   setMedicoSelecionado={setMedicoSelecionado}
                   setEspecialidadeProfissional={setEspecialidadeProfissional}

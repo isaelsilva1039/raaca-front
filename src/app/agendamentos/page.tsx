@@ -207,6 +207,7 @@ export default function Agendamentos() {
 
     const onFetchSuccess = (data: any) => {
 
+      console.log('setPlanosProfissionalEspecialidade ' ,data );
       setPlanosProfissionalEspecialidade(data)
 
       // setEventos(data.data);
@@ -298,16 +299,6 @@ export default function Agendamentos() {
     });
   };
 
-  const renderPageLimite = () => {
-    return (
-      <CondicionalDisplay
-        isAtingido={isAtingido}
-        isPrazoPassado={isPrazoPassado}
-        isLiberdo={isLiberdo}
-        podeAgendarConsultas={true}
-      />
-    );
-  };
 
   return (
     <>
@@ -328,9 +319,7 @@ export default function Agendamentos() {
             >
               Menu / Agendamentos
             </Typography>
-            {isAtingido || isPrazoPassado || !isLiberdo ? (
-              <div>{renderPageLimite()}</div>
-            ) : (
+    
               <div className="container-page">
                 {user?.tipo == 1 && (
                   <div className="menu-profissionais">
@@ -388,7 +377,6 @@ export default function Agendamentos() {
                   )}
                 </div>
               </div>
-            )}
           </>
         )}
       </div>

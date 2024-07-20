@@ -93,17 +93,20 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
           setIsLoading(false);
           setIsFoto(true);
           setMensagem(data.mensagem);
+          handleLimpar()
         } else {
           setIsLoading(false);
           setIsSucess(true);
           setMensagem(data.mensagem);
           onUpdate();
+          handleLimpar()
         }
       },
       (error) => {
         setIsLoading(false);
         setIsFoto(true);
         setMensagem("Esse cpf já existe");
+
       }
     );
   };

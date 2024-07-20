@@ -122,7 +122,6 @@ const CalendarComponent = ({
     setStatus(event.target.value);
   };
 
-  console.log(eventos);
 
   // Função para determinar a cor com base no status
   const getColorBasedOnStatus = (status: string): string => {

@@ -208,7 +208,7 @@ const SchedulePage: React.FC = () => {
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
-    <Box className="container-a" sx={{ p: 3 }}>
+    <Box className="container-horarios" sx={{ p: 3 }}>
       <ToastContainer />
       {loading ? (
         <ScheduleSkeleton />
@@ -332,7 +332,7 @@ const SchedulePage: React.FC = () => {
             </Box>
           )}
 
-          {tabIndex === 2 && (
+          {tabIndex === 2 && user.tipo == 1 && (
             <Box>
               <ConfiguracaoTempoConsultas
                 usuario={usuario}

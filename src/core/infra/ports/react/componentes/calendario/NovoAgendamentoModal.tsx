@@ -240,29 +240,24 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   };
 
   const filtrarProfissionaisComConsultasDisponiveis = (data: ClienteData) => {
+    console.log(data?.meta);
+  
     if (!data?.meta) {
       return [];
     }
-
-    return data?.meta
-      .filter((item) => item?.consultas_restantes > 0)
-      .map((item) => item?.profissional);
+  
+    return data.meta
+      .filter((item) => item?.consultas_restantes > 0 && item?.profissional != null)
+      .map((item) => item.profissional);
   };
 
-  const renderPageLimite = () => {
-    return (
-      <CondicionalDisplay
-        isAtingido={false}
-        isPrazoPassado={false}
-        isLiberdo={true}
-        podeAgendarConsultas={true}
-      />
-    );
-  };
 
   const profissionaisListaPermitas = filtrarProfissionaisComConsultasDisponiveis(
     planosProfissionalEspecialidade[0]
   );
+
+
+  console.log(profissionaisListaPermitas)
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth={"xl"}>
@@ -291,7 +286,7 @@ const NovoAgendamentoModal: React.FC<Props> = ({
             <FormControl fullWidth>
               <h2 className="title">Selecione um Profissional</h2>
               <MedicosHorizontalList
-                medicos={medicos}
+                // medicos={profissionaisListaPermitas.length > 0 ? profissionaisListaPermitas : medicos}
                 medicoSelecionado={medicoSelecionado}
                 setMedicoSelecionado={setMedicoSelecionado}
                 profissional={profissionaisListaPermitas}

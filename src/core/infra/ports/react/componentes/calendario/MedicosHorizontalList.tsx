@@ -10,7 +10,6 @@ interface Medico {
 }
 
 interface Props {
-  medicos: Medico[];
   medicoSelecionado: number | string;
   setMedicoSelecionado: (value: number | string) => void;
   profissional: any;
@@ -45,12 +44,15 @@ export interface Profissional {
 }
 
 const MedicosHorizontalList: React.FC<Props> = ({
-  medicos,
+  // medicos,
   medicoSelecionado,
   setMedicoSelecionado,
   profissional,
   setEspecialidadeProfissional,
 }) => {
+
+  console.log('profissional',profissional)
+
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState<number | null>(null);
   const [scrollLeft, setScrollLeft] = useState<number | null>(null);
@@ -66,7 +68,7 @@ const MedicosHorizontalList: React.FC<Props> = ({
         const currentScrollLeft = scrollContainerRef.current.scrollLeft;
         const position =
           (currentScrollLeft / maxScrollLeft) *
-          (medicos.length - 1); // Ajuste conforme necessário
+          (profissional.length - 1); // Ajuste conforme necessário
         setScrollPosition(Math.round(position));
       }
     };
@@ -80,7 +82,7 @@ const MedicosHorizontalList: React.FC<Props> = ({
         scrollContainerRef.current.removeEventListener("scroll", handleScroll);
       }
     };
-  }, [medicos.length]);
+  }, [profissional.length]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!scrollContainerRef.current) return;
@@ -131,8 +133,7 @@ const MedicosHorizontalList: React.FC<Props> = ({
         onMouseLeave={handleMouseUpOrLeave}
         className="scroll-container"
       >
-        {profissional && profissional.length > 0
-          ? profissional.map((prof: Profissional) => (
+        {profissional && profissional.length > 0 && profissional.map((prof: Profissional) => (
               <div
                 key={prof.user_id}
                 onClick={() => handleProfissionalSelecionado(prof)}
@@ -155,32 +156,10 @@ const MedicosHorizontalList: React.FC<Props> = ({
                 </div>
               </div>
             ))
-          : medicos.map((medico) => (
-              <div
-                key={medico.user_id}
-                onClick={() => handleProfissionalSelecionado(medico)}
-                className={`medico-card ${
-                  medicoSelecionado === medico.user_id
-                    ? "medico-card--selected"
-                    : ""
-                }`}
-              >
-                <div className="avatar-container">
-                  <img
-                    src={medico.avatarUrl}
-                    alt={`Avatar de ${medico.nome}`}
-                    className="avatar-image"
-                  />
-                </div>
-                <div className="medico-info">
-                  <strong className="medico-name">{medico.nome}</strong>
-                  <small>{medico.especialidade}</small>
-                </div>
-              </div>
-            ))}
+          }
       </div>
-      <div className="scroll-indicators">
-        {medicos.map((_, index) => (
+      {/* <div className="scroll-indicators">
+        {profissional.map((prof, index) => (
           <span
             key={index}
             className={`indicator ${
@@ -188,7 +167,7 @@ const MedicosHorizontalList: React.FC<Props> = ({
             }`}
           ></span>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
