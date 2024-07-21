@@ -127,11 +127,18 @@ table tbody tr:hover td {
 
   .filtrar-por-plano{
     height: 30px !important ;
+    div {
+      height: 32px !important ;
 
-    .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
-      margin-top: -10px;
+      label{
+        margin-top: -10px;
+      }
+
+      input{
+        margin-top: -10px;
+      }
     }
-     /* border: 1px slategray solid;   */
+
      border-radius: 4px;
      width: 300px;
      display: flex;
@@ -139,14 +146,6 @@ table tbody tr:hover td {
      justify-content: flex-end;
      .inpunt-busca{
       height: 32px !important ;
-
-      .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root{
-        height: 30px !important ;
-      }
-
-      .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
-        margin-top: -10px;
-      }
 
      }
   }
