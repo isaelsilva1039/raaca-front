@@ -8,11 +8,11 @@ import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { FaCheckCircle } from "react-icons/fa";
 import "./styles.css";
-import { Alert, Autocomplete } from "@mui/material";
+import { Alert, Autocomplete, Tooltip } from "@mui/material";
 import { enviarProfissional } from "./sevises/postProfissional";
 import LoadingSpinner from "../componentes/load/load";
-import { specialties } from "@/core/helpes/especialidades";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface Especialidade {
   id: number;
   nome: string;
@@ -66,6 +66,22 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
     }
   };
 
+
+  const hasEmptyFields = () => {
+    return (
+      !name ||
+      !email ||
+      !cpf ||
+      !birthdate ||
+      !specialty ||
+      !photo ||
+      !preview ||
+      !link_sala
+    );
+  };
+
+  console.log(hasEmptyFields())
+
   const handleAvatarClick = () => {
     fileInputRef?.current?.click();
   };
@@ -88,16 +104,16 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
     enviarProfissional(
       profissionalData,
       (data) => {
-        console.log(data.status);
+
         if (data.status === 500) {
+          pushNotify("error", "Error", "Aconteceu um erro");
           setIsLoading(false);
           setIsFoto(true);
-          setMensagem(data.mensagem);
           handleLimpar()
         } else {
+          pushNotify("success", "Success", "Profissional adicionado com sucesso!");
           setIsLoading(false);
           setIsSucess(true);
-          setMensagem(data.mensagem);
           onUpdate();
           handleLimpar()
         }
@@ -105,7 +121,7 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
       (error) => {
         setIsLoading(false);
         setIsFoto(true);
-        setMensagem("Esse cpf já existe");
+        pushNotify("error", "Error", "Aconteceu um erro");
 
       }
     );
@@ -127,8 +143,30 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
     }
   };
 
+
+
+
+  const pushNotify = (
+    status: "success" | "error" | "info",
+    title: string,
+    text: string
+  ) => {
+    toast[status](text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      type: status,
+      className: "notify-custom-margin", // Adiciona a classe CSS personalizada
+    });
+  };
+
   return (
     <>
+      <ToastContainer />
       <Dialog open={show} onClose={handleClose}>
         <DialogTitle>Adicionar Novo Profissional</DialogTitle>
         <DialogContent>
@@ -182,6 +220,7 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
                 variant="outlined"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required={true}
               />
               <TextField
                 margin="dense"
@@ -191,6 +230,7 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
                 variant="outlined"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required={true}
               />
               <TextField
                 margin="dense"
@@ -210,6 +250,7 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
                 InputLabelProps={{
                   shrink: true,
                 }}
+                required={true}
                 value={birthdate}
                 onChange={(e) => setBirthdate(e.target.value)}
               />
@@ -235,6 +276,7 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
                     variant="outlined"
                     margin="dense"
                     fullWidth
+                    required={true}
                   />
                 )}
                 onChange={(event, newValue) => {
@@ -245,13 +287,24 @@ const ProfessionalFormModal: React.FC<ProfessionalFormModalProps> = ({
           )}
         </DialogContent>
         <DialogActions>
-          <Button className="btn-fechar" onClick={handleClose}>
-            Fechar
-          </Button>
-          <Button className="btn-salvar" onClick={handleclickSalvar}>
+      <Button className="btn-fechar-1" onClick={handleClose}>
+        Fechar
+      </Button>
+      <Tooltip
+        title={hasEmptyFields() ? "Preencha todos os campos para habilitar o botão." : ""}
+        arrow
+      >
+        <span>
+          <Button
+            disabled={hasEmptyFields()}
+            className={!hasEmptyFields() ? "btn-salvar-1" : 'btn-salvar-1 disabled'  }
+            onClick={handleclickSalvar}
+          >
             Salvar <FaCheckCircle />
           </Button>
-        </DialogActions>
+        </span>
+      </Tooltip>
+    </DialogActions>
       </Dialog>
     </>
   );

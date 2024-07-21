@@ -1,10 +1,10 @@
-.btn-salvar{
+.btn-salvar-1{
     background: #A500F7;
     color: white;
     
 }
 
-.btn-salvar.disabled {
+.btn-salvar-1.disabled {
     opacity: 0.5;
     cursor: not-allowed;
     color: white;
@@ -13,12 +13,12 @@
 
 
 
-.btn-salvar:hover{
+.btn-salvar-1:hover{
     background: #8502c7;
     color: white;
 }
 
-.btn-fechar{
+.btn-fechar-1{
     color: #A500F7;
     /* color: white; */
 }
