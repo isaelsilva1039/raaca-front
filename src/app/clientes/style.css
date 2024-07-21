@@ -99,3 +99,57 @@ table tbody tr:hover td {
 .circulo{
   height: 40px;
 }
+
+.container-buscar-clientes{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 12px;
+  .input-busca-cliente{
+    /* padding: 10px; */
+    height: 30px !important ;
+    /* border: 1px slategray solid;   */
+    border-radius: 4px;
+    width: 300px;
+  }
+
+  .outline-secondary {
+    background: #a704f8;
+    height: 28px;
+    border: none;
+    color: #fafafa;
+    width: 32px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+
+  .filtrar-por-plano{
+    height: 30px !important ;
+
+    .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
+      margin-top: -10px;
+    }
+     /* border: 1px slategray solid;   */
+     border-radius: 4px;
+     width: 300px;
+     display: flex;
+     align-items: center;
+     justify-content: flex-end;
+     .inpunt-busca{
+      height: 32px !important ;
+
+      .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root{
+        height: 30px !important ;
+      }
+
+      .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+        margin-top: -10px;
+      }
+
+     }
+  }
+}
+
+

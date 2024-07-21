@@ -84,7 +84,18 @@
   justify-content: space-between;
   /* width: 100%; */
   gap: 10px;
+
+  flex-direction: column;
 }
+
+.plano-informa{
+  gap: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background: #7c02b9;
+}
+
 
 .flexRow {
   padding: 0 5vw 0 5vw;

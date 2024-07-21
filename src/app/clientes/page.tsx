@@ -5,8 +5,17 @@ import { useEffect, useMemo, useState } from "react";
 import { useTable } from "react-table";
 
 import "./style.css";
-import { useMediaQuery } from 'react-responsive';
-import { IconButton, Tooltip, Typography } from "@mui/material";
+import { useMediaQuery } from "react-responsive";
+import {
+  Autocomplete,
+  Button,
+  DialogContent,
+  FilledInput,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import CustomPagination from "@/core/infra/ports/react/componentes/paginacao/paginacao";
 import CustomTable from "@/core/infra/ports/react/componentes/use-table/table";
 import { Col, Row } from "react-bootstrap";
@@ -32,7 +41,7 @@ import MobileCard from "@/core/infra/ports/react/componentes/use-table/cardMobil
 import ModalEditarCliente from "@/core/infra/ports/react/componentes/modal-consultas/ModalEditarCliente";
 import { FaUserEdit } from "react-icons/fa";
 import { listarPlanos } from "../api/planos/planosService";
-
+import { TfiSearch } from "react-icons/tfi";
 
 interface IData {
   id: number;
@@ -44,10 +53,10 @@ interface IData {
   plano: any;
   qtd_consultas: any;
   user: any;
+  plano_cliente: any;
 }
 
 export default function Gerenciador() {
-  
   const { token, user } = useCliente();
   const [expandedRows, setExpandedRows] = useState<any>({});
   const [modalEditar, setModalEditar] = useState({
@@ -76,38 +85,50 @@ export default function Gerenciador() {
   const [loadingVinculo, setLoadingVinculo] = useState<boolean>(false);
   const [error, setError] = useState<any>(null);
   const [loadingEdit, setLoadingEdit] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<any>("");
+  const [planoSelecionado, setPlanoSelecionado] = useState<any>(null);
 
   useEffect(() => {
     if (!token) return;
     setLoading(true);
     getClientesAll();
-    fetchPlans()
+    fetchPlans();
   }, [per_page, page, token]);
 
 
 
+  useEffect(() => {
+    if (!token) return;
+    setLoading(true);
+    getClientesAll();
+  }, [planoSelecionado]);
+
+  
 
   const fetchPlans = async () => {
     try {
       setLoadingEdit(true);
-      
+
       const data = await listarPlanos(10000, 1);
 
       setPlans(data?.data);
       setLoadingEdit(false);
     } catch (error: any) {
-   
       setError(error.message);
       setLoadingEdit(false);
-   
     } finally {
-   
       setLoadingEdit(false);
-   
     }
   };
 
+  const handlePlanoChange = (event: any, newValue: any) => {
+    setPlanoSelecionado(newValue);
+  };
 
+  const handleClicBuscar = () => {
+    setLoading(true);
+    getClientesAll();
+  };
 
   const getClientesAll = () => {
     getClientes(
@@ -123,7 +144,9 @@ export default function Gerenciador() {
       (error) => {
         setLoading(false);
         setLoadingVinculo(false);
-      }
+      },
+      searchTerm,
+      planoSelecionado?.id
     );
   };
 
@@ -179,6 +202,9 @@ export default function Gerenciador() {
       {
         Header: "plano",
         accessor: "plano",
+        Cell: ({ row }: { row: { original: IData } }) => (
+          <div>{row?.original?.plano_cliente?.nome_plano}</div>
+        ),
       },
 
       {
@@ -223,66 +249,6 @@ export default function Gerenciador() {
           );
         },
       },
-
-      {
-        Header: "Quantidade consultas",
-        accessor: "qtd_consultas",
-
-        Cell: ({ row }) => {
-    
-          const consultas = row.original?.user?.consultas; // Acessando consultas do usuário vinculado
-
-          const isComplete =
-            consultas &&
-            consultas.length > 0 &&
-            consultas[0].quantidade_realizada ===
-              consultas[0].quantidade_consultas;
-
-          return (
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {consultas && consultas.length > 0 ? (
-                <>
-                  <div>
-                    <CircularProgressbar
-                      className="circulo"
-                      value={
-                        (consultas[0].quantidade_realizada /
-                          consultas[0].quantidade_consultas) *
-                        100
-                      }
-                      text={`${consultas[0].quantidade_realizada} / ${consultas[0].quantidade_consultas}`}
-                      styles={buildStyles({
-                        pathColor:
-                          consultas[0].quantidade_realizada ===
-                          consultas[0].quantidade_consultas
-                            ? "#cf7373"
-                            : "rgb(153 199 164)",
-                        textColor: "#000",
-                        trailColor: "#eee",
-                        backgroundColor: "#3e98c7",
-                      })}
-                    />
-                  </div>
-                </>
-              ) : (
-                <div>
-                  <CircularProgressbar
-                    className="circulo"
-                    value={(0 / 1) * 100}
-                    text={`0`}
-                    styles={buildStyles({
-                      pathColor: "#d4edda",
-                      textColor: "#000",
-                      trailColor: "#eee",
-                      backgroundColor: "#3e98c7",
-                    })}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        },
-      },
     ],
     []
   );
@@ -302,98 +268,102 @@ export default function Gerenciador() {
 
   const renderRowSubComponent = ({ row }: any) => {
     const rowData = row.original || row;
-  
-    return (
-      <Row className="rowContainer">
-        <Row className="flexRow">
-          <Col className="columnFlex">
-            <img
-              src={rowData.avatarUrl ? rowData.avatarUrl : "/img/avatar1.png"}
-              alt={`Avatar de ${rowData.nome}`}
-              className="avatarImage"
-            />
-  
-            <Col className="columnStart">
-              <text className="text-header">Nome</text>
-              <small className="text-corpo">{rowData.name}</small>
-            </Col>
-          </Col>
-  
-          <Col className="columnStart">
-            <text className="text-header">CPF</text>
-            <small className="text-corpo">{rowData.cpfCnpj}</small>
-          </Col>
-  
-          <Col className="columnStart">
-            <text className="text-header">Data de Nascimento</text>
-            <small className="text-corpo">{formatDate(rowData.date_of_birth)}</small>
-          </Col>
-  
-          <Col className="columnStart">
-            <Row className="botoes">
-              {loadingVinculo ? (
-                <div className="loading-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              ) : (
-                <>
-                    <Tooltip title="Mudar Plano">
-                        <IconButton
-                          onClick={() => {
-                            setModalEditarCliente({
-                              abriModal: true,
-                              cliente: rowData,
-                            });
-                          }}
-                        >
-                          <FaUserEdit size={20} color="#cf7373" />
-                        </IconButton>
-                      </Tooltip>
 
-                  {rowData.user_id ? (
-                    <>
-                      <Tooltip title="Liberar consultas">
-                        <IconButton
-                          onClick={() => {
-                            setModalEditar({
-                              abriModal: true,
-                              cliente: rowData,
-                            });
-                          }}
-                        >
-                          <FaUserDoctor size={18} color="#707EAE" />
-                        </IconButton>
-                      </Tooltip>
-  
-                      <Tooltip title="Cliente já tem um usuario">
-                        <IconButton>
-                          <IoCheckmarkCircleSharp size={18} color="green" />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  ) : (
-                    <Tooltip title="cliente não tem um usuario no racca">
+    return (
+      <>
+        <Row className="rowContainer">
+          <Row className="flexRow">
+            <Col className="columnFlex">
+              <img
+                src={rowData.avatarUrl ? rowData.avatarUrl : "/img/avatar1.png"}
+                alt={`Avatar de ${rowData.nome}`}
+                className="avatarImage"
+              />
+
+              <Col className="columnStart">
+                <text className="text-header">Nome</text>
+                <small className="text-corpo">{rowData.name}</small>
+              </Col>
+            </Col>
+
+            <Col className="columnStart">
+              <text className="text-header">CPF</text>
+              <small className="text-corpo">{rowData.cpfCnpj}</small>
+            </Col>
+
+            <Col className="columnStart">
+              <text className="text-header">Data de Nascimento</text>
+              <small className="text-corpo">
+                {formatDate(rowData.date_of_birth)}
+              </small>
+            </Col>
+
+            <Col className="columnStart">
+              <Row className="botoes">
+                {loadingVinculo ? (
+                  <div className="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                ) : (
+                  <>
+                    <Tooltip title="Mudar Plano">
                       <IconButton
                         onClick={() => {
-                          handleVincularClienteAserRacca(rowData.id);
+                          setModalEditarCliente({
+                            abriModal: true,
+                            cliente: rowData,
+                          });
                         }}
                       >
-                        <FaUserSlash size={18} color="red" />
+                        <FaUserEdit size={20} color="#cf7373" />
                       </IconButton>
                     </Tooltip>
-                  )}
-                </>
-              )}
-            </Row>
-          </Col>
+
+                    {rowData.user_id ? (
+                      <>
+                        <Tooltip title="Liberar consultas">
+                          <IconButton
+                            onClick={() => {
+                              setModalEditar({
+                                abriModal: true,
+                                cliente: rowData,
+                              });
+                            }}
+                          >
+                            <FaUserDoctor size={18} color="#707EAE" />
+                          </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Cliente já tem um usuario">
+                          <IconButton>
+                            <IoCheckmarkCircleSharp size={18} color="green" />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    ) : (
+                      <Tooltip title="cliente não tem um usuario no racca">
+                        <IconButton
+                          onClick={() => {
+                            handleVincularClienteAserRacca(rowData.id);
+                          }}
+                        >
+                          <FaUserSlash size={18} color="red" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </>
+                )}
+              </Row>
+            </Col>
+          </Row>
         </Row>
-      </Row>
+      </>
     );
   };
-  
-  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
     <div className="container-clientes">
@@ -414,27 +384,60 @@ export default function Gerenciador() {
           <MuiTableSkeleton />
         ) : (
           <>
+            <div className="container-buscar-clientes">
+              <Autocomplete
+                value={planoSelecionado}
+                onChange={handlePlanoChange}
+                options={plans}
+                className="filtrar-por-plano"
+                getOptionLabel={(option) => option.nome_plano}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Filtrar por um plano"
+                    variant="outlined"
+                    fullWidth
+                    className="inpunt-busca"
+                  />
+                )}
+              />
+              <FilledInput
+                className="input-busca-cliente"
+                inputMode="search"
+                margin="dense"
+                placeholder="Buscar..."
+                type="text"
+                fullWidth
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                color="secondary"
+              />
 
-          {!isMobile ? (
-            <CustomTable
-              columns={columns}
-              data={clientes}
-              expandedRows={expandedRows}
-              toggleRowExpanded={toggleRowExpanded}
-              renderRowSubComponent={renderRowSubComponent}
-            />
+              <Button
+                className="outline-secondary"
+                onClick={() => handleClicBuscar()}
+              >
+                <TfiSearch />
+              </Button>
+            </div>
 
-          ):(
-
-            <MobileCard
-              columns={columns}
-              data={clientes}
-              expandedRows={expandedRows}
-              toggleRowExpanded={toggleRowExpanded}
-              renderRowSubComponent={renderRowSubComponent}
-            />
-          )}
-            
+            {!isMobile ? (
+              <CustomTable
+                columns={columns}
+                data={clientes}
+                expandedRows={expandedRows}
+                toggleRowExpanded={toggleRowExpanded}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            ) : (
+              <MobileCard
+                columns={columns}
+                data={clientes}
+                expandedRows={expandedRows}
+                toggleRowExpanded={toggleRowExpanded}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            )}
 
             <div className="paginacao">
               <CustomPagination
@@ -457,7 +460,9 @@ export default function Gerenciador() {
 
       <ModalEditarCliente
         show={modalEditarCliente.abriModal}
-        handleClose={() => setModalEditarCliente({ abriModal: false, cliente: {} })}
+        handleClose={() =>
+          setModalEditarCliente({ abriModal: false, cliente: {} })
+        }
         cliente={modalEditarCliente.cliente}
         onUpdate={onUpdate}
         onClose={{}}

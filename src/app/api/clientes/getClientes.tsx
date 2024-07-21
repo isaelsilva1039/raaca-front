@@ -6,9 +6,21 @@ export const getClientes = async (
     token: any,
     onSuccess: (data: any) => void,
     onError: (error: any) => void,
+    searchTerm?: string, // Parâmetro opcional para busca
+    plano_id?: any,
   ) => {
-    const url =  API + `/api/racca/clientes?per_page=${per_page}&page=${page}`;
+    let url =  API + `/api/racca/clientes?per_page=${per_page}&page=${page}`;
   
+      // Adiciona o parâmetro de busca à URL se ele estiver presente
+    if (searchTerm) {
+      url += `&search=${encodeURIComponent(searchTerm)}`;
+    }
+
+    // Adiciona o parâmetro plano_id à URL se ele estiver presente
+    if (plano_id) {
+      url += `&plano_id=${encodeURIComponent(plano_id)}`;
+    }
+
     try {
       const response = await fetch(url, {
         method: "GET",
