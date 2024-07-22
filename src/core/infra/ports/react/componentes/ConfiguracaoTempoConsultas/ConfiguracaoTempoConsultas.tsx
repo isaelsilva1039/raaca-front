@@ -26,8 +26,6 @@ const ConfiguracaoTempoConsultas: React.FC<Props> = ({ usuario, loadusuario, onS
 
   // Função para converter minutos em horas e minutos
   const converterTempo = (minutos: number) => {
-
-    console.log(minutos)
     const horas = Math.floor(minutos / 60);
     const minutosRestantes = minutos % 60;
     return { horas, minutosRestantes };

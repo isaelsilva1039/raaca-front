@@ -332,7 +332,7 @@ const SchedulePage: React.FC = () => {
             </Box>
           )}
 
-          {tabIndex === 2 && user.tipo == 1 && (
+          {tabIndex === 2 && (
             <Box>
               <ConfiguracaoTempoConsultas
                 usuario={usuario}
