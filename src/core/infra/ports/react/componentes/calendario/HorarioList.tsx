@@ -14,6 +14,12 @@ const HorarioList: React.FC<HorarioListProps> = ({
   handleHorarioClick,
   load,
 }) => {
+
+
+  const getButtonClass = (horario : any) => {
+    return `button ${horarioSelecionado === horario ? 'buttonSelected' : 'buttonNotSelected'}`;
+  };
+
   return (
     <Grid
       container
@@ -35,7 +41,7 @@ const HorarioList: React.FC<HorarioListProps> = ({
               <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
 
                 <Button
-                  className={`button ${horarioSelecionado === horario ? 'buttonSelected' : 'buttonNotSelected'}`}
+                  className={getButtonClass(horario)}
                   onClick={() => handleHorarioClick(horario)}
                 >
                   {horario.start} - {horario.end}

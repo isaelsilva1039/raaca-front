@@ -18,7 +18,13 @@
   }
   
   .buttonSelected {
-    color: rgb(120, 28, 148);
+    color: white;
+    background-color: #9c27b0;
+    border: 1px solid #9c27b0;
+  }
+
+  .buttonSelected:hover {
+    color: white;
     background-color: #9c27b0;
     border: 1px solid #9c27b0;
   }
@@ -26,6 +32,12 @@
   .buttonNotSelected {
     color: #9c27b0;
     background-color: white;
+    border: 1px solid #9c27b0;
+  }
+
+  .buttonNotSelected:hover {
+    color: rgb(120, 28, 148);
+    background-color: #c355d6;
     border: 1px solid #9c27b0;
   }
   

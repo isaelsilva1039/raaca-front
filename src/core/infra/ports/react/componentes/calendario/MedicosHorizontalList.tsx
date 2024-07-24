@@ -51,7 +51,6 @@ const MedicosHorizontalList: React.FC<Props> = ({
   setEspecialidadeProfissional,
 }) => {
 
-  console.log('profissional',profissional)
 
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState<number | null>(null);
