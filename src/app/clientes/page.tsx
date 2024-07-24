@@ -32,7 +32,7 @@ import MuiTableSkeleton from "@/core/infra/ports/react/componentes/skeleton/MuiT
 import moment from "moment";
 import { FaUserDoctor } from "react-icons/fa6";
 import ModalConsulta from "@/core/infra/ports/react/componentes/modal-consultas/ModalConsulta";
-import { IoCheckmarkCircleSharp } from "react-icons/io5";
+import { IoCheckmarkCircleSharp, IoPersonAddOutline } from "react-icons/io5";
 import { FaUserSlash } from "react-icons/fa6";
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
@@ -42,6 +42,7 @@ import ModalEditarCliente from "@/core/infra/ports/react/componentes/modal-consu
 import { FaUserEdit } from "react-icons/fa";
 import { listarPlanos } from "../api/planos/planosService";
 import { TfiSearch } from "react-icons/tfi";
+import ModalNovoCliente from "@/core/infra/ports/react/componentes/modal-novo-cliente/ModalNovoCliente";
 
 interface IData {
   id: number;
@@ -87,6 +88,8 @@ export default function Gerenciador() {
   const [loadingEdit, setLoadingEdit] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<any>("");
   const [planoSelecionado, setPlanoSelecionado] = useState<any>(null);
+  const [modalShow, setModalShow] = useState(false);
+
 
   useEffect(() => {
     if (!token) return;
@@ -165,6 +168,7 @@ export default function Gerenciador() {
       }
     );
   };
+
 
   const columns = useMemo(
     () => [
@@ -266,6 +270,9 @@ export default function Gerenciador() {
     getClientesAll();
   };
 
+
+
+  
   const renderRowSubComponent = ({ row }: any) => {
     const rowData = row.original || row;
 
@@ -365,7 +372,9 @@ export default function Gerenciador() {
 
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
+
   return (
+    <>
     <div className="container-clientes">
       <Typography
         sx={{
@@ -384,6 +393,15 @@ export default function Gerenciador() {
           <MuiTableSkeleton />
         ) : (
           <>
+          <div className="container-caixa-novo">
+            <div>
+              <Button
+            className="novo-profissional"
+            onClick={() => setModalShow(true)}
+          >
+            <IoPersonAddOutline /> Adicionar
+          </Button>
+            </div>
             <div className="container-buscar-clientes">
               <Autocomplete
                 value={planoSelecionado}
@@ -420,7 +438,7 @@ export default function Gerenciador() {
                 <TfiSearch />
               </Button>
             </div>
-
+            </div>
             {!isMobile ? (
               <CustomTable
                 columns={columns}
@@ -471,5 +489,17 @@ export default function Gerenciador() {
         loadingEdit={loadingEdit}
       />
     </div>
+
+
+    <ModalNovoCliente
+      show={modalShow}
+      handleClose={() => setModalShow(false)}
+      plans={plans}
+      onUpdate={onUpdate}
+      token={token}
+      setLoading={setLoading}
+      loading={loading}
+    />
+</>
   );
 }

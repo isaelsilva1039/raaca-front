@@ -123,3 +123,42 @@ export const getClientes = async (
     }
   };
   
+
+
+
+  export const salvarNovoCliente = async (
+    clienteData: {
+      nome: string,
+      email: string,
+      cpf: string,
+      dataNascimento: string,
+      planoSelecionado: string
+    },
+    token: any,
+    onSuccess: (data: any) => void,
+    onError: (error: any) => void,
+  ) => {
+    const url = API + '/api/racca/novo-cliente/plataforma'; // Altere para a URL correta da sua API
+  
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(clienteData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Erro HTTP! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      // Chama a função onSuccess passando os dados como argumento
+      onSuccess(data);
+    } catch (error) {
+      // Chama a função onError passando o erro como argumento
+      onError(error);
+    }
+  };

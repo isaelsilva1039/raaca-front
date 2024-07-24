@@ -6,6 +6,8 @@ table {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   border-radius: 5px;
   font-size: 12px;
+
+
   
 }
 
@@ -150,5 +152,38 @@ table tbody tr:hover td {
      }
   }
 }
+
+
+
+.container-caixa-novo{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .novo-profissional {
+    width: fit-content;
+    height: 32px;
+    border: none;
+    background: #a704f8;
+    color: white;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 4px;
+  }
+
+  .novo-profissional:hover {
+    background: #7c02b9;
+  }
+}
+
+
+.btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: white !important;
+}
+
 
 

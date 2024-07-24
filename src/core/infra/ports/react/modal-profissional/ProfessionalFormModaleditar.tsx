@@ -144,7 +144,7 @@ const ProfessionalFormModaleditar: React.FC<ProfessionalFormModalProps> = ({
   };
 
 
-  console.log(birthdate)
+
   return (
     <Dialog open={show} onClose={handleClose}>
       <DialogTitle>Editar Profissional</DialogTitle>
