@@ -202,15 +202,16 @@ const EventModal = ({
   const [especialidadeProfissional, setEspecialidadeProfissional] = useState<any>(null);
 
 
-  const filtrarProfissionaisComConsultasDisponiveis = (data : ClienteData) => {
 
+  const filtrarProfissionaisComConsultasDisponiveis = (data: ClienteData) => {
+  
     if (!data?.meta) {
       return [];
     }
   
-    return data?.meta
-      .filter(item => item?.consultas_restantes > 0)
-      .map(item => item?.profissional);
+    return data.meta
+      .filter((item) => item?.consultas_restantes > 0 && item?.profissional != null)
+      .map((item) => item.profissional);
   };
 
   const profissionaisListaPermitas = filtrarProfissionaisComConsultasDisponiveis(planosProfissionalEspecialidade[0])

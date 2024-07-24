@@ -240,7 +240,6 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   };
 
   const filtrarProfissionaisComConsultasDisponiveis = (data: ClienteData) => {
-    console.log(data?.meta);
   
     if (!data?.meta) {
       return [];
@@ -257,7 +256,6 @@ const NovoAgendamentoModal: React.FC<Props> = ({
   );
 
 
-  console.log(profissionaisListaPermitas)
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth={"xl"}>

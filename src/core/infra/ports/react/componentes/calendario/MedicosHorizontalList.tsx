@@ -134,24 +134,24 @@ const MedicosHorizontalList: React.FC<Props> = ({
       >
         {profissional && profissional.length > 0 && profissional.map((prof: Profissional) => (
               <div
-                key={prof.user_id}
+                key={prof?.user_id}
                 onClick={() => handleProfissionalSelecionado(prof)}
                 className={`medico-card ${
-                  medicoSelecionado === prof.user_id
+                  medicoSelecionado === prof?.user_id
                     ? "medico-card--selected"
                     : ""
                 }`}
               >
                 <div className="avatar-container">
                   <img
-                    src={prof.avatar}
-                    alt={`Avatar de ${prof.nome}`}
+                    src={prof?.avatar}
+                    alt={`Avatar de ${prof?.nome}`}
                     className="avatar-image"
                   />
                 </div>
                 <div className="medico-info">
-                  <strong className="medico-name">{prof.nome}</strong>
-                  <small>{prof.especialidade.nome}</small>
+                  <strong className="medico-name">{prof?.nome}</strong>
+                  <small>{prof?.especialidade?.nome}</small>
                 </div>
               </div>
             ))
