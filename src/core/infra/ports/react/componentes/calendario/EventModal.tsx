@@ -39,9 +39,9 @@ import { buscarHorariosDisponiveisMedico } from "@/app/api/horarios/getDisponili
 import LoadingSpinner from "../load/load";
 import { FcVideoCall } from "react-icons/fc";
 import { BsCalendarDateFill } from "react-icons/bs";
-
 import { FcAlarmClock } from "react-icons/fc";
 import { ClienteData } from "./NovoAgendamentoModal";
+import AvatarImage from "../avatar/avatar";  // Importando o componente AvatarImage
 
 interface Medico {
   id: number;
@@ -97,9 +97,6 @@ const EventModal = ({
   const handleStatusChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStatus(event.target.value);
   };
-
-
-  
 
   const buscarHorariosDisponiveis = (medicoId: number, dia: string) => {
     setLoad(true);
@@ -201,14 +198,11 @@ const EventModal = ({
 
   const [especialidadeProfissional, setEspecialidadeProfissional] = useState<any>(null);
 
-
-
   const filtrarProfissionaisComConsultasDisponiveis = (data: ClienteData) => {
-  
     if (!data?.meta) {
       return [];
     }
-  
+
     return data.meta
       .filter((item) => item?.consultas_restantes > 0 && item?.profissional != null)
       .map((item) => item.profissional);
@@ -239,7 +233,6 @@ const EventModal = ({
     setHorarioSelecionadoState({ start: horario.start, end: horario.end });
   };
 
-
   return (
     <>
       <Dialog
@@ -260,13 +253,7 @@ const EventModal = ({
             className="container-cliente"
             style={{ display: "flex", alignItems: "center", gap: "8px" }}
           >
-            <img
-              key={1}
-              src={selectedEvent?.extendedProps?.medico_avatar}
-              alt={selectedEvent?.extendedProps?.medicoName}
-              className={"avatar"}
-              style={{ border: "1px solid" }}
-            />
+            <AvatarImage src={selectedEvent?.extendedProps?.medico_avatar} />
             <text>{selectedEvent?.extendedProps.medicoName}</text>
           </div>
         </DialogTitle>
@@ -285,12 +272,7 @@ const EventModal = ({
             {!remarcado && (
               <DialogContentText className="detalhes">
                 <div className="container-cliente">
-                  <img
-                    key={1}
-                    src={selectedEvent?.extendedProps?.cliente_avatar}
-                    alt={selectedEvent?.extendedProps?.clientName}
-                    className={"avatar"}
-                  />
+                  <AvatarImage src={selectedEvent?.extendedProps?.cliente_avatar} />
                   <text>{selectedEvent?.extendedProps.clientName}</text>
                 </div>
               <div style={{background:'#ebe7ed', borderRadius:'4px', padding:'10px', display:'flex', flexDirection: 'column', gap:10}}>
@@ -323,7 +305,6 @@ const EventModal = ({
                   </text>
                   <text>{selectedEvent?.extendedProps.details}</text>
                 </div>
-
 
                 <div className="container-icones">
                   <text className="text">

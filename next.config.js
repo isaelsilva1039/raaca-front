@@ -1,8 +1,5 @@
-// next.config.js
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: 'export', // Adicionado para permitir a exportação estática
   images: {
     remotePatterns: [
       {
@@ -11,7 +8,7 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'http',
+        protocol: 'https',
         hostname: 'racca.store',
         pathname: '/api/racca/profissional/avatar/**',
       },
