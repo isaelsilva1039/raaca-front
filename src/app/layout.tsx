@@ -14,6 +14,8 @@ import { IoExitOutline } from "react-icons/io5";
 import { UserProvider } from "@/core/helpes/UserContext";
 import { FaTachometerAlt, FaUser, FaCalendarAlt, FaCog, FaUsers, FaClipboardList, FaFileAlt, FaTools } from 'react-icons/fa';
 import Head from "next/head";
+import { BiSolidMegaphone } from "react-icons/bi";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -78,6 +80,12 @@ const menuItems = [
     icon: <FaTools  color="#a3aed0" size={20} />,
     route: "/grupo-de-acesso",
     allowedTypes: [1]
+  },
+  {
+    title: "Chamados",
+    icon: <BiSolidMegaphone  color="#a3aed0" size={20} />,
+    route: "/chamados",
+    allowedTypes: [1,2,3,4]
   },
 ];
 

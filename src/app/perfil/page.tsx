@@ -9,6 +9,7 @@ import { getVerificarAgendasLiberadas } from '../api/horarios/getVerificarAgenda
 import { Avatar } from '@mui/material';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import AvatarPlaceholder from '@/core/infra/ports/react/componentes/AvatarPlaceholder/AvatarPlaceholder';
 
 
 const Perfil = () => {
@@ -111,7 +112,13 @@ const Perfil = () => {
       {loading ? (
           <Skeleton circle={true} height={50} width={50} />
         ) : (
-          <Avatar src={usuarioCliente?.avatar} />
+
+          <AvatarPlaceholder
+          avatarUrl={usuarioCliente?.avatar}
+          name={usuarioCliente?.name || "Desconhecido"}
+          className="avatar"
+
+        />
         )}
         {loading ? (
           <Skeleton width={100} />
