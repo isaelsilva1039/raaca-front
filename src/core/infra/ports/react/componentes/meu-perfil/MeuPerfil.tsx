@@ -19,6 +19,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useCliente } from "@/core/helpes/UserContext";
 import { getVerificarAgendasLiberadas } from "@/app/api/horarios/getVerificarAgendasLiberadas";
 import { putMeService } from "@/app/api/me/putMeService";
+import AvatarPlaceholder from "../AvatarPlaceholder/AvatarPlaceholder";
 
 interface Profile {
   avatar: string | null | undefined;
@@ -43,7 +44,6 @@ const Perfil: React.FC = () => {
 
   const [loading, setLoading] = useState<Boolean>(true);
   const [update, setUpdate] = useState<Boolean>(false);
-  
 
   const [profile, setProfile] = useState<Profile>({
     avatar: usuarioCliente?.avatar,
@@ -55,12 +55,12 @@ const Perfil: React.FC = () => {
     novaSenha: null,
   });
 
-  const [avatar, setAvatar] = useState<any>(usuarioCliente?.avatar);   
+  const [avatar, setAvatar] = useState<any>(usuarioCliente?.avatar);
   const [name, setName] = useState<any>(profile?.name);
   const [email, setEmail] = useState<any>(usuarioCliente?.email);
   const [cpf, setCpf] = useState<any>(usuarioCliente?.cpf);
   const [tipo, settipo] = useState<any>();
-  const [senha, setSenha] = useState<any | null>(null);
+  const [senha, setSenha] = useState<any | null>('');
   const [novaSenha, setNovaSenha] = useState<string | null>(null);
   const [senhasIguais, setSenhasIguais] = useState<boolean>(true);
 
@@ -82,27 +82,24 @@ const Perfil: React.FC = () => {
     }
   };
 
-
-
-
   const putMe = () => {
     if (!token) return;
 
-    setLoading(true)
+    setLoading(true);
     const onFetchSuccess = (data: any) => {
-      setUpdate(true)
+      setUpdate(true);
     };
 
     const onFetchError = (error: any) => {
-      setUpdate(true)
+      setUpdate(true);
     };
 
-    if(!preview){
-      setPreview(null)
+    if (!preview) {
+      setPreview(null);
     }
 
-    if(senha == 'undefined'){
-      setSenha(null)
+    if (senha == "undefined") {
+      setSenha(null);
     }
 
     putMeService(
@@ -111,13 +108,11 @@ const Perfil: React.FC = () => {
       email,
       cpf,
       senha,
-      avatar, 
+      avatar,
       onFetchSuccess,
       onFetchError
     );
   };
-
-
 
   const getMe = () => {
     if (!token) return;
@@ -135,12 +130,11 @@ const Perfil: React.FC = () => {
         novaSenha: null,
       });
 
-
-      setAvatar(data?.user?.avatar)
-      setName(data?.user?.name)
-      setCpf(data?.user?.cpf)
-      setEmail(data?.user?.email)
-      settipo(data?.user?.tipo)
+      setAvatar(data?.user?.avatar);
+      setName(data?.user?.name);
+      setCpf(data?.user?.cpf);
+      setEmail(data?.user?.email);
+      settipo(data?.user?.tipo);
 
       setLoading(false);
     };
@@ -152,26 +146,18 @@ const Perfil: React.FC = () => {
     getVerificarAgendasLiberadas(token, onFetchSuccess, onFetchError);
   };
 
-
-
-
   useEffect(() => {
-
-    if(update){
+    if (update) {
       getMe();
 
-      setUpdate(false)
-      setQuerTrocarAsenha(true)
+      setUpdate(false);
+      setQuerTrocarAsenha(true);
     }
-    
   }, [update]);
-
 
   useEffect(() => {
     getMe();
   }, [token]);
-
-
 
   const verificarSenhas = () => {
     if (senha !== novaSenha) {
@@ -185,23 +171,18 @@ const Perfil: React.FC = () => {
     verificarSenhas();
   }, [senha, novaSenha]);
 
-
   let tipoUser = null;
-  if(profile.tipo == 1 ){
-    tipoUser = 'Administrador'
+  if (profile.tipo == 1) {
+    tipoUser = "Administrador";
   }
 
-
-  if(profile.tipo == 2 ){
-    tipoUser = 'Profissional'
+  if (profile.tipo == 2) {
+    tipoUser = "Profissional";
   }
 
-  if(profile.tipo == 3 ){
-    tipoUser = 'Cliente'
+  if (profile.tipo == 3) {
+    tipoUser = "Cliente";
   }
-
-
-  
 
   return (
     <div className="profile-container">
@@ -225,11 +206,10 @@ const Perfil: React.FC = () => {
             <Col className="text-center">
               {/* <img src={profile.avatar} alt={profile.name} className="avatar" /> */}
 
-              <Avatar
+              <AvatarPlaceholder
+                avatarUrl={preview || profile.avatar}
+                name={profile?.name || "Desconhecido"}
                 className="avatar"
-                src={preview || profile.avatar}
-                alt="Preview"
-                sx={{ width: 100, height: 100, cursor: "pointer" }}
                 onClick={handleAvatarClick}
               />
 
@@ -244,8 +224,10 @@ const Perfil: React.FC = () => {
           </Col>
 
           <Col className="form-perfil" xs={8}>
-            <Row style={{display:'flex', flexDirection:'column', gap:'10px'}}>
-              <div >
+            <Row
+              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
+            >
+              <div>
                 <label>Nome</label>
 
                 <TextField
@@ -287,7 +269,7 @@ const Perfil: React.FC = () => {
             </Row>
 
             <Col style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div >
+              <div>
                 <label> C . P . F</label>
 
                 <TextField
@@ -307,7 +289,7 @@ const Perfil: React.FC = () => {
                 />
               </div>
 
-              <div >
+              <div>
                 <label> Tipo de Usuário</label>
 
                 <TextField
@@ -340,7 +322,7 @@ const Perfil: React.FC = () => {
               <Col
                 style={{ display: "flex", alignItems: "center", gap: "12px" }}
               >
-                <div >
+                <div>
                   <label> Nova Senha </label>
 
                   <TextField
@@ -383,11 +365,11 @@ const Perfil: React.FC = () => {
             )}
 
             <Col className="botoes" xs={12}>
-              <Button 
-                  className={`btn-salvar ${!senhasIguais ? "disabled" : ""}`}
-                  onClick={() => putMe()} 
-                  disabled={!senhasIguais}
-                  >
+              <Button
+                className={`btn-salvar ${!senhasIguais ? "disabled" : ""}`}
+                onClick={() => putMe()}
+                disabled={!senhasIguais}
+              >
                 Salvar <FaCheckCircle />{" "}
               </Button>
             </Col>

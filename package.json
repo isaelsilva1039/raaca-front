@@ -51,6 +51,7 @@
     "simplebar-react": "^3.2.4",
     "styled-components": "^6.1.8",
     "tippy.js": "^6.3.7",
+    "uuid": "^10.0.0",
     "whatsapp-business-api": "^0.0.4",
     "xmldom": "^0.6.0"
   },
