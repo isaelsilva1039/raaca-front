@@ -15,7 +15,6 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useCliente } from "@/core/helpes/UserContext";
 import { getVerificarAgendasLiberadas } from "@/app/api/horarios/getVerificarAgendasLiberadas";
 import { putMeService } from "@/app/api/me/putMeService";
-import AvatarPlaceholder from "../AvatarPlaceholder/AvatarPlaceholder";
 
 interface Profile {
   avatar: string | null | undefined;
@@ -56,7 +55,7 @@ const Perfil: React.FC = () => {
   const [email, setEmail] = useState<any>(usuarioCliente?.email);
   const [cpf, setCpf] = useState<any>(usuarioCliente?.cpf);
   const [tipo, settipo] = useState<any>();
-  const [senha, setSenha] = useState<any | null>('');
+  const [senha, setSenha] = useState<any | null>(null);
   const [novaSenha, setNovaSenha] = useState<string | null>(null);
   const [senhasIguais, setSenhasIguais] = useState<boolean>(true);
 
@@ -110,11 +109,6 @@ const Perfil: React.FC = () => {
       onFetchError
     );
   };
-<<<<<<< HEAD
-=======
-  
-  
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
 
   const getMe = () => {
     if (!token) return;
@@ -151,14 +145,8 @@ const Perfil: React.FC = () => {
   useEffect(() => {
     if (update) {
       getMe();
-<<<<<<< HEAD
       setUpdate(false);
       setQuerTrocarAsenha(false);
-=======
-
-      setUpdate(false);
-      setQuerTrocarAsenha(true);
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
     }
   }, [update]);
 
@@ -178,7 +166,6 @@ const Perfil: React.FC = () => {
 
   useEffect(() => {
     verificarSenhas();
-<<<<<<< HEAD
   }, [senha, novaSenha, querTrocarAsenha]);
 
   let tipoUser = null;
@@ -192,21 +179,6 @@ const Perfil: React.FC = () => {
 
   if (profile.tipo == 3) {
     tipoUser = 'Cliente';
-=======
-  }, [senha, novaSenha]);
-
-  let tipoUser = null;
-  if (profile.tipo == 1) {
-    tipoUser = "Administrador";
-  }
-
-  if (profile.tipo == 2) {
-    tipoUser = "Profissional";
-  }
-
-  if (profile.tipo == 3) {
-    tipoUser = "Cliente";
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
   }
 
   return (
@@ -228,16 +200,11 @@ const Perfil: React.FC = () => {
         >
           <Col xs={4} className="profile-header">
             <Col className="text-center">
-<<<<<<< HEAD
               <Avatar
-=======
-              {/* <img src={profile.avatar} alt={profile.name} className="avatar" /> */}
-
-              <AvatarPlaceholder
-                avatarUrl={preview || profile.avatar}
-                name={profile?.name || "Desconhecido"}
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
                 className="avatar"
+                src={preview || profile.avatar}
+                alt="Preview"
+                sx={{ width: 100, height: 100, cursor: "pointer" }}
                 onClick={handleAvatarClick}
               />
 
@@ -252,13 +219,7 @@ const Perfil: React.FC = () => {
           </Col>
 
           <Col className="form-perfil" xs={8}>
-<<<<<<< HEAD
             <Row style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-=======
-            <Row
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-            >
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
               <div>
                 <label>Nome</label>
 
@@ -340,7 +301,6 @@ const Perfil: React.FC = () => {
               </div>
             </Col>
 
-<<<<<<< HEAD
             <Row style={{ marginTop: "15px" }}>
               <Col>
                 <Checkbox
@@ -348,53 +308,6 @@ const Perfil: React.FC = () => {
                   onChange={(e) => setQuerTrocarAsenha(e.target.checked)}
                 />
                 <label>Desejo trocar a senha</label>
-=======
-            <div style={{ padding: "22px 22px 22px 0px" }}>
-              Deseja alterar sua senha ?
-              <Checkbox
-                className="input-perfil"
-                onChange={(e) => setQuerTrocarAsenha(!querTrocarAsenha)}
-              />
-            </div>
-
-            {!querTrocarAsenha && (
-              <Col
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
-                <div>
-                  <label> Nova Senha </label>
-
-                  <TextField
-                    className="input-perfil"
-                    inputMode="text"
-                    margin="dense"
-                    placeholder="senha"
-                    variant="outlined"
-                    type="password"
-                    fullWidth
-                    defaultValue={profile?.senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    disabled={querTrocarAsenha}
-                  />
-                </div>
-
-                <div>
-                  <label>Repita a senha</label>
-
-                  <TextField
-                    className="input-perfil"
-                    inputMode="text"
-                    margin="dense"
-                    placeholder="Repita a senha"
-                    variant="outlined"
-                    type="password"
-                    fullWidth
-                    defaultValue={profile?.novaSenha}
-                    onChange={(e) => setNovaSenha(e.target.value)}
-                    disabled={querTrocarAsenha}
-                  />
-                </div>
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
               </Col>
             </Row>
 
@@ -444,24 +357,16 @@ const Perfil: React.FC = () => {
               <p className="error-message">As senhas não coincidem.</p>
             )}
 
-<<<<<<< HEAD
 <Col className="botoes" xs={12}>
-<Button 
-                  className={`btn-salvar ${!senhasIguais ? "disabled" : ""}`}
-                  onClick={() => putMe()} 
-                  disabled={!senhasIguais}
-                  >
-=======
-            <Col className="botoes" xs={12}>
               <Button
                 className={`btn-salvar ${!senhasIguais ? "disabled" : ""}`}
                 onClick={() => putMe()}
                 disabled={!senhasIguais}
               >
->>>>>>> 4949b425aabf3b36682832a8bcdcee7d871f9324
                 Salvar <FaCheckCircle />{" "}
               </Button>
             </Col>
+
           </Col>
         </Row>
       )}
