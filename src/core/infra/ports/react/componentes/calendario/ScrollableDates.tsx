@@ -18,8 +18,8 @@ const ScrollableDates: React.FC<Props> = ({
   
   const today = addDays(tomorrow, 1);
 
-   // Funções para rolar as datas horizontalmente
-   const scrollLeft = () => {
+  // Funções para rolar as datas horizontalmente
+  const scrollLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -200, behavior: "smooth" });
     }
@@ -33,7 +33,7 @@ const ScrollableDates: React.FC<Props> = ({
 
   return (
     <Box mt={2} mb={2} style={{ display: "flex", alignItems: "center" }}>
-      <Button onClick={scrollLeft} style={{ padding: "2px", cursor: "pointer" }}>
+      <Button onClick={scrollLeft} style={{ padding: "16px", cursor: "pointer", fontSize: '30px' }}>
         &larr;
       </Button>
       <div
@@ -61,7 +61,7 @@ const ScrollableDates: React.FC<Props> = ({
           );
         })}
       </div>
-      <Button onClick={scrollRight} style={{ padding: "8px", cursor: "pointer" }}>
+      <Button onClick={scrollRight} style={{ padding: "16px", cursor: "pointer", fontSize: '30px' }}>
         &rarr;
       </Button>
     </Box>

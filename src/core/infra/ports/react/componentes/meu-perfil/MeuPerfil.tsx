@@ -84,35 +84,38 @@ const Perfil: React.FC = () => {
 
   const putMe = () => {
     if (!token) return;
-
+  
     setLoading(true);
+  
     const onFetchSuccess = (data: any) => {
       setUpdate(true);
     };
-
+  
     const onFetchError = (error: any) => {
       setUpdate(true);
     };
-
+  
+    // Se não houver preview, define como null
     if (!preview) {
       setPreview(null);
     }
-
-    if (senha == "undefined") {
-      setSenha(null);
-    }
-
+  
+    // Define senha como null se não for uma string válida
+    const senhaParaEnviar = senha && senha !== 'undefined' ? senha : undefined;
+  
     putMeService(
       token,
       name,
       email,
       cpf,
-      senha,
+      senhaParaEnviar, // Envia a senha apenas se definida
       avatar,
       onFetchSuccess,
       onFetchError
     );
   };
+  
+  
 
   const getMe = () => {
     if (!token) return;
