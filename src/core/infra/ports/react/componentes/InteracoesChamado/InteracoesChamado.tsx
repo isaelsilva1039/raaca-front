@@ -60,7 +60,7 @@ const InteracoesChamado: React.FC<InteracoesChamadoProps> = ({
             Responder interações <FaReplyAll size={18} />
           </a>
         </div>
-        {chamado.interacoes.map((interacao) => (
+        {chamado?.interacoes?.slice().reverse().map((interacao) => (
           <div key={interacao.id} className="interacao-item">
             <AvatarPlaceholder
                 avatarUrl={interacao.criado_por?.avatar}

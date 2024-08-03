@@ -97,6 +97,7 @@ const ChamadosPage: React.FC = () => {
 
   const handlePostChamadosSuccess = (data: any) => {
     setModalShow(false);
+
     setFormData({
       chave: "",
       titulo: "",
@@ -110,10 +111,12 @@ const ChamadosPage: React.FC = () => {
   
   const handlePostChamadosError = (error: any) => {
     console.error("Erro ao criar chamado:", error);
+    setLoading(false)
   };
 
   const handleSubmit = () => {
     const chave = '';
+    setLoading(true)
     postChamados(
       formData.titulo,
       formData.interacao_assunto,
@@ -181,6 +184,7 @@ const ChamadosPage: React.FC = () => {
   };
 
   const handleAddInteracao = (chave: string, assunto: string, status: string) => {
+    setLoading(true)
     postChamados(
       formData?.titulo,
       assunto,
