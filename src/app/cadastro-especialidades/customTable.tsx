@@ -46,9 +46,9 @@ const CustomTable: React.FC<ICustomTableProps> = ({
       <tbody {...getTableBodyProps()}>
         {rows.map((row, rowIndex) => {
           prepareRow(row);
-          const isExpanded = expandedRows[row.id.toString()];
+          const isExpanded = expandedRows[row?.id?.toString()];
           return (
-            <React.Fragment key={`row-fragment-${row.id}`}>
+            <React.Fragment key={`row-fragment-${row?.id}`}>
               <tr {...row.getRowProps()} onClick={() => toggleRowExpanded(row.id.toString())}>
                 {row.cells.map((cell, cellIndex) => (
                   <td {...cell.getCellProps()} key={`cell-${row.id}-${cellIndex}`}>

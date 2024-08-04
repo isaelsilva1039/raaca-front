@@ -20,12 +20,10 @@ import "../cadastro-especialidades/style.css";
 import { styled } from "@mui/system";
 import { IoIosSearch } from "react-icons/io";
 import { useMediaQuery } from "react-responsive";
-import RelatorioMedicoPage from "./relatorio-medico-consolidade";
-import './styles.css';
-import RelatoriosAgendamentos from "./relatorio-agendas";
-import { FaUserDoctor } from "react-icons/fa6";
-import { LuCalendarSearch } from "react-icons/lu";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { API } from "@/core/api/api";
 
+// Estilizando o botão
 const StyledButton = styled(Button)({
   backgroundColor: "rgb(167, 4, 248)",
   color: "white",
@@ -43,15 +41,13 @@ const StyledButton = styled(Button)({
   },
 });
 
-const TabsRelatorios: React.FC = () => {
+const RelatorioMedicoPage: React.FC = () => {
   const { token } = useCliente();
   const [relatorio, setRelatorio] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [expandedRows, setExpandedRows] = useState<{ [key: number]: boolean }>(
     {}
   );
-  const [tabIndex, setTabIndex] = useState(0);
-  const [issTable, setIsTable] = useState(false);
 
   // Pega o primeiro e o último dia do mês atual
   const getDefaultDateRange = () => {
@@ -154,66 +150,111 @@ const TabsRelatorios: React.FC = () => {
     fetchRelatorio();
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newIndex: number) => {
-    setTabIndex(newIndex);
+  const handleDownloadXlsx = () => {
+    const url =
+      API +
+      `/api/relatorios/exportar-relatorio-medicos?start_date=${startDate}&end_date=${endDate}`;
+    window.open(url, "_blank");
   };
-
-  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
     <>
-      <Typography
-        className="list-top"
-        sx={{
-          color: "#707EAE",
-          fontWeight: "500",
-          lineHeight: "24px",
-          fontSize: "15px",
-          display: "flex",
-          gap: 12,
-        }}
-      >
-        Relatório por Médico
-      </Typography>
-      
       <div
         style={{ padding: "20px", background: "white", borderRadius: "4px" }}
       >
         <div style={{ padding: "20 0 0 0" }}>
-          <Tabs
-            style={{ padding: isMobile ? "52px 0 20px 0" : "0px 0 20px 0" }}
-            value={tabIndex}
-            onChange={handleTabChange}
-            centered
-            variant="fullWidth"
-            indicatorColor="secondary"
-            textColor="secondary"
-          >
-            <Tab
-              style={{textTransform:'capitalize'}}
-              label="Relatório por medico"
-              onClick={() => setIsTable(true)}
-              icon={<FaUserDoctor />}
-            />
-            <Tab
-              style={{textTransform:'capitalize'}}
-              label="Relatório agendamentos detalhados"
-              onClick={() => setIsTable(true)}
-              icon={<LuCalendarSearch />}
-            />
-        
-          </Tabs>
-          <hr style={{marginTop:-20}}></hr>
+          {loading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 20,
+              }}
+            >
+              <MuiTableSkeleton />
+            </div>
+          ) : relatorio && relatorio.length > 0 ? (
+            <>
+              <div
+                className="filter-section"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "20px",
+                }}
+              >
+                <TextField
+                  label="Data de Início"
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  style={{ marginRight: 10 }}
+                />
+                <TextField
+                  label="Data de Fim"
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  variant="outlined"
+                  style={{ marginRight: 10 }}
+                />
+                <StyledButton onClick={handleFilter}>
+                  Filtrar <IoIosSearch size={18} />
+                </StyledButton>
+              </div>
+              <div 
+                style={{   display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  gap: "4px",
+                  padding: "10px",
+                  color: "rgb(66 138 28)",
+                  textDecoration: "underline",
+                  cursor: "pointer"
+                }}
+              >
+                <text
+                  onClick={handleDownloadXlsx}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                    gap: "4px",
+                    padding: "10px",
+                    color: "rgb(66 138 28)",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                >
+                  {" "}
+                  <SiMicrosoftexcel color="rgb(66 138 28)" /> Exportar xlsx{" "}
+                </text>
+              </div>
 
-          {tabIndex === 0 && <RelatorioMedicoPage />}
-
-          {tabIndex === 1 && <RelatoriosAgendamentos />}
-
-        
+              <CustomTable
+                columns={columns}
+                data={relatorio}
+                expandedRows={expandedRows}
+                toggleRowExpanded={() => {}}
+                renderRowSubComponent={renderRowSubComponent}
+              />
+            </>
+          ) : (
+            <Typography variant="subtitle2">
+              Não há dados disponíveis para o período selecionado.
+            </Typography>
+          )}
         </div>
       </div>
     </>
   );
 };
 
-export default TabsRelatorios;
+export default RelatorioMedicoPage;
