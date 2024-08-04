@@ -98,7 +98,7 @@
 
 
 .flexRow {
-  padding: 0 5vw 0 5vw;
+  padding: 0 0 0 0vw;
   display: flex;
   justify-content: space-between;
   align-items: center;

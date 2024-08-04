@@ -43,6 +43,7 @@ import { FaUserEdit } from "react-icons/fa";
 import { listarPlanos } from "../api/planos/planosService";
 import { TfiSearch } from "react-icons/tfi";
 import ModalNovoCliente from "@/core/infra/ports/react/componentes/modal-novo-cliente/ModalNovoCliente";
+import AvatarPlaceholder from "@/core/infra/ports/react/componentes/AvatarPlaceholder/AvatarPlaceholder";
 
 interface IData {
   id: number;
@@ -90,7 +91,6 @@ export default function Gerenciador() {
   const [planoSelecionado, setPlanoSelecionado] = useState<any>(null);
   const [modalShow, setModalShow] = useState(false);
 
-
   useEffect(() => {
     if (!token) return;
     setLoading(true);
@@ -98,15 +98,11 @@ export default function Gerenciador() {
     fetchPlans();
   }, [per_page, page, token]);
 
-
-
   useEffect(() => {
     if (!token) return;
     setLoading(true);
     getClientesAll();
   }, [planoSelecionado]);
-
-  
 
   const fetchPlans = async () => {
     try {
@@ -169,7 +165,6 @@ export default function Gerenciador() {
     );
   };
 
-
   const columns = useMemo(
     () => [
       {
@@ -181,19 +176,11 @@ export default function Gerenciador() {
         accessor: "name",
         Cell: ({ row }: { row: { original: IData } }) => (
           <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={
-                row.original?.avatarUrl
-                  ? row.original.avatarUrl
-                  : "/img/avatar1.png"
-              }
-              alt="Avatar"
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: "50%",
-              }}
+            <AvatarPlaceholder
+              avatarUrl={row.original?.avatarUrl}
+              name={row.original.name || "Desconhecido"}
             />
+
             {row.original.name}
           </div>
         ),
@@ -270,9 +257,6 @@ export default function Gerenciador() {
     getClientesAll();
   };
 
-
-
-  
   const renderRowSubComponent = ({ row }: any) => {
     const rowData = row.original || row;
 
@@ -281,14 +265,13 @@ export default function Gerenciador() {
         <Row className="rowContainer">
           <Row className="flexRow">
             <Col className="columnFlex">
-              <img
-                src={rowData.avatarUrl ? rowData.avatarUrl : "/img/avatar1.png"}
-                alt={`Avatar de ${rowData.nome}`}
-                className="avatarImage"
-              />
-
               <Col className="columnStart">
-                <text className="text-header">Nome</text>
+                <AvatarPlaceholder
+                  avatarUrl={row?.original?.avatarUrl}
+                  name={row?.original?.name || "Desconhecido"}
+                  className="avatarImage"
+                />
+
                 <small className="text-corpo">{rowData.name}</small>
               </Col>
             </Col>
@@ -372,134 +355,132 @@ export default function Gerenciador() {
 
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
-
   return (
     <>
-    <div className="container-clientes">
-      <Typography
-        sx={{
-          color: "#707EAE",
-          fontWeight: "500",
-          lineHeight: "24px",
-          fontSize: "15px",
-          padding: "12px",
-        }}
-      >
-        Menu / Clientes
-      </Typography>
+      <div className="container-clientes">
+        <Typography
+          sx={{
+            color: "#707EAE",
+            fontWeight: "500",
+            lineHeight: "24px",
+            fontSize: "15px",
+            padding: "12px",
+          }}
+        >
+          Menu / Clientes
+        </Typography>
 
-      <div className="tabela">
-        {loading ? (
-          <MuiTableSkeleton />
-        ) : (
-          <>
-          <div className="container-caixa-novo">
-            <div>
-              <Button
-            className="novo-profissional"
-            onClick={() => setModalShow(true)}
-          >
-            <IoPersonAddOutline /> Adicionar
-          </Button>
-            </div>
-            <div className="container-buscar-clientes">
-              <Autocomplete
-                value={planoSelecionado}
-                onChange={handlePlanoChange}
-                options={plans}
-                className="filtrar-por-plano"
-                getOptionLabel={(option) => option.nome_plano}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Filtrar por um plano"
-                    variant="outlined"
-                    fullWidth
-                    className="inpunt-busca"
+        <div className="tabela">
+          {loading ? (
+            <MuiTableSkeleton />
+          ) : (
+            <>
+              <div className="container-caixa-novo">
+                <div>
+                  <Button
+                    className="novo-profissional"
+                    onClick={() => setModalShow(true)}
+                  >
+                    <IoPersonAddOutline /> Adicionar
+                  </Button>
+                </div>
+                <div className="container-buscar-clientes">
+                  <Autocomplete
+                    value={planoSelecionado}
+                    onChange={handlePlanoChange}
+                    options={plans}
+                    className="filtrar-por-plano"
+                    getOptionLabel={(option) => option.nome_plano}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Filtrar por um plano"
+                        variant="outlined"
+                        fullWidth
+                        className="inpunt-busca"
+                      />
+                    )}
                   />
-                )}
-              />
-              <FilledInput
-                className="input-busca-cliente"
-                inputMode="search"
-                margin="dense"
-                placeholder="Buscar..."
-                type="text"
-                fullWidth
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                color="secondary"
-              />
+                  <FilledInput
+                    className="input-busca-cliente"
+                    inputMode="search"
+                    margin="dense"
+                    placeholder="Buscar..."
+                    type="text"
+                    fullWidth
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    color="secondary"
+                  />
 
-              <Button
-                className="outline-secondary"
-                onClick={() => handleClicBuscar()}
-              >
-                <TfiSearch />
-              </Button>
-            </div>
-            </div>
-            {!isMobile ? (
-              <CustomTable
-                columns={columns}
-                data={clientes}
-                expandedRows={expandedRows}
-                toggleRowExpanded={toggleRowExpanded}
-                renderRowSubComponent={renderRowSubComponent}
-              />
-            ) : (
-              <MobileCard
-                columns={columns}
-                data={clientes}
-                expandedRows={expandedRows}
-                toggleRowExpanded={toggleRowExpanded}
-                renderRowSubComponent={renderRowSubComponent}
-              />
-            )}
+                  <Button
+                    className="outline-secondary"
+                    onClick={() => handleClicBuscar()}
+                  >
+                    <TfiSearch />
+                  </Button>
+                </div>
+              </div>
+              {!isMobile ? (
+                <CustomTable
+                  columns={columns}
+                  data={clientes}
+                  expandedRows={expandedRows}
+                  toggleRowExpanded={toggleRowExpanded}
+                  renderRowSubComponent={renderRowSubComponent}
+                />
+              ) : (
+                <MobileCard
+                  columns={columns}
+                  data={clientes}
+                  expandedRows={expandedRows}
+                  toggleRowExpanded={toggleRowExpanded}
+                  renderRowSubComponent={renderRowSubComponent}
+                />
+              )}
 
-            <div className="paginacao">
-              <CustomPagination
-                currentPage={page}
-                totalPages={currentPage?.lastPage}
-                onPageChange={setStatePage}
-              />
-            </div>
-          </>
-        )}
+              <div className="paginacao">
+                <CustomPagination
+                  currentPage={page}
+                  totalPages={currentPage?.lastPage}
+                  onPageChange={setStatePage}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <ModalConsulta
+          show={modalEditar.abriModal}
+          handleClose={() => setModalEditar({ abriModal: false, cliente: {} })}
+          cliente={modalEditar.cliente}
+          onUpdate={onUpdate}
+          onClose={{}}
+          token={token}
+        />
+
+        <ModalEditarCliente
+          show={modalEditarCliente.abriModal}
+          handleClose={() =>
+            setModalEditarCliente({ abriModal: false, cliente: {} })
+          }
+          cliente={modalEditarCliente.cliente}
+          onUpdate={onUpdate}
+          onClose={{}}
+          token={token}
+          planos={plans}
+          loadingEdit={loadingEdit}
+        />
       </div>
-      <ModalConsulta
-        show={modalEditar.abriModal}
-        handleClose={() => setModalEditar({ abriModal: false, cliente: {} })}
-        cliente={modalEditar.cliente}
+
+      <ModalNovoCliente
+        show={modalShow}
+        handleClose={() => setModalShow(false)}
+        plans={plans}
         onUpdate={onUpdate}
-        onClose={{}}
         token={token}
+        setLoading={setLoading}
+        loading={loading}
       />
-
-      <ModalEditarCliente
-        show={modalEditarCliente.abriModal}
-        handleClose={() =>
-          setModalEditarCliente({ abriModal: false, cliente: {} })
-        }
-        cliente={modalEditarCliente.cliente}
-        onUpdate={onUpdate}
-        onClose={{}}
-        token={token}
-        planos={plans}
-        loadingEdit={loadingEdit}
-      />
-    </div>
-
-
-    <ModalNovoCliente
-      show={modalShow}
-      handleClose={() => setModalShow(false)}
-      plans={plans}
-      onUpdate={onUpdate}
-      token={token}
-      setLoading={setLoading}
-      loading={loading}
-    />
-</>
+    </>
   );
 }

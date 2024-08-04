@@ -171,23 +171,26 @@ const TabsRelatorios: React.FC = () => {
           fontSize: "15px",
           display: "flex",
           gap: 12,
+          padding:'0 0 8px 0'
         }}
       >
-        Relatório por Médico
+        Menu/Relatórios
       </Typography>
       
       <div
         style={{ padding: "20px", background: "white", borderRadius: "4px" }}
       >
         <div style={{ padding: "20 0 0 0" }}>
+          
           <Tabs
+            centered
+            variant="scrollable"
             style={{ padding: isMobile ? "52px 0 20px 0" : "0px 0 20px 0" }}
             value={tabIndex}
             onChange={handleTabChange}
-            centered
-            variant="fullWidth"
             indicatorColor="secondary"
             textColor="secondary"
+            
           >
             <Tab
               style={{textTransform:'capitalize'}}
@@ -200,6 +203,7 @@ const TabsRelatorios: React.FC = () => {
               label="Relatório agendamentos detalhados"
               onClick={() => setIsTable(true)}
               icon={<LuCalendarSearch />}
+              title="Visualize um relatório detalhado dos agendamentos"
             />
         
           </Tabs>
