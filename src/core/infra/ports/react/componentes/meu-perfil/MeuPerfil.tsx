@@ -7,19 +7,14 @@ import {
   Avatar,
   Checkbox,
   CircularProgress,
-  FilledInput,
-  FormControlLabel,
-  Grid,
-  Input,
-  InputLabel,
   TextField,
+  Grid,
 } from "@mui/material";
 import { useMediaQuery } from "react-responsive";
 import { FaCheckCircle } from "react-icons/fa";
 import { useCliente } from "@/core/helpes/UserContext";
 import { getVerificarAgendasLiberadas } from "@/app/api/horarios/getVerificarAgendasLiberadas";
 import { putMeService } from "@/app/api/me/putMeService";
-import AvatarPlaceholder from "../AvatarPlaceholder/AvatarPlaceholder";
 
 interface Profile {
   avatar: string | null | undefined;
@@ -60,13 +55,13 @@ const Perfil: React.FC = () => {
   const [email, setEmail] = useState<any>(usuarioCliente?.email);
   const [cpf, setCpf] = useState<any>(usuarioCliente?.cpf);
   const [tipo, settipo] = useState<any>();
-  const [senha, setSenha] = useState<any | null>('');
+  const [senha, setSenha] = useState<any | null>(null);
   const [novaSenha, setNovaSenha] = useState<string | null>(null);
   const [senhasIguais, setSenhasIguais] = useState<boolean>(true);
 
   const [preview, setPreview] = useState<any>();
 
-  const [querTrocarAsenha, setQuerTrocarAsenha] = useState<boolean | any>(true);
+  const [querTrocarAsenha, setQuerTrocarAsenha] = useState<boolean | any>(false);
 
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const fileInputRef = useRef<any>(null);
@@ -84,25 +79,25 @@ const Perfil: React.FC = () => {
 
   const putMe = () => {
     if (!token) return;
-  
+
     setLoading(true);
-  
+
     const onFetchSuccess = (data: any) => {
       setUpdate(true);
     };
-  
+
     const onFetchError = (error: any) => {
       setUpdate(true);
     };
-  
+
     // Se não houver preview, define como null
     if (!preview) {
       setPreview(null);
     }
-  
+
     // Define senha como null se não for uma string válida
-    const senhaParaEnviar = senha && senha !== 'undefined' ? senha : undefined;
-  
+    const senhaParaEnviar = querTrocarAsenha && senha && senha !== 'undefined' ? senha : undefined;
+
     putMeService(
       token,
       name,
@@ -114,8 +109,6 @@ const Perfil: React.FC = () => {
       onFetchError
     );
   };
-  
-  
 
   const getMe = () => {
     if (!token) return;
@@ -152,9 +145,8 @@ const Perfil: React.FC = () => {
   useEffect(() => {
     if (update) {
       getMe();
-
       setUpdate(false);
-      setQuerTrocarAsenha(true);
+      setQuerTrocarAsenha(false);
     }
   }, [update]);
 
@@ -163,28 +155,30 @@ const Perfil: React.FC = () => {
   }, [token]);
 
   const verificarSenhas = () => {
-    if (senha !== novaSenha) {
-      setSenhasIguais(false);
-    } else {
-      setSenhasIguais(true);
+    if (querTrocarAsenha) {
+      if (senha !== novaSenha) {
+        setSenhasIguais(false);
+      } else {
+        setSenhasIguais(true);
+      }
     }
   };
 
   useEffect(() => {
     verificarSenhas();
-  }, [senha, novaSenha]);
+  }, [senha, novaSenha, querTrocarAsenha]);
 
   let tipoUser = null;
   if (profile.tipo == 1) {
-    tipoUser = "Administrador";
+    tipoUser = 'Administrador';
   }
 
   if (profile.tipo == 2) {
-    tipoUser = "Profissional";
+    tipoUser = 'Profissional';
   }
 
   if (profile.tipo == 3) {
-    tipoUser = "Cliente";
+    tipoUser = 'Cliente';
   }
 
   return (
@@ -199,7 +193,6 @@ const Perfil: React.FC = () => {
         </Grid>
       ) : (
         <Row
-          // xs={12}
           style={{
             flexDirection: isMobile ? "column" : "row",
             display: "flex",
@@ -207,12 +200,11 @@ const Perfil: React.FC = () => {
         >
           <Col xs={4} className="profile-header">
             <Col className="text-center">
-              {/* <img src={profile.avatar} alt={profile.name} className="avatar" /> */}
-
-              <AvatarPlaceholder
-                avatarUrl={preview || profile.avatar}
-                name={profile?.name || "Desconhecido"}
+              <Avatar
                 className="avatar"
+                src={preview || profile.avatar}
+                alt="Preview"
+                sx={{ width: 100, height: 100, cursor: "pointer" }}
                 onClick={handleAvatarClick}
               />
 
@@ -227,9 +219,7 @@ const Perfil: React.FC = () => {
           </Col>
 
           <Col className="form-perfil" xs={8}>
-            <Row
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-            >
+            <Row style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div>
                 <label>Nome</label>
 
@@ -294,80 +284,80 @@ const Perfil: React.FC = () => {
 
               <div>
                 <label> Tipo de Usuário</label>
-
                 <TextField
                   className="input-perfil"
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: false,
                   }}
                   inputMode="text"
                   margin="dense"
-                  placeholder="nome"
+                  placeholder="Tipo"
                   variant="outlined"
                   type="text"
                   fullWidth
                   defaultValue={tipoUser}
-                  // onChange={(e) => settipo(e.target.value)}
-                  disabled={true}
+                  disabled
                 />
               </div>
             </Col>
 
-            <div style={{ padding: "22px 22px 22px 0px" }}>
-              Deseja alterar sua senha ?
-              <Checkbox
-                className="input-perfil"
-                onChange={(e) => setQuerTrocarAsenha(!querTrocarAsenha)}
-              />
-            </div>
-
-            {!querTrocarAsenha && (
-              <Col
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
-                <div>
-                  <label> Nova Senha </label>
-
-                  <TextField
-                    className="input-perfil"
-                    inputMode="text"
-                    margin="dense"
-                    placeholder="senha"
-                    variant="outlined"
-                    type="password"
-                    fullWidth
-                    defaultValue={profile?.senha}
-                    onChange={(e) => setSenha(e.target.value)}
-                    disabled={querTrocarAsenha}
-                  />
-                </div>
-
-                <div>
-                  <label>Repita a senha</label>
-
-                  <TextField
-                    className="input-perfil"
-                    inputMode="text"
-                    margin="dense"
-                    placeholder="Repita a senha"
-                    variant="outlined"
-                    type="password"
-                    fullWidth
-                    defaultValue={profile?.novaSenha}
-                    onChange={(e) => setNovaSenha(e.target.value)}
-                    disabled={querTrocarAsenha}
-                  />
-                </div>
+            <Row style={{ marginTop: "15px" }}>
+              <Col>
+                <Checkbox
+                  defaultChecked={querTrocarAsenha}
+                  onChange={(e) => setQuerTrocarAsenha(e.target.checked)}
+                />
+                <label>Desejo trocar a senha</label>
               </Col>
+            </Row>
+
+            {querTrocarAsenha && (
+              <Row style={{ marginTop: "15px" }}>
+                <Col>
+                  <div>
+                    <label>Senha Atual</label>
+                    <TextField
+                      className="input-perfil"
+                      InputLabelProps={{
+                        shrink: false,
+                      }}
+                      inputMode="text"
+                      margin="dense"
+                      placeholder="Senha Atual"
+                      variant="outlined"
+                      type="password"
+                      fullWidth
+                      onChange={(e) => setSenha(e.target.value)}
+                    />
+                  </div>
+                </Col>
+
+                <Col>
+                  <div>
+                    <label>Nova Senha</label>
+                    <TextField
+                      className="input-perfil"
+                      InputLabelProps={{
+                        shrink: false,
+                      }}
+                      inputMode="text"
+                      margin="dense"
+                      placeholder="Nova Senha"
+                      variant="outlined"
+                      type="password"
+                      fullWidth
+                      onChange={(e) => setNovaSenha(e.target.value)}
+                    />
+                  </div>
+                </Col>
+              </Row>
             )}
 
-            {!senhasIguais && (
-              <Col style={{ color: "red", marginTop: "10px" }}>
-                As senhas não coincidem
-              </Col>
+            {!senhasIguais && querTrocarAsenha && (
+              <p className="error-message">As senhas não coincidem.</p>
             )}
 
-            <Col className="botoes" xs={12}>
+<Col className="botoes" xs={12}>
               <Button
                 className={`btn-salvar ${!senhasIguais ? "disabled" : ""}`}
                 onClick={() => putMe()}
@@ -376,6 +366,7 @@ const Perfil: React.FC = () => {
                 Salvar <FaCheckCircle />{" "}
               </Button>
             </Col>
+
           </Col>
         </Row>
       )}
